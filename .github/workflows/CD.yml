@@ -26,6 +26,15 @@ jobs:
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
       with:
         arguments: build
+
+    - name: copy file via ssh password
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.AWS_HOST }}
+        username: ${{ secrets.AWS_USERNAME }}
+        key: ${{ secrets.AWS_PRIVATE_KEY }}
+        source: "./scripts/docker-compose.yml,./scripts/data"
+        target: "/home/ubuntu"
         
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
