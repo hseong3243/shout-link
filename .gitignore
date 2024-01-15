@@ -180,3 +180,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+.idea/.name
+.idea/compiler.xml
+.idea/jarRepositories.xml
+.idea/misc.xml
+.idea/vcs.xml
