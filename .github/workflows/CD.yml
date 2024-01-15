@@ -43,7 +43,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/shoutlink:$(date +%s)
+        tags: ${{ secrets.DOCKER_USERNAME }}/shoutlink:latest
 
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@v1.0.3
@@ -53,7 +53,5 @@ jobs:
         key: ${{ secrets.AWS_PRIVATE_KEY }}
         script: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/shoutlink
           docker-compose down
-          docker rmi $(docker images -p)
           docker-compose up -d
