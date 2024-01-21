@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.catchException;
 
 import com.seong.shoutlink.domain.auth.MockPasswordEncoder;
 import com.seong.shoutlink.domain.auth.service.request.CreateMemberCommand;
+import com.seong.shoutlink.domain.auth.service.response.CreateMemberResponse;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.MemberRole;
 import com.seong.shoutlink.domain.member.repository.StubMemberRepository;
@@ -50,10 +51,10 @@ class AuthServiceTest {
                 = new CreateMemberCommand("email@email.com", validPassword, "닉네임");
 
             //when
-            Long memberId = authService.createMember(createMemberCommand);
+            CreateMemberResponse response = authService.createMember(createMemberCommand);
 
             //then
-            assertThat(memberId).isNotNull();
+            assertThat(response.memberId()).isNotNull();
         }
 
         @ParameterizedTest

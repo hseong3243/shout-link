@@ -2,6 +2,7 @@ package com.seong.shoutlink.domain.auth.service;
 
 import com.seong.shoutlink.domain.auth.PasswordEncoder;
 import com.seong.shoutlink.domain.auth.service.request.CreateMemberCommand;
+import com.seong.shoutlink.domain.auth.service.response.CreateMemberResponse;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.MemberRole;
 import com.seong.shoutlink.domain.member.service.MemberRepository;
@@ -28,7 +29,7 @@ public class AuthService {
         }
     }
 
-    public Long createMember(CreateMemberCommand command) {
+    public CreateMemberResponse createMember(CreateMemberCommand command) {
         validatePassword(command);
         memberRepository.findByEmail(command.email())
                 .ifPresent(member -> {
@@ -43,6 +44,6 @@ public class AuthService {
             passwordEncoder.encode(command.password()),
             command.nickname(),
             MemberRole.USER);
-        return memberRepository.save(member);
+        return new CreateMemberResponse(memberRepository.save(member));
     }
 }
