@@ -1,6 +1,6 @@
 package com.seong.shoutlink.domain.auth;
 
-public class MockPasswordEncoder implements PasswordEncoder{
+public class FakePasswordEncoder implements PasswordEncoder{
 
     @Override
     public String encode(String rawPassword) {

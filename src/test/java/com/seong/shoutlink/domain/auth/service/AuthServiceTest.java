@@ -3,7 +3,7 @@ package com.seong.shoutlink.domain.auth.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 
-import com.seong.shoutlink.domain.auth.MockPasswordEncoder;
+import com.seong.shoutlink.domain.auth.FakePasswordEncoder;
 import com.seong.shoutlink.domain.auth.service.request.CreateMemberCommand;
 import com.seong.shoutlink.domain.auth.service.response.CreateMemberResponse;
 import com.seong.shoutlink.domain.member.Member;
@@ -20,7 +20,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 class AuthServiceTest {
 
-    MockPasswordEncoder passwordEncoder = new MockPasswordEncoder();
+    FakePasswordEncoder passwordEncoder = new FakePasswordEncoder();
 
     @Nested
     @DisplayName("회원 생성 시")
