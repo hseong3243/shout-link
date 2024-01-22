@@ -62,6 +62,9 @@ public class AuthService {
         TokenResponse tokenResponse = jwtProvider.createToken(
             member.getMemberId(),
             member.getMemberRole());
-        return new LoginResponse(tokenResponse.accessToken(), tokenResponse.refreshToken());
+        return new LoginResponse(
+            member.getMemberId(),
+            tokenResponse.accessToken(),
+            tokenResponse.refreshToken());
     }
 }
