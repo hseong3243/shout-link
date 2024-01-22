@@ -9,7 +9,6 @@ import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import javax.crypto.SecretKey;
-import org.springframework.beans.factory.annotation.Value;
 
 public class JJwtProvider implements JwtProvider {
 
@@ -24,11 +23,11 @@ public class JJwtProvider implements JwtProvider {
     private final JwtParser refreshTokenParser;
 
     public JJwtProvider(
-        @Value("${jwt.issuer}") String issuer,
-        @Value("${jwt.expiry-seconds}") int expirySeconds,
-        @Value("${jwt.refresh-expiry-seconds}") int refreshExpirySeconds,
-        @Value("${jwt.secret}") String secret,
-        @Value("${jwt.refresh-secret}") String refreshSecret) {
+        String issuer,
+        int expirySeconds,
+        int refreshExpirySeconds,
+        String secret,
+        String refreshSecret) {
         this.issuer = issuer;
         this.expirySeconds = expirySeconds;
         this.refreshExpirySeconds = refreshExpirySeconds;
