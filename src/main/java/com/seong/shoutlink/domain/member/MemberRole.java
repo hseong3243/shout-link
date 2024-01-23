@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 public enum MemberRole {
-    USER(Constants.ROLE_USER, List.of(Constants.ROLE_USER)),
-    ADMIN(Constants.ROLE_ADMIN, List.of(Constants.ROLE_USER, Constants.ROLE_ADMIN));
+    ROLE_USER(Constants.ROLE_USER, List.of(Constants.ROLE_USER)),
+    ROLE_ADMIN(Constants.ROLE_ADMIN, List.of(Constants.ROLE_USER, Constants.ROLE_ADMIN));
 
     private final String value;
     private final List<String> authorities;

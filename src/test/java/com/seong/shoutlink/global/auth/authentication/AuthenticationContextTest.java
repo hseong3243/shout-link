@@ -20,7 +20,7 @@ class AuthenticationContextTest {
         void setAuthentication() {
             //given
             long memberId = 1L;
-            MemberRole memberRole = MemberRole.USER;
+            MemberRole memberRole = MemberRole.ROLE_USER;
             String accessToken = "accessToken";
             JwtAuthentication givenAuthentication
                 = new JwtAuthentication(memberId, memberRole, accessToken);
@@ -46,7 +46,7 @@ class AuthenticationContextTest {
         void releaseContext() {
             //given
             JwtAuthentication givenAuthentication
-                = new JwtAuthentication(1L, MemberRole.USER, "accessToken");
+                = new JwtAuthentication(1L, MemberRole.ROLE_USER, "accessToken");
             authenticationContext.setAuthentication(givenAuthentication);
 
             //when

@@ -25,7 +25,7 @@ class JJwtProviderTest {
         void createToken() {
             //given
             Long memberId = 1L;
-            MemberRole volunteerRole = MemberRole.USER;
+            MemberRole volunteerRole = MemberRole.ROLE_USER;
 
             //when
             TokenResponse TokenResponse = jwtProvider.createToken(memberId, volunteerRole);

@@ -43,7 +43,7 @@ class AuthServiceTest {
             String email = "stub@stub.com";
             String password = "stub123!";
             String nickname = "stub";
-            MemberRole memberRole = MemberRole.USER;
+            MemberRole memberRole = MemberRole.ROLE_USER;
             savedMember = new Member(email, password, nickname, memberRole);
             memberRepository = new StubMemberRepository(savedMember);
             authService = new AuthService(memberRepository, passwordEncoder, jwtProvider);
@@ -138,7 +138,7 @@ class AuthServiceTest {
             savedMemberPassword = "stub123!";
             String password = passwordEncoder.encode(savedMemberPassword);
             String nickname = "stub";
-            MemberRole memberRole = MemberRole.USER;
+            MemberRole memberRole = MemberRole.ROLE_USER;
             savedMember = new Member(1L, email, password, nickname, memberRole);
             memberRepository = new StubMemberRepository(savedMember);
             authService = new AuthService(memberRepository, passwordEncoder, jwtProvider);
