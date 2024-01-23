@@ -48,7 +48,7 @@ public class AuthService {
             command.email(),
             passwordEncoder.encode(command.password()),
             command.nickname(),
-            MemberRole.USER);
+            MemberRole.ROLE_USER);
         return new CreateMemberResponse(memberRepository.save(member));
     }
 

@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum ErrorCode {
     ILLEGAL_ARGUMENT("SL001"),
-    UNAUTHENTICATED("SL401"),
+    UNAUTHENTICATED("SL101"),
+    INVALID_ACCESS_TOKEN("SL102"),
+    EXPIRED_ACCESS_TOKEN("SL103"),
     DUPLICATE_EMAIL("SL901"),
     DUPLICATE_NICKNAME("SL902");
 

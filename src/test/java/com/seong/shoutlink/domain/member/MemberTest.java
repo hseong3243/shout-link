@@ -20,7 +20,7 @@ class MemberTest {
         private String email = "email@email.com";
         private String password = "1234";
         private String nickname = "nickname";
-        private MemberRole memberRole = MemberRole.USER;
+        private MemberRole memberRole = MemberRole.ROLE_USER;
 
         @Test
         @DisplayName("회원이 생성된다.")
