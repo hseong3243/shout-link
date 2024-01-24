@@ -1,10 +1,13 @@
 package com.seong.shoutlink.global.config;
 
+import com.seong.shoutlink.global.auth.resolver.LoginUserArgumentResolver;
 import com.seong.shoutlink.global.auth.authentication.AuthenticationContext;
 import com.seong.shoutlink.global.auth.authentication.JwtAuthenticationInterceptor;
 import com.seong.shoutlink.global.auth.authentication.JwtAuthenticationProvider;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -21,5 +24,10 @@ public class WebConfig implements WebMvcConfigurer {
             new JwtAuthenticationInterceptor(jwtAuthenticationProvider, authenticationContext))
             .order(1)
             .addPathPatterns("/api/**");
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new LoginUserArgumentResolver(authenticationContext));
     }
 }

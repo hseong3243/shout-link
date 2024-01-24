@@ -1,7 +1,7 @@
 package com.seong.shoutlink.domain.member;
 
-import com.seong.shoutlink.global.exception.ErrorCode;
-import com.seong.shoutlink.global.exception.ShoutLinkException;
+import com.seong.shoutlink.domain.exception.ErrorCode;
+import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import lombok.Getter;
