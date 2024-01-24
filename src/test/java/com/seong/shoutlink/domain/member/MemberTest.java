@@ -3,8 +3,8 @@ package com.seong.shoutlink.domain.member;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 
-import com.seong.shoutlink.global.exception.ErrorCode;
-import com.seong.shoutlink.global.exception.ShoutLinkException;
+import com.seong.shoutlink.domain.exception.ErrorCode;
+import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

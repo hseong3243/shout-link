@@ -1,5 +1,6 @@
 package com.seong.shoutlink.global.exception;
 
+import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
