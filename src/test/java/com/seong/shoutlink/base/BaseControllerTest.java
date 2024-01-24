@@ -9,6 +9,7 @@ import com.seong.shoutlink.domain.auth.service.AuthService;
 import com.seong.shoutlink.fixture.AuthFixture;
 import com.seong.shoutlink.global.auth.authentication.AuthenticationContext;
 import com.seong.shoutlink.global.auth.authentication.JwtAuthenticationProvider;
+import com.seong.shoutlink.global.config.WebConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 @WebMvcTest
-@Import({RestDocsConfig.class, BaseControllerConfig.class})
+@Import({RestDocsConfig.class, BaseControllerConfig.class, WebConfig.class})
 @ExtendWith(RestDocumentationExtension.class)
 public class BaseControllerTest {
 
@@ -49,6 +50,8 @@ public class BaseControllerTest {
             return new AuthenticationContext();
         }
     }
+
+    protected static final String AUTHORIZATION = "Authorization";
 
     protected MockMvc mockMvc;
 
