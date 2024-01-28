@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seong.shoutlink.base.BaseControllerTest.BaseControllerConfig;
 import com.seong.shoutlink.domain.auth.JwtProvider;
 import com.seong.shoutlink.domain.auth.service.AuthService;
+import com.seong.shoutlink.domain.link.service.LinkService;
+import com.seong.shoutlink.domain.member.MemberRole;
 import com.seong.shoutlink.fixture.AuthFixture;
 import com.seong.shoutlink.global.auth.authentication.AuthenticationContext;
 import com.seong.shoutlink.global.auth.authentication.JwtAuthenticationProvider;
@@ -52,7 +54,7 @@ public class BaseControllerTest {
     }
 
     protected static final String AUTHORIZATION = "Authorization";
-
+    protected String bearerAccessToken;
     protected MockMvc mockMvc;
 
     @Autowired
@@ -63,6 +65,9 @@ public class BaseControllerTest {
 
     @MockBean
     protected AuthService authService;
+
+    @MockBean
+    protected LinkService linkService;
 
     @BeforeEach
     void setUp(
@@ -75,5 +80,9 @@ public class BaseControllerTest {
                 MockMvcRestDocumentation.documentationConfiguration(documentationContextProvider))
             .addFilter(new CharacterEncodingFilter("UTF-8", true))
             .build();
+
+        this.bearerAccessToken = "Bearer " + AuthFixture.jwtProvider()
+                .createToken(1L, MemberRole.ROLE_USER)
+                .accessToken();
     }
 }
