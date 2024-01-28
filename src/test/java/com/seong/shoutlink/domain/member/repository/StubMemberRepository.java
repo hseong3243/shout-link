@@ -29,4 +29,9 @@ public final class StubMemberRepository implements MemberRepository {
     public Long save(Member member) {
         return (long) (memory.size() + 1);
     }
+
+    @Override
+    public Optional<Member> findById(Long memberId) {
+        return memory.stream().filter(member -> member.getMemberId().equals(memberId)).findFirst();
+    }
 }

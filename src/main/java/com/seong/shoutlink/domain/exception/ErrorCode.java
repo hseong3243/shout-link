@@ -10,6 +10,7 @@ public enum ErrorCode {
     UNAUTHENTICATED("SL101", Constants.UNAUTHORIZED),
     INVALID_ACCESS_TOKEN("SL102", Constants.UNAUTHORIZED),
     EXPIRED_ACCESS_TOKEN("SL103", Constants.UNAUTHORIZED),
+    NOT_FOUND("SL401", Constants.NOT_FOUND),
     DUPLICATE_EMAIL("SL901", Constants.CONFLICT),
     DUPLICATE_NICKNAME("SL902", Constants.BAD_REQUEST);
 
@@ -20,6 +21,7 @@ public enum ErrorCode {
 
         private static final int BAD_REQUEST = 400;
         private static final int UNAUTHORIZED = 401;
+        private static final int NOT_FOUND = 404;
         private static final int CONFLICT = 409;
     }
 }

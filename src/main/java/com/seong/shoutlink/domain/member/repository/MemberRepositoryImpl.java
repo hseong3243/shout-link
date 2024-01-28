@@ -29,4 +29,10 @@ public class MemberRepositoryImpl implements MemberRepository {
         MemberEntity memberEntity = memberJpaRepository.save(MemberEntity.create(member));
         return memberEntity.getMemberId();
     }
+
+    @Override
+    public Optional<Member> findById(Long memberId) {
+        return memberJpaRepository.findById(memberId)
+            .map(MemberEntity::toDomain);
+    }
 }
