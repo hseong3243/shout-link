@@ -10,4 +10,6 @@ public interface MemberRepository {
     Optional<Member> findByNickname(String nickname);
 
     Long save(Member member);
+
+    Optional<Member> findById(Long memberId);
 }
