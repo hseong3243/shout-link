@@ -9,12 +9,13 @@ import com.seong.shoutlink.domain.auth.service.request.CreateMemberCommand;
 import com.seong.shoutlink.domain.auth.service.request.LoginCommand;
 import com.seong.shoutlink.domain.auth.service.response.CreateMemberResponse;
 import com.seong.shoutlink.domain.auth.service.response.LoginResponse;
+import com.seong.shoutlink.domain.common.StubEventPublisher;
+import com.seong.shoutlink.domain.exception.ErrorCode;
+import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.MemberRole;
 import com.seong.shoutlink.domain.member.repository.StubMemberRepository;
 import com.seong.shoutlink.global.auth.jwt.JJwtProvider;
-import com.seong.shoutlink.domain.exception.ErrorCode;
-import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -37,6 +38,7 @@ class AuthServiceTest {
         Member savedMember;
         StubMemberRepository memberRepository;
         AuthService authService;
+        StubEventPublisher eventPublisher;
 
         @BeforeEach
         void setUp() {
@@ -46,7 +48,12 @@ class AuthServiceTest {
             MemberRole memberRole = MemberRole.ROLE_USER;
             savedMember = new Member(email, password, nickname, memberRole);
             memberRepository = new StubMemberRepository(savedMember);
-            authService = new AuthService(memberRepository, passwordEncoder, jwtProvider);
+            eventPublisher = new StubEventPublisher();
+            authService = new AuthService(
+                memberRepository,
+                passwordEncoder,
+                jwtProvider,
+                eventPublisher);
         }
 
         @ParameterizedTest
@@ -121,6 +128,20 @@ class AuthServiceTest {
                 .extracting(e -> ((ShoutLinkException) e).getErrorCode())
                 .isEqualTo(ErrorCode.DUPLICATE_NICKNAME);
         }
+
+        @Test
+        @DisplayName("성공: 회원 생성 이벤트 발행함")
+        void publishCreateMemberEvent() {
+            //given
+            CreateMemberCommand command
+                = new CreateMemberCommand("email@email.com", "asdf123!", "nickname");
+
+            //when
+            CreateMemberResponse response = authService.createMember(command);
+
+            //then
+            assertThat(eventPublisher.getPublishEventCount()).isEqualTo(1);
+        }
     }
 
     @Nested
@@ -131,6 +152,7 @@ class AuthServiceTest {
         Member savedMember;
         StubMemberRepository memberRepository;
         AuthService authService;
+        StubEventPublisher eventPublisher;
 
         @BeforeEach
         void setUp() {
@@ -141,7 +163,12 @@ class AuthServiceTest {
             MemberRole memberRole = MemberRole.ROLE_USER;
             savedMember = new Member(1L, email, password, nickname, memberRole);
             memberRepository = new StubMemberRepository(savedMember);
-            authService = new AuthService(memberRepository, passwordEncoder, jwtProvider);
+            eventPublisher = new StubEventPublisher();
+            authService = new AuthService(
+                memberRepository,
+                passwordEncoder,
+                jwtProvider,
+                eventPublisher);
         }
 
         @Test

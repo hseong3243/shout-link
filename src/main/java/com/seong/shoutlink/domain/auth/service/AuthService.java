@@ -2,19 +2,22 @@ package com.seong.shoutlink.domain.auth.service;
 
 import com.seong.shoutlink.domain.auth.JwtProvider;
 import com.seong.shoutlink.domain.auth.PasswordEncoder;
+import com.seong.shoutlink.domain.auth.service.event.CreateMemberEvent;
 import com.seong.shoutlink.domain.auth.service.request.CreateMemberCommand;
 import com.seong.shoutlink.domain.auth.service.request.LoginCommand;
 import com.seong.shoutlink.domain.auth.service.response.CreateMemberResponse;
 import com.seong.shoutlink.domain.auth.service.response.LoginResponse;
 import com.seong.shoutlink.domain.auth.service.response.TokenResponse;
+import com.seong.shoutlink.domain.common.EventPublisher;
+import com.seong.shoutlink.domain.exception.ErrorCode;
+import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.MemberRole;
 import com.seong.shoutlink.domain.member.service.MemberRepository;
-import com.seong.shoutlink.domain.exception.ErrorCode;
-import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,7 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final EventPublisher eventPublisher;
 
     private void validatePassword(CreateMemberCommand command) {
         if(!PASSWORD_PATTEN.matcher(command.password()).matches()) {
@@ -34,6 +38,7 @@ public class AuthService {
         }
     }
 
+    @Transactional
     public CreateMemberResponse createMember(CreateMemberCommand command) {
         validatePassword(command);
         memberRepository.findByEmail(command.email())
@@ -49,7 +54,9 @@ public class AuthService {
             passwordEncoder.encode(command.password()),
             command.nickname(),
             MemberRole.ROLE_USER);
-        return new CreateMemberResponse(memberRepository.save(member));
+        Long memberId = memberRepository.save(member);
+        eventPublisher.publishEvent(new CreateMemberEvent(memberId));
+        return new CreateMemberResponse(memberId);
     }
 
     public LoginResponse login(LoginCommand command) {
