@@ -7,6 +7,7 @@ import com.seong.shoutlink.base.BaseControllerTest.BaseControllerConfig;
 import com.seong.shoutlink.domain.auth.JwtProvider;
 import com.seong.shoutlink.domain.auth.service.AuthService;
 import com.seong.shoutlink.domain.link.service.LinkService;
+import com.seong.shoutlink.domain.linkbundle.service.LinkBundleService;
 import com.seong.shoutlink.domain.member.MemberRole;
 import com.seong.shoutlink.fixture.AuthFixture;
 import com.seong.shoutlink.global.auth.authentication.AuthenticationContext;
@@ -68,6 +69,9 @@ public class BaseControllerTest {
 
     @MockBean
     protected LinkService linkService;
+
+    @MockBean
+    protected LinkBundleService linkBundleService;
 
     @BeforeEach
     void setUp(
