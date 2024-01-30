@@ -22,12 +22,12 @@ public class FakeLinkBundleRepository implements LinkBundleRepository {
     @Override
     public void updateDefaultBundleFalse(Member member) {
         List<LinkBundle> defaultLinkBundle = memory.values().stream()
-            .filter(linkBundle -> linkBundle.isDefault() && linkBundle.getMember().equals(member))
+            .filter(linkBundle -> linkBundle.isDefault() && linkBundle.getMemberId().equals(member.getMemberId()))
             .toList();
         defaultLinkBundle.forEach(lb -> {
             memory.remove(lb.getLinkBundleId());
             memory.put(lb.getLinkBundleId(),
-                new LinkBundle(lb.getDescription(), false, lb.getMember()));
+                new LinkBundle(lb.getDescription(), false, lb.getMemberId()));
         });
     }
 
