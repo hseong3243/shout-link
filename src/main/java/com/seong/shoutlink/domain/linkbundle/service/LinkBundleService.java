@@ -22,6 +22,9 @@ public class LinkBundleService {
     public CreateLinkBundleResponse createLinkBundle(CreateLinkBundleCommand command) {
         Member member = memberRepository.findById(command.memberId())
             .orElseThrow(() -> new ShoutLinkException("존재하지 않는 사용자입니다.", ErrorCode.NOT_FOUND));
+        if(command.isDefault()) {
+            linkBundleRepository.updateDefaultBundleFalse(member);
+        }
         LinkBundle linkBundle = new LinkBundle(command.description(), command.isDefault(), member);
         return new CreateLinkBundleResponse(linkBundleRepository.save(linkBundle));
     }
