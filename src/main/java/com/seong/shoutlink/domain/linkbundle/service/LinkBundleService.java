@@ -28,7 +28,7 @@ public class LinkBundleService {
         LinkBundle linkBundle = new LinkBundle(
             command.description(),
             command.isDefault(),
-            member.getMemberId());
+            member);
         return new CreateLinkBundleResponse(linkBundleRepository.save(linkBundle));
     }
 }

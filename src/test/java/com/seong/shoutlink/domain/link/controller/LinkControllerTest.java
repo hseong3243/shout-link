@@ -25,7 +25,8 @@ class LinkControllerTest extends BaseControllerTest {
     @DisplayName("성공: 링크 생성 API 호출 시")
     void createLink() throws Exception {
         //given
-        CreateLinkRequest request = new CreateLinkRequest(1L, "https://hseong.tistory.com/", "내 블로그");
+        CreateLinkRequest request = new CreateLinkRequest(1L, "https://hseong.tistory.com/",
+            "내 블로그");
         CreateLinkResponse response = new CreateLinkResponse(1L);
         given(linkService.createLink(any())).willReturn(response);
 
@@ -42,7 +43,7 @@ class LinkControllerTest extends BaseControllerTest {
                     headerWithName(AUTHORIZATION).description("사용자 액세스 토큰")
                 ),
                 requestFields(
-                    fieldWithPath("linkBundleId").type(JsonFieldType.NUMBER).description("링크 번들 ID"),
+                    fieldWithPath("linkBundleId").type(JsonFieldType.NUMBER).description("링크 묶음 ID"),
                     fieldWithPath("url").type(JsonFieldType.STRING).description("링크 url"),
                     fieldWithPath("description").type(JsonFieldType.STRING).description("링크 설명")
                         .optional()
