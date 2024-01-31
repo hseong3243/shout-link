@@ -27,6 +27,7 @@ public class LinkController {
         @Valid @RequestBody CreateLinkRequest request) {
         CreateLinkResponse response = linkService.createLink(new CreateLinkCommand(
             memberId,
+            request.linkBundleId(),
             request.url(),
             request.description()));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

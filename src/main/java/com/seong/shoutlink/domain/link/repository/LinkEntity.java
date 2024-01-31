@@ -1,6 +1,8 @@
 package com.seong.shoutlink.domain.link.repository;
 
 import com.seong.shoutlink.domain.link.Link;
+import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
+import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,13 +22,20 @@ public class LinkEntity {
 
     private String url;
     private String description;
+    private Long linkBundleId;
 
-    private LinkEntity(String url, String description) {
+    private LinkEntity(String url, String description, Long linkBundleId) {
         this.url = url;
         this.description = description;
+        this.linkBundleId = linkBundleId;
     }
 
-    public static LinkEntity create(Link link) {
-        return new LinkEntity(link.getUrl(), link.getDescription());
+    public static LinkEntity create(LinkWithLinkBundle linkWithLinkBundle) {
+        Link link = linkWithLinkBundle.getLink();
+        LinkBundle linkBundle = linkWithLinkBundle.getLinkBundle();
+        return new LinkEntity(
+            link.getUrl(),
+            link.getDescription(),
+            linkBundle.getLinkBundleId());
     }
 }

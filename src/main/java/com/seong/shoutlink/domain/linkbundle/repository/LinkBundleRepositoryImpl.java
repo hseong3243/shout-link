@@ -3,6 +3,7 @@ package com.seong.shoutlink.domain.linkbundle.repository;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import com.seong.shoutlink.domain.linkbundle.service.LinkBundleRepository;
 import com.seong.shoutlink.domain.member.Member;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -23,5 +24,11 @@ public class LinkBundleRepositoryImpl implements LinkBundleRepository {
     @Override
     public void updateDefaultBundleFalse(Member member) {
         linkBundleJpaRepository.updateDefaultBundleFalse(member.getMemberId());
+    }
+
+    @Override
+    public Optional<LinkBundle> findById(Long linkBundleId) {
+        return linkBundleJpaRepository.findById(linkBundleId)
+            .map(LinkBundleEntity::toDomain);
     }
 }
