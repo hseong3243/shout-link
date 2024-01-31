@@ -6,7 +6,10 @@ import com.seong.shoutlink.domain.common.StubEventPublisher;
 import com.seong.shoutlink.domain.link.repository.FakeLinkRepository;
 import com.seong.shoutlink.domain.link.service.request.CreateLinkCommand;
 import com.seong.shoutlink.domain.link.service.response.CreateLinkResponse;
+import com.seong.shoutlink.domain.linkbundle.repository.FakeLinkBundleRepository;
+import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.repository.StubMemberRepository;
+import com.seong.shoutlink.fixture.LinkBundleFixture;
 import com.seong.shoutlink.fixture.MemberFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,14 +25,18 @@ class LinkServiceTest {
         private LinkService linkService;
         private StubMemberRepository memberRepository;
         private FakeLinkRepository linkRepository;
+        private FakeLinkBundleRepository linkBundleRepository;
         private StubEventPublisher eventPublisher;
 
         @BeforeEach
         void setUp() {
-            memberRepository = new StubMemberRepository(MemberFixture.member());
+            Member member = MemberFixture.member();
+            memberRepository = new StubMemberRepository(member);
             linkRepository = new FakeLinkRepository();
+            linkBundleRepository = new FakeLinkBundleRepository(LinkBundleFixture.linkBundle(member));
             eventPublisher = new StubEventPublisher();
-            linkService = new LinkService(memberRepository, linkRepository, eventPublisher);
+            linkService = new LinkService(memberRepository, linkRepository, linkBundleRepository,
+                eventPublisher);
         }
 
         @Test
@@ -37,7 +44,7 @@ class LinkServiceTest {
         void createLink() {
             //given
             CreateLinkCommand command = new CreateLinkCommand(1L,
-                "https://hseong.tistory.com/", "내 블로그");
+                1L, "https://hseong.tistory.com/", "내 블로그");
 
             //when
             CreateLinkResponse response = linkService.createLink(command);
@@ -51,7 +58,7 @@ class LinkServiceTest {
         void createLink_ThenPublishCreateLinkEvent() {
             //given
             CreateLinkCommand command = new CreateLinkCommand(1L,
-                "https://hseong.tistory.com/", "내 블로그");
+                1L, "https://hseong.tistory.com/", "내 블로그");
 
             //when
             CreateLinkResponse response = linkService.createLink(command);
