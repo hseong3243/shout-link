@@ -11,6 +11,11 @@ public class Link {
 
 
     public Link(String url, String description) {
+        this(null, url, description);
+    }
+
+    public Link(Long linkId, String url, String description) {
+        this.linkId = linkId;
         this.url = url;
         this.description = description;
     }

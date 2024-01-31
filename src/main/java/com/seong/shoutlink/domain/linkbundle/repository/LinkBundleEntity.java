@@ -38,6 +38,15 @@ public class LinkBundleEntity {
             linkBundle.getLinkBundleId(),
             linkBundle.getDescription(),
             linkBundle.isDefault(),
-            linkBundle.getMember().getMemberId());
+            linkBundle.getMemberId());
+    }
+
+    public LinkBundle toDomain() {
+        return new LinkBundle(
+            linkBundleId,
+            description,
+            isDefault,
+            memberId
+        );
     }
 }

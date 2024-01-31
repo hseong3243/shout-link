@@ -1,8 +1,8 @@
 package com.seong.shoutlink.domain.link.service;
 
-import com.seong.shoutlink.domain.link.Link;
+import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
 
 public interface LinkRepository {
 
-    Long save(Link link);
+    Long save(LinkWithLinkBundle linkWithLinkBundle);
 }
