@@ -38,12 +38,14 @@ public class FakeLinkBundleRepository implements LinkBundleRepository {
         });
     }
 
-    private long getNextId() {
-        return memory.keySet().size() + 1;
-    }
-
     @Override
     public Optional<LinkBundle> findById(Long linkBundleId) {
-        return memory.values().stream().findFirst();
+        return memory.values().stream()
+            .filter(lb -> lb.getLinkBundleId().equals(linkBundleId))
+            .findFirst();
+    }
+
+    private long getNextId() {
+        return memory.keySet().size() + 1;
     }
 }

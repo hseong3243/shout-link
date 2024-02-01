@@ -25,7 +25,10 @@ public class LinkBundleService {
         if(command.isDefault()) {
             linkBundleRepository.updateDefaultBundleFalse(member);
         }
-        LinkBundle linkBundle = new LinkBundle(command.description(), command.isDefault(), member);
+        LinkBundle linkBundle = new LinkBundle(
+            command.description(),
+            command.isDefault(),
+            member);
         return new CreateLinkBundleResponse(linkBundleRepository.save(linkBundle));
     }
 }
