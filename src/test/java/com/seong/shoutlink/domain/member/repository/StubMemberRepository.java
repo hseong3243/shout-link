@@ -15,6 +15,10 @@ public final class StubMemberRepository implements MemberRepository {
         memory.addAll(Arrays.stream(members).toList());
     }
 
+    public void stub(Member... members) {
+        memory.addAll(Arrays.stream(members).toList());
+    }
+
     @Override
     public Optional<Member> findByEmail(String email) {
         return memory.stream().filter(member -> member.getEmail().equals(email)).findFirst();

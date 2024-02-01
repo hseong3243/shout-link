@@ -18,6 +18,13 @@ public class FakeLinkBundleRepository implements LinkBundleRepository {
         }
     }
 
+    public void stub(LinkBundle... linkBundles) {
+        memory.clear();
+        for (LinkBundle linkBundle : linkBundles) {
+            memory.put(getNextId(), linkBundle);
+        }
+    }
+
     @Override
     public Long save(LinkBundle linkBundle) {
         long nextId = getNextId();
@@ -43,6 +50,11 @@ public class FakeLinkBundleRepository implements LinkBundleRepository {
         return memory.values().stream()
             .filter(lb -> lb.getLinkBundleId().equals(linkBundleId))
             .findFirst();
+    }
+
+    @Override
+    public List<LinkBundle> findLinkBundlesThatMembersHave(Member member) {
+        return memory.values().stream().toList();
     }
 
     private long getNextId() {
