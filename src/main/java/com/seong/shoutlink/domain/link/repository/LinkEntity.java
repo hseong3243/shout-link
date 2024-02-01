@@ -38,4 +38,8 @@ public class LinkEntity {
             link.getDescription(),
             linkBundle.getLinkBundleId());
     }
+
+    public Link toDomain() {
+        return new Link(linkId, url, description);
+    }
 }
