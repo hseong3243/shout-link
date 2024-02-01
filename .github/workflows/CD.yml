@@ -63,4 +63,5 @@ jobs:
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           cd scripts
           docker-compose down
+          docker rmi $(docker images -q)
           docker-compose up -d
