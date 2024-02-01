@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.linkbundle.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,4 +12,6 @@ public interface LinkBundleJpaRepository extends JpaRepository<LinkBundleEntity,
     @Query("update LinkBundleEntity lb set lb.isDefault = false"
         + " where lb.isDefault = true and lb.memberId = :memberId")
     void updateDefaultBundleFalse(@Param("memberId") Long memberId);
+
+    List<LinkBundleEntity> findAllByMemberId(Long memberId);
 }

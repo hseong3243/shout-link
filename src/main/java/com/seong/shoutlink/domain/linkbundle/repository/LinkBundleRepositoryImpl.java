@@ -35,6 +35,8 @@ public class LinkBundleRepositoryImpl implements LinkBundleRepository {
 
     @Override
     public List<LinkBundle> findLinkBundlesThatMembersHave(Member member) {
-        return null;
+        return linkBundleJpaRepository.findAllByMemberId(member.getMemberId()).stream()
+            .map(LinkBundleEntity::toDomain)
+            .toList();
     }
 }
