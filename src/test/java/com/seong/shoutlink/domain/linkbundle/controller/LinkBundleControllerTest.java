@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -13,6 +14,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.seong.shoutlink.base.BaseControllerTest;
 import com.seong.shoutlink.domain.linkbundle.controller.request.CreateLinkBundleRequest;
 import com.seong.shoutlink.domain.linkbundle.service.response.CreateLinkBundleResponse;
+import com.seong.shoutlink.domain.linkbundle.service.response.FindLinkBundleResponse;
+import com.seong.shoutlink.domain.linkbundle.service.response.FindLinkBundlesResponse;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -49,6 +53,37 @@ class LinkBundleControllerTest extends BaseControllerTest {
                 responseFields(
                     fieldWithPath("linkBundleId").type(JsonFieldType.NUMBER)
                         .description("생성된 링크 번들 ID")
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("성공: 링크 묶음 목록 조회 API 호출 시")
+    void findLinkBundles() throws Exception {
+        //given
+        FindLinkBundlesResponse response = new FindLinkBundlesResponse(List.of(
+            new FindLinkBundleResponse(1L, "기본 분류", true),
+            new FindLinkBundleResponse(2L, "두번째", false)));
+        given(linkBundleService.findLinkBundles(any())).willReturn(response);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(get("/api/link-bundles")
+            .header(AUTHORIZATION, bearerAccessToken));
+
+        //then
+        resultActions.andExpect(status().isOk())
+            .andDo(restDocs.document(
+                requestHeaders(
+                    headerWithName(AUTHORIZATION).description("액세스 토큰")
+                ),
+                responseFields(
+                    fieldWithPath("linkBundles").type(JsonFieldType.ARRAY).description("링크 묶음 목록"),
+                    fieldWithPath("linkBundles[].linkBundleId").type(JsonFieldType.NUMBER)
+                        .description("링크 묶음 ID"),
+                    fieldWithPath("linkBundles[].description").type(JsonFieldType.STRING)
+                        .description("설명"),
+                    fieldWithPath("linkBundles[].isDefault").type(JsonFieldType.BOOLEAN)
+                        .description("기본 여부")
                 )
             ));
     }
