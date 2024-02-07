@@ -22,7 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(
-            new JwtAuthenticationInterceptor(jwtAuthenticationProvider, authenticationContext))
+                new JwtAuthenticationInterceptor(jwtAuthenticationProvider, authenticationContext))
             .order(1)
             .addPathPatterns("/api/**");
     }
@@ -35,7 +35,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-            .allowedOrigins("http://localhost:3000", "https://shoutlink.me")
+            .allowedOrigins(
+                "http://localhost:3000",
+                "https://shoutlink.me",
+                "https://www.shoutlink.me",
+                "https://shout-link-front.vercel.app")
             .allowedMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS")
             .allowCredentials(true);
     }
