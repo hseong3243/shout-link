@@ -25,7 +25,7 @@ class HubControllerTest extends BaseControllerTest {
     @DisplayName("성공: 허브 생성 api 호출 시")
     void createHub() throws Exception {
         //given
-        CreateHubRequest request = new CreateHubRequest("허브 이름", "허브 설명");
+        CreateHubRequest request = new CreateHubRequest("허브 이름", "허브 설명", false);
         CreateHubResponse response = new CreateHubResponse(1L);
 
         given(hubService.createHub(any())).willReturn(response);
@@ -45,7 +45,8 @@ class HubControllerTest extends BaseControllerTest {
                 requestFields(
                     fieldWithPath("name").type(JsonFieldType.STRING).description("허브 이름"),
                     fieldWithPath("description").type(JsonFieldType.STRING).description("허브 설명")
-                        .optional()
+                        .optional(),
+                    fieldWithPath("isPrivate").type(JsonFieldType.BOOLEAN).description("허브 공개 여부r")
                 ),
                 responseFields(
                     fieldWithPath("hubId").type(JsonFieldType.NUMBER).description("허브 ID")

@@ -42,7 +42,8 @@ class HubServiceTest {
             //given
             Member member = MemberFixture.member();
             memberRepository.stub(member);
-            CreateHubCommand command = new CreateHubCommand(member.getMemberId(), "허브 이름", "허브 설명");
+            CreateHubCommand command = new CreateHubCommand(member.getMemberId(), "허브 이름", "허브 설명",
+                false);
 
             //when
             CreateHubResponse response = hubService.createHub(command);
@@ -57,7 +58,8 @@ class HubServiceTest {
             //given
             Member member = MemberFixture.member();
             memberRepository.stub(member);
-            CreateHubCommand command = new CreateHubCommand(member.getMemberId(), "허브 이름", "허브 설명");
+            CreateHubCommand command = new CreateHubCommand(member.getMemberId(), "허브 이름", "허브 설명",
+                false);
 
             //when
             CreateHubResponse response = hubService.createHub(command);
@@ -70,7 +72,7 @@ class HubServiceTest {
         @DisplayName("예외(NotFount): 존재하지 않는 사용자")
         void notFound_WhenUserNotFound() {
             //given
-            CreateHubCommand command = new CreateHubCommand(1L, "허브 이름", "허브 설명");
+            CreateHubCommand command = new CreateHubCommand(1L, "허브 이름", "허브 설명", false);
 
             //when
             Exception exception = catchException(() -> hubService.createHub(command));

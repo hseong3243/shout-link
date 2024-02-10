@@ -23,7 +23,7 @@ public class HubService {
 
     public CreateHubResponse createHub(CreateHubCommand command) {
         Member member = getMember(command.memberId());
-        Hub hub = new Hub(command.name(), command.description());
+        Hub hub = new Hub(command.name(), command.description(), command.isPrivate());
         Long hubId = hubRepository.save(new HubWithMembers(hub, member));
         eventPublisher.publishEvent(new CreateHubEvent(hubId));
         return new CreateHubResponse(hubId);

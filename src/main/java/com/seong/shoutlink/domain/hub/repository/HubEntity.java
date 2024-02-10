@@ -25,12 +25,16 @@ public class HubEntity {
     @Column(nullable = false)
     private String description;
 
-    private HubEntity(String name, String description) {
+    @Column(nullable = false)
+    private boolean isPrivate;
+
+    private HubEntity(String name, String description, boolean isPrivate) {
         this.name = name;
         this.description = description;
+        this.isPrivate = isPrivate;
     }
 
     public static HubEntity create(Hub hub) {
-        return new HubEntity(hub.getName(), hub.getDescription());
+        return new HubEntity(hub.getName(), hub.getDescription(), hub.isPrivate());
     }
 }

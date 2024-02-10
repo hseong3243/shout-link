@@ -28,7 +28,8 @@ public class HubController {
         CreateHubResponse response = hubService.createHub(new CreateHubCommand(
             memberId,
             request.name(),
-            request.description()));
+            request.description(),
+            request.isPrivate()));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

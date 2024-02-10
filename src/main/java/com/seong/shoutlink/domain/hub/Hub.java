@@ -16,10 +16,12 @@ public class Hub {
     private Long hubId;
     private String name;
     private String description;
+    private boolean isPrivate;
 
-    public Hub(String name, String description) {
+    public Hub(String name, String description, boolean isPrivate) {
         this.name = validateName(name);
         this.description = validateDescription(description);
+        this.isPrivate = isPrivate;
     }
 
     private String validateName(String name) {
