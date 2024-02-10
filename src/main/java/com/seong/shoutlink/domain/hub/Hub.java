@@ -4,7 +4,9 @@ import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import java.text.MessageFormat;
 import java.util.Objects;
+import lombok.Getter;
 
+@Getter
 public class Hub {
 
     private static final int NAME_MAX_SIZE = 30;
