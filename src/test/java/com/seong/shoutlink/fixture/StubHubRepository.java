@@ -11,7 +11,7 @@ public class StubHubRepository implements HubRepository {
     private final Map<Long, Hub> memory = new HashMap<>();
 
     @Override
-    public Long save(HubWithMembers hub) {
+    public Long save(HubWithMembers hubWithMembers) {
         return 1L;
     }
 }

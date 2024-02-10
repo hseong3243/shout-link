@@ -4,5 +4,5 @@ import com.seong.shoutlink.domain.hub.HubWithMembers;
 
 public interface HubRepository {
 
-    Long save(HubWithMembers hub);
+    Long save(HubWithMembers hubWithMembers);
 }
