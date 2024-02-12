@@ -1,7 +1,9 @@
 package com.seong.shoutlink.global.event;
 
 import com.seong.shoutlink.domain.auth.service.event.CreateMemberEvent;
+import com.seong.shoutlink.domain.hub.service.event.CreateHubEvent;
 import com.seong.shoutlink.domain.linkbundle.service.LinkBundleService;
+import com.seong.shoutlink.domain.linkbundle.service.request.CreateHubLinkBundleCommand;
 import com.seong.shoutlink.domain.linkbundle.service.response.CreateLinkBundleCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,5 +25,14 @@ public class LinkBundleEventListener {
         linkBundleService.createLinkBundle(command);
     }
 
-
+    @TransactionalEventListener
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void createDefaultHubLinkBundle(CreateHubEvent event) {
+        CreateHubLinkBundleCommand command = new CreateHubLinkBundleCommand(
+            event.hubId(),
+            event.memberId(),
+            DEFAULT_LINK_BUNDLE,
+            true);
+        linkBundleService.createHubLinkBundle(command);
+    }
 }

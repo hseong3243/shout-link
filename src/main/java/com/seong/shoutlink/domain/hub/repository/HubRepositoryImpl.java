@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.hub.repository;
 
+import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.HubWithMaster;
 import com.seong.shoutlink.domain.hub.service.HubRepository;
 import com.seong.shoutlink.domain.hubMember.repository.HubMemberEntity;
@@ -18,17 +19,17 @@ public class HubRepositoryImpl implements HubRepository {
 
     @Override
     @Transactional
-    public Long save(HubWithMaster hubWithMaster) {
-        HubEntity hubEntity = HubEntity.create(hubWithMaster.getHub());
+    public Long save(Hub hub) {
+        HubEntity hubEntity = HubEntity.create(hub);
         hubJpaRepository.save(hubEntity);
         HubMemberEntity hubMemberEntity
-            = HubMemberEntity.create(hubWithMaster.getHub(), hubWithMaster.getMember());
+            = HubMemberEntity.create(hubEntity, hub.getMasterId());
         hubMemberJpaRepository.save(hubMemberEntity);
         return hubEntity.getHubId();
     }
 
     @Override
     public Optional<HubWithMaster> findByIdWithHubMaster(Long hubId) {
-        return Optional.empty();
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 package com.seong.shoutlink.fixture;
 
+import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.HubWithMaster;
 import com.seong.shoutlink.domain.hub.service.HubRepository;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class StubHubRepository implements HubRepository {
     }
 
     @Override
-    public Long save(HubWithMaster hubWithMaster) {
+    public Long save(Hub hub) {
         return 1L;
     }
 

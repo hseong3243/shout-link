@@ -1,15 +1,17 @@
 package com.seong.shoutlink.domain.hubMember.repository;
 
-import com.seong.shoutlink.domain.hub.Hub;
+import com.seong.shoutlink.domain.hub.repository.HubEntity;
 import com.seong.shoutlink.domain.hubMember.HubMemberRole;
-import com.seong.shoutlink.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,20 +28,21 @@ public class HubMemberEntity {
     @Column(nullable = false)
     private Long memberId;
 
-    @Column(nullable = false)
-    private Long hubId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hub_id", nullable = false, updatable = false)
+    private HubEntity hubEntity;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private HubMemberRole hubMemberRole;
 
-    public HubMemberEntity(Long memberId, Long hubId, HubMemberRole hubMemberRole) {
+    public HubMemberEntity(Long memberId, HubEntity hubEntity, HubMemberRole hubMemberRole) {
         this.memberId = memberId;
-        this.hubId = hubId;
+        this.hubEntity = hubEntity;
         this.hubMemberRole = hubMemberRole;
     }
 
-    public static HubMemberEntity create(Hub hub, Member member) {
-        return new HubMemberEntity(member.getMemberId(), hub.getHubId(), HubMemberRole.MASTER);
+    public static HubMemberEntity create(HubEntity hubEntity, Long masterId) {
+        return new HubMemberEntity(masterId, hubEntity, HubMemberRole.MASTER);
     }
 }
