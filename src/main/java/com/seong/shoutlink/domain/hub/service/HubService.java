@@ -4,7 +4,7 @@ import com.seong.shoutlink.domain.common.EventPublisher;
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.hub.Hub;
-import com.seong.shoutlink.domain.hub.HubWithMembers;
+import com.seong.shoutlink.domain.hub.HubWithMaster;
 import com.seong.shoutlink.domain.hub.service.event.CreateHubEvent;
 import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
 import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
@@ -24,8 +24,8 @@ public class HubService {
     public CreateHubResponse createHub(CreateHubCommand command) {
         Member member = getMember(command.memberId());
         Hub hub = new Hub(command.name(), command.description(), command.isPrivate());
-        Long hubId = hubRepository.save(new HubWithMembers(hub, member));
-        eventPublisher.publishEvent(new CreateHubEvent(hubId));
+        Long hubId = hubRepository.save(new HubWithMaster(hub, member));
+        eventPublisher.publishEvent(new CreateHubEvent(hubId, member.getMemberId()));
         return new CreateHubResponse(hubId);
     }
 

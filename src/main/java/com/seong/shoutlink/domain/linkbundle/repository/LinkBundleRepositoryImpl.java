@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.linkbundle.repository;
 
+import com.seong.shoutlink.domain.linkbundle.HubLinkBundle;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import com.seong.shoutlink.domain.linkbundle.MemberLinkBundle;
 import com.seong.shoutlink.domain.linkbundle.service.LinkBundleRepository;
@@ -39,5 +40,10 @@ public class LinkBundleRepositoryImpl implements LinkBundleRepository {
         return linkBundleJpaRepository.findAllByMemberId(member.getMemberId()).stream()
             .map(LinkBundleEntity::toDomain)
             .toList();
+    }
+
+    @Override
+    public Long save(HubLinkBundle hubLinkBundle) {
+        return null;
     }
 }

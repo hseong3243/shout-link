@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.linkbundle.service;
 
+import com.seong.shoutlink.domain.linkbundle.HubLinkBundle;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import com.seong.shoutlink.domain.linkbundle.MemberLinkBundle;
 import com.seong.shoutlink.domain.member.Member;
@@ -15,4 +16,6 @@ public interface LinkBundleRepository {
     Optional<LinkBundle> findById(Long linkBundleId);
 
     List<LinkBundle> findLinkBundlesThatMembersHave(Member member);
+
+    Long save(HubLinkBundle hubLinkBundle);
 }

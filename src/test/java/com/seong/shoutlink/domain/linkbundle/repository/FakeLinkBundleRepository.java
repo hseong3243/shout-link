@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.linkbundle.repository;
 
+import com.seong.shoutlink.domain.linkbundle.HubLinkBundle;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import com.seong.shoutlink.domain.linkbundle.MemberLinkBundle;
 import com.seong.shoutlink.domain.linkbundle.service.LinkBundleRepository;
@@ -53,6 +54,11 @@ public class FakeLinkBundleRepository implements LinkBundleRepository {
     @Override
     public List<LinkBundle> findLinkBundlesThatMembersHave(Member member) {
         return memory.values().stream().toList();
+    }
+
+    @Override
+    public Long save(HubLinkBundle hubLinkBundle) {
+        return 1L;
     }
 
     private long getNextId() {

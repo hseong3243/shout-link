@@ -19,6 +19,11 @@ public class Hub {
     private boolean isPrivate;
 
     public Hub(String name, String description, boolean isPrivate) {
+        this(null, name, description, isPrivate);
+    }
+
+    public Hub(Long hubId, String name, String description, boolean isPrivate) {
+        this.hubId = hubId;
         this.name = validateName(name);
         this.description = validateDescription(description);
         this.isPrivate = isPrivate;
