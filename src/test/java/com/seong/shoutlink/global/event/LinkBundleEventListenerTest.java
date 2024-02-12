@@ -17,7 +17,7 @@ import org.springframework.test.context.event.RecordApplicationEvents;
 
 @SpringBootTest
 @RecordApplicationEvents
-class SpringEventListenerTest {
+class LinkBundleEventListenerTest {
 
     @Autowired
     private AuthService authService;
@@ -44,7 +44,7 @@ class SpringEventListenerTest {
 
             //then
             LinkBundleEntity linkBundleEntity = em.createQuery(
-                    "select lb from LinkBundleEntity lb where lb.memberId = :memberId",
+                    "select mlb from MemberLinkBundleEntity mlb where mlb.memberId = :memberId",
                     LinkBundleEntity.class)
                 .setParameter("memberId", member.getMemberId())
                 .getSingleResult();
