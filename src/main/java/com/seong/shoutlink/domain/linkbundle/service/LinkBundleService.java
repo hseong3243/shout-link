@@ -3,6 +3,7 @@ package com.seong.shoutlink.domain.linkbundle.service;
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
+import com.seong.shoutlink.domain.linkbundle.MemberLinkBundle;
 import com.seong.shoutlink.domain.linkbundle.service.request.FindLinkBundlesCommand;
 import com.seong.shoutlink.domain.linkbundle.service.response.CreateLinkBundleCommand;
 import com.seong.shoutlink.domain.linkbundle.service.response.CreateLinkBundleResponse;
@@ -29,9 +30,9 @@ public class LinkBundleService {
         }
         LinkBundle linkBundle = new LinkBundle(
             command.description(),
-            command.isDefault(),
-            member);
-        return new CreateLinkBundleResponse(linkBundleRepository.save(linkBundle));
+            command.isDefault());
+        MemberLinkBundle memberLinkBundle = new MemberLinkBundle(member, linkBundle);
+        return new CreateLinkBundleResponse(linkBundleRepository.save(memberLinkBundle));
     }
 
     public FindLinkBundlesResponse findLinkBundles(FindLinkBundlesCommand command) {

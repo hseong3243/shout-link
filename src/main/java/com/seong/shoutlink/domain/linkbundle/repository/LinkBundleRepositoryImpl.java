@@ -1,6 +1,7 @@
 package com.seong.shoutlink.domain.linkbundle.repository;
 
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
+import com.seong.shoutlink.domain.linkbundle.MemberLinkBundle;
 import com.seong.shoutlink.domain.linkbundle.service.LinkBundleRepository;
 import com.seong.shoutlink.domain.member.Member;
 import java.util.List;
@@ -15,10 +16,10 @@ public class LinkBundleRepositoryImpl implements LinkBundleRepository {
     private final LinkBundleJpaRepository linkBundleJpaRepository;
 
     @Override
-    public Long save(LinkBundle linkBundle) {
-        LinkBundleEntity linkBundleEntity = LinkBundleEntity.create(linkBundle);
+    public Long save(MemberLinkBundle memberLinkBundle) {
+        LinkBundleEntity linkBundleEntity = LinkBundleEntity.create(memberLinkBundle);
         linkBundleJpaRepository.save(linkBundleEntity);
-        linkBundle.initId(linkBundleEntity.getLinkBundleId());
+        memberLinkBundle.initLinkBundleId(linkBundleEntity.getLinkBundleId());
         return linkBundleEntity.getLinkBundleId();
     }
 

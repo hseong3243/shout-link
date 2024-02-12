@@ -9,9 +9,11 @@ import org.springframework.data.repository.query.Param;
 public interface LinkBundleJpaRepository extends JpaRepository<LinkBundleEntity, Long> {
 
     @Modifying
-    @Query("update LinkBundleEntity lb set lb.isDefault = false"
+    @Query("update MemberLinkBundleEntity lb set lb.isDefault = false"
         + " where lb.isDefault = true and lb.memberId = :memberId")
     void updateDefaultBundleFalse(@Param("memberId") Long memberId);
 
-    List<LinkBundleEntity> findAllByMemberId(Long memberId);
+    @Query("select lb from MemberLinkBundleEntity lb "
+        + "where lb.memberId = :memberId")
+    List<LinkBundleEntity> findAllByMemberId(@Param("memberId") Long memberId);
 }

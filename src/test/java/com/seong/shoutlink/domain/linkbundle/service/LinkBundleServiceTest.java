@@ -15,6 +15,7 @@ import com.seong.shoutlink.domain.linkbundle.service.response.FindLinkBundlesRes
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.repository.StubMemberRepository;
 import com.seong.shoutlink.fixture.MemberFixture;
+import com.seong.shoutlink.fixture.StubHubRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +26,7 @@ class LinkBundleServiceTest {
 
     private StubMemberRepository memberRepository;
     private FakeLinkBundleRepository linkBundleRepository;
+    private StubHubRepository stubHubRepository;
 
     @Nested
     @DisplayName("createLinkBundle 메서드 호출 시")
@@ -38,7 +40,9 @@ class LinkBundleServiceTest {
             savedMember = MemberFixture.member();
             memberRepository = new StubMemberRepository(savedMember);
             linkBundleRepository = new FakeLinkBundleRepository();
-            linkBundleService = new LinkBundleService(memberRepository, linkBundleRepository);
+            stubHubRepository = new StubHubRepository();
+            linkBundleService = new LinkBundleService(memberRepository, stubHubRepository,
+                linkBundleRepository);
         }
 
         @Test
@@ -88,7 +92,9 @@ class LinkBundleServiceTest {
         void setUp() {
             memberRepository = new StubMemberRepository();
             linkBundleRepository = new FakeLinkBundleRepository();
-            linkBundleService = new LinkBundleService(memberRepository, linkBundleRepository);
+            stubHubRepository = new StubHubRepository();
+            linkBundleService = new LinkBundleService(memberRepository, stubHubRepository,
+                linkBundleRepository);
         }
 
         @Test
@@ -98,8 +104,8 @@ class LinkBundleServiceTest {
             Member stubMember = MemberFixture.member();
             memberRepository.stub(stubMember);
             linkBundleRepository.stub(
-                new LinkBundle(1L, "기본", true, stubMember.getMemberId()),
-                new LinkBundle(2L, "두번째", false, stubMember.getMemberId())
+                new LinkBundle(1L, "기본", true),
+                new LinkBundle(2L, "두번째", false)
             );
             FindLinkBundlesCommand command = new FindLinkBundlesCommand(stubMember.getMemberId());
 
