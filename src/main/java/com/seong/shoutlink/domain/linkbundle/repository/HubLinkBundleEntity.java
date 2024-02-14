@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("hub")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class HubLinkBundleEntity extends LinkBundleEntity {
-    
+
     private Long hubId;
 
     public HubLinkBundleEntity(String description, boolean isDefault, Long hubId) {

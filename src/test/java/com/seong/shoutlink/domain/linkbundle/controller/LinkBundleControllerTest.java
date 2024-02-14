@@ -9,6 +9,8 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.seong.shoutlink.base.BaseControllerTest;
@@ -84,6 +86,41 @@ class LinkBundleControllerTest extends BaseControllerTest {
                         .description("설명"),
                     fieldWithPath("linkBundles[].isDefault").type(JsonFieldType.BOOLEAN)
                         .description("기본 여부")
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("성공: 허브 링크 묶음 생성 API 호출 시")
+    void createHubLinkBundle() throws Exception {
+        //given
+        CreateLinkBundleRequest request = new CreateLinkBundleRequest("설명", false);
+        Long hubId = 1L;
+        CreateLinkBundleResponse response = new CreateLinkBundleResponse(1L);
+
+        given(linkBundleService.createHubLinkBundle(any())).willReturn(response);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(post("/api/hubs/{hubId}/link-bundles", hubId)
+            .header(AUTHORIZATION, bearerAccessToken)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        resultActions.andExpect(status().isCreated())
+            .andDo(restDocs.document(
+                requestHeaders(
+                    headerWithName(AUTHORIZATION).description("액세스 토큰")
+                ),
+                pathParameters(
+                    parameterWithName("hubId").description("허브 ID")
+                ),
+                requestFields(
+                    fieldWithPath("description").type(JsonFieldType.STRING).description("설명"),
+                    fieldWithPath("isDefault").type(JsonFieldType.BOOLEAN).description("기본 여부")
+                ),
+                responseFields(
+                    fieldWithPath("linkBundleId").type(JsonFieldType.NUMBER).description("링크 묶음 ID")
                 )
             ));
     }
