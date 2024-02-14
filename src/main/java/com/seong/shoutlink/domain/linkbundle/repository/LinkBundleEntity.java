@@ -1,5 +1,7 @@
 package com.seong.shoutlink.domain.linkbundle.repository;
 
+import com.seong.shoutlink.domain.hub.Hub;
+import com.seong.shoutlink.domain.linkbundle.HubLinkBundle;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import com.seong.shoutlink.domain.linkbundle.MemberLinkBundle;
 import com.seong.shoutlink.domain.member.Member;
@@ -42,6 +44,16 @@ public abstract class LinkBundleEntity {
             linkBundle.getDescription(),
             linkBundle.isDefault(),
             member.getMemberId()
+        );
+    }
+
+    public static LinkBundleEntity create(HubLinkBundle hubLinkBundle) {
+        LinkBundle linkBundle = hubLinkBundle.getLinkBundle();
+        Hub hub = hubLinkBundle.getHub();
+        return new HubLinkBundleEntity(
+            linkBundle.getDescription(),
+            linkBundle.isDefault(),
+            hub.getHubId()
         );
     }
 

@@ -44,6 +44,9 @@ public class LinkBundleRepositoryImpl implements LinkBundleRepository {
 
     @Override
     public Long save(HubLinkBundle hubLinkBundle) {
-        return null;
+        LinkBundleEntity linkBundleEntity = LinkBundleEntity.create(hubLinkBundle);
+        linkBundleJpaRepository.save(linkBundleEntity);
+        hubLinkBundle.initLinkBundleId(linkBundleEntity.getLinkBundleId());
+        return linkBundleEntity.getLinkBundleId();
     }
 }
