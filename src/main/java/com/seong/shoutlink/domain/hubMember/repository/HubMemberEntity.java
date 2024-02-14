@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.hubMember.repository;
 
+import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.repository.HubEntity;
 import com.seong.shoutlink.domain.hubMember.HubMemberRole;
 import jakarta.persistence.Column;
@@ -44,5 +45,14 @@ public class HubMemberEntity {
 
     public static HubMemberEntity create(HubEntity hubEntity, Long masterId) {
         return new HubMemberEntity(masterId, hubEntity, HubMemberRole.MASTER);
+    }
+
+    public Hub toHub() {
+        return new Hub(
+            hubEntity.getHubId(),
+            memberId,
+            hubEntity.getName(),
+            hubEntity.getDescription(),
+            hubEntity.isPrivate());
     }
 }

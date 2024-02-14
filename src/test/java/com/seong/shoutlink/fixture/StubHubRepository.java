@@ -1,7 +1,6 @@
 package com.seong.shoutlink.fixture;
 
 import com.seong.shoutlink.domain.hub.Hub;
-import com.seong.shoutlink.domain.hub.HubWithMaster;
 import com.seong.shoutlink.domain.hub.service.HubRepository;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,11 +8,11 @@ import java.util.Optional;
 
 public class StubHubRepository implements HubRepository {
 
-    private final Map<Long, HubWithMaster> memory = new HashMap<>();
+    private final Map<Long, Hub> memory = new HashMap<>();
 
-    public void stub(HubWithMaster... hubWithMasters) {
-        for (HubWithMaster hubWithMaster : hubWithMasters) {
-            memory.put(getNextKey(), hubWithMaster);
+    public void stub(Hub... hubs) {
+        for (Hub hub : hubs) {
+            memory.put(getNextKey(), hub);
         }
     }
 
@@ -27,7 +26,7 @@ public class StubHubRepository implements HubRepository {
     }
 
     @Override
-    public Optional<HubWithMaster> findByIdWithHubMaster(Long hubId) {
+    public Optional<Hub> findById(Long hubId) {
         return memory.values().stream().findFirst();
     }
 }

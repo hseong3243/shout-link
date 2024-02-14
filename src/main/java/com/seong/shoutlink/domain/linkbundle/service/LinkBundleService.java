@@ -2,7 +2,7 @@ package com.seong.shoutlink.domain.linkbundle.service;
 
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
-import com.seong.shoutlink.domain.hub.HubWithMaster;
+import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.service.HubRepository;
 import com.seong.shoutlink.domain.linkbundle.HubLinkBundle;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
@@ -54,17 +54,17 @@ public class LinkBundleService {
 
     @Transactional
     public CreateLinkBundleResponse createHubLinkBundle(CreateHubLinkBundleCommand command) {
-        HubWithMaster hubWithMaster = getHubWithMaster(command.hubId());
-        hubWithMaster.checkMasterAuthority(command.memberId());
+        Hub hub = getHub(command.hubId());
+        hub.checkMasterAuthority(command.memberId());
         LinkBundle linkBundle = new LinkBundle(
             command.description(),
             command.isDefault());
-        HubLinkBundle hubLinkBundle = new HubLinkBundle(hubWithMaster.getHub(), linkBundle);
+        HubLinkBundle hubLinkBundle = new HubLinkBundle(hub, linkBundle);
         return new CreateLinkBundleResponse(linkBundleRepository.save(hubLinkBundle));
     }
 
-    private HubWithMaster getHubWithMaster(Long hubId) {
-        return hubRepository.findByIdWithHubMaster(hubId)
+    private Hub getHub(Long hubId) {
+        return hubRepository.findById(hubId)
             .orElseThrow(() -> new ShoutLinkException("존재하지 않는 허브입니다.", ErrorCode.NOT_FOUND));
     }
 }

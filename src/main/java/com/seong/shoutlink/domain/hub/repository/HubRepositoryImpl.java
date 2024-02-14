@@ -1,7 +1,6 @@
 package com.seong.shoutlink.domain.hub.repository;
 
 import com.seong.shoutlink.domain.hub.Hub;
-import com.seong.shoutlink.domain.hub.HubWithMaster;
 import com.seong.shoutlink.domain.hub.service.HubRepository;
 import com.seong.shoutlink.domain.hubMember.repository.HubMemberEntity;
 import com.seong.shoutlink.domain.hubMember.repository.HubMemberJpaRepository;
@@ -29,7 +28,8 @@ public class HubRepositoryImpl implements HubRepository {
     }
 
     @Override
-    public Optional<HubWithMaster> findByIdWithHubMaster(Long hubId) {
-        return null;
+    public Optional<Hub> findById(Long hubId) {
+        return hubMemberJpaRepository.findHubMasterByHubIdWithHub(hubId)
+            .map(HubMemberEntity::toHub);
     }
 }

@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.catchException;
 
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
-import com.seong.shoutlink.domain.hub.HubWithMaster;
+import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import com.seong.shoutlink.domain.linkbundle.repository.FakeLinkBundleRepository;
 import com.seong.shoutlink.domain.linkbundle.service.request.CreateHubLinkBundleCommand;
@@ -144,11 +144,11 @@ class LinkBundleServiceTest {
         void createHubLinkBundle() {
             //given
             Member member = MemberFixture.member();
-            HubWithMaster hubWithMaster = HubFixture.hubWithMaster(member);
+            Hub hub = HubFixture.hub(member);
             memberRepository.stub(member);
-            hubRepository.stub(hubWithMaster);
+            hubRepository.stub(hub);
             CreateHubLinkBundleCommand command = new CreateHubLinkBundleCommand(
-                hubWithMaster.getHub().getHubId(),
+                hub.getHubId(),
                 member.getMemberId(),
                 "테스트 허브",
                 false);
@@ -182,12 +182,12 @@ class LinkBundleServiceTest {
         void unauthorized_WhenMemberIsNotHubMaster() {
             //given
             Member member = MemberFixture.member();
-            HubWithMaster hubWithMaster = HubFixture.hubWithMaster(member);
+            Hub hub = HubFixture.hub(member);
             memberRepository.stub(member);
-            hubRepository.stub(hubWithMaster);
+            hubRepository.stub(hub);
             long unknownMemberId = member.getMemberId() + 1;
             CreateHubLinkBundleCommand command = new CreateHubLinkBundleCommand(
-                hubWithMaster.getHub().getHubId(),
+                hub.getHubId(),
                 unknownMemberId,
                 "허브",
                 false);
