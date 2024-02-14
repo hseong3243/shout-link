@@ -11,6 +11,7 @@ import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.service.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class HubService {
     private final HubRepository hubRepository;
     private final EventPublisher eventPublisher;
 
+    @Transactional
     public CreateHubResponse createHub(CreateHubCommand command) {
         Member member = getMember(command.memberId());
         Hub hub = new Hub(member, command.name(), command.description(), command.isPrivate());

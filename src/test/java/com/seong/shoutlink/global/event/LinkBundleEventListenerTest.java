@@ -4,8 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.seong.shoutlink.domain.auth.service.AuthService;
 import com.seong.shoutlink.domain.auth.service.request.CreateMemberCommand;
+import com.seong.shoutlink.domain.hub.service.HubService;
+import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
+import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
 import com.seong.shoutlink.domain.linkbundle.repository.LinkBundleEntity;
 import com.seong.shoutlink.domain.member.Member;
+import com.seong.shoutlink.domain.member.service.MemberRepository;
 import com.seong.shoutlink.fixture.MemberFixture;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +25,12 @@ class LinkBundleEventListenerTest {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private HubService hubService;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Autowired
     private EntityManager em;
@@ -47,6 +57,31 @@ class LinkBundleEventListenerTest {
                     "select mlb from MemberLinkBundleEntity mlb where mlb.memberId = :memberId",
                     LinkBundleEntity.class)
                 .setParameter("memberId", member.getMemberId())
+                .getSingleResult();
+            assertThat(linkBundleEntity.getDescription()).isEqualTo("기본");
+        }
+    }
+
+    @Nested
+    @DisplayName("createHubEvent 수신 시")
+    class CreateHubEventTest {
+
+        @Test
+        @DisplayName("성공: 기본 허브 링크 번들 생성됨")
+        void createDefaultHubLinkBundle() {
+            //given
+            Member member = MemberFixture.member();
+            Long memberId = memberRepository.save(member);
+            CreateHubCommand command = new CreateHubCommand(memberId, "허브", "설명", false);
+
+            //when
+            CreateHubResponse response = hubService.createHub(command);
+
+            //then
+            LinkBundleEntity linkBundleEntity = em.createQuery(
+                    "select hlb from HubLinkBundleEntity hlb "
+                        + "where hlb.hubId = :hubId", LinkBundleEntity.class)
+                .setParameter("hubId", response.hubId())
                 .getSingleResult();
             assertThat(linkBundleEntity.getDescription()).isEqualTo("기본");
         }
