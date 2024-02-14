@@ -69,4 +69,8 @@ public class Member {
             throw new ShoutLinkException("회원 역할은 필수입니다.", ErrorCode.ILLEGAL_ARGUMENT);
         }
     }
+
+    public boolean isEqualToMemberId(Long memberId) {
+        return Objects.equals(this.memberId, memberId);
+    }
 }

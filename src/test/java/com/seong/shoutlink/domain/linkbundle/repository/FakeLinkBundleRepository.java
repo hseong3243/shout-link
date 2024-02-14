@@ -1,6 +1,8 @@
 package com.seong.shoutlink.domain.linkbundle.repository;
 
+import com.seong.shoutlink.domain.linkbundle.HubLinkBundle;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
+import com.seong.shoutlink.domain.linkbundle.MemberLinkBundle;
 import com.seong.shoutlink.domain.linkbundle.service.LinkBundleRepository;
 import com.seong.shoutlink.domain.member.Member;
 import java.util.HashMap;
@@ -26,22 +28,19 @@ public class FakeLinkBundleRepository implements LinkBundleRepository {
     }
 
     @Override
-    public Long save(LinkBundle linkBundle) {
-        long nextId = getNextId();
-        linkBundle.initId(nextId);
-        memory.put(nextId, linkBundle);
-        return nextId;
+    public Long save(MemberLinkBundle memberLinkBundle) {
+        return 1L;
     }
 
     @Override
     public void updateDefaultBundleFalse(Member member) {
         List<LinkBundle> defaultLinkBundle = memory.values().stream()
-            .filter(linkBundle -> linkBundle.isDefault() && linkBundle.getMemberId().equals(member.getMemberId()))
+            .filter(LinkBundle::isDefault)
             .toList();
         defaultLinkBundle.forEach(lb -> {
             memory.remove(lb.getLinkBundleId());
             memory.put(lb.getLinkBundleId(),
-                new LinkBundle(lb.getDescription(), false, member));
+                new LinkBundle(lb.getDescription(), false));
         });
     }
 
@@ -55,6 +54,11 @@ public class FakeLinkBundleRepository implements LinkBundleRepository {
     @Override
     public List<LinkBundle> findLinkBundlesThatMembersHave(Member member) {
         return memory.values().stream().toList();
+    }
+
+    @Override
+    public Long save(HubLinkBundle hubLinkBundle) {
+        return 1L;
     }
 
     private long getNextId() {

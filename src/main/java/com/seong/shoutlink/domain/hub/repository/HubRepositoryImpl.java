@@ -1,11 +1,13 @@
 package com.seong.shoutlink.domain.hub.repository;
 
-import com.seong.shoutlink.domain.hub.HubWithMembers;
+import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.service.HubRepository;
 import com.seong.shoutlink.domain.hubMember.repository.HubMemberEntity;
 import com.seong.shoutlink.domain.hubMember.repository.HubMemberJpaRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
@@ -15,12 +17,19 @@ public class HubRepositoryImpl implements HubRepository {
     private final HubMemberJpaRepository hubMemberJpaRepository;
 
     @Override
-    public Long save(HubWithMembers hubWithMembers) {
-        HubEntity hubEntity = HubEntity.create(hubWithMembers.getHub());
+    @Transactional
+    public Long save(Hub hub) {
+        HubEntity hubEntity = HubEntity.create(hub);
         hubJpaRepository.save(hubEntity);
         HubMemberEntity hubMemberEntity
-            = HubMemberEntity.create(hubWithMembers.getHub(), hubWithMembers.getMember());
+            = HubMemberEntity.create(hubEntity, hub.getMasterId());
         hubMemberJpaRepository.save(hubMemberEntity);
         return hubEntity.getHubId();
+    }
+
+    @Override
+    public Optional<Hub> findById(Long hubId) {
+        return hubMemberJpaRepository.findHubMasterByHubIdWithHub(hubId)
+            .map(HubMemberEntity::toHub);
     }
 }

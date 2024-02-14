@@ -2,7 +2,7 @@ package com.seong.shoutlink.global.config;
 
 import com.seong.shoutlink.domain.common.EventPublisher;
 import com.seong.shoutlink.domain.linkbundle.service.LinkBundleService;
-import com.seong.shoutlink.global.event.SpringEventListener;
+import com.seong.shoutlink.global.event.LinkBundleEventListener;
 import com.seong.shoutlink.global.event.SpringEventPublisher;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,7 @@ public class EventConfig {
     }
 
     @Bean
-    public SpringEventListener springEventListener(LinkBundleService linkBundleService) {
-        return new SpringEventListener(linkBundleService);
+    public LinkBundleEventListener springEventListener(LinkBundleService linkBundleService) {
+        return new LinkBundleEventListener(linkBundleService);
     }
 }

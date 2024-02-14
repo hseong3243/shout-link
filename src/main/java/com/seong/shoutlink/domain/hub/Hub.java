@@ -2,6 +2,7 @@ package com.seong.shoutlink.domain.hub;
 
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
+import com.seong.shoutlink.domain.member.Member;
 import java.text.MessageFormat;
 import java.util.Objects;
 import lombok.Getter;
@@ -14,11 +15,18 @@ public class Hub {
     private static final int DESCRIPTION_MAX_SIZE = 200;
 
     private Long hubId;
+    private Long masterId;
     private String name;
     private String description;
     private boolean isPrivate;
 
-    public Hub(String name, String description, boolean isPrivate) {
+    public Hub(Member master, String name, String description, boolean isPrivate) {
+        this(null, master.getMemberId(), name, description, isPrivate);
+    }
+
+    public Hub(Long hubId, Long memberId, String name, String description, boolean isPrivate) {
+        this.hubId = hubId;
+        this.masterId = memberId;
         this.name = validateName(name);
         this.description = validateDescription(description);
         this.isPrivate = isPrivate;
@@ -46,5 +54,12 @@ public class Hub {
                 ErrorCode.ILLEGAL_ARGUMENT);
         }
         return description;
+    }
+
+    public void checkMasterAuthority(Long memberId) {
+        if(Objects.equals(masterId, memberId)) {
+            return;
+        }
+        throw new ShoutLinkException("권한이 없습니다.", ErrorCode.UNAUTHORIZED);
     }
 }

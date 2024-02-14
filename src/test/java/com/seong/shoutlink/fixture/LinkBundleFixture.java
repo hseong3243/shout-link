@@ -10,6 +10,6 @@ public final class LinkBundleFixture {
     public static final boolean IS_DEFAULT = true;
 
     public static LinkBundle linkBundle(Member member) {
-        return new LinkBundle(LINK_BUNDLE_ID, DESCRIPTION, IS_DEFAULT, member.getMemberId());
+        return new LinkBundle(LINK_BUNDLE_ID, DESCRIPTION, IS_DEFAULT);
     }
 }
