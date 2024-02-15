@@ -2,7 +2,9 @@ package com.seong.shoutlink.fixture;
 
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.service.HubRepository;
+import com.seong.shoutlink.domain.hub.service.result.HubPaginationResult;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,5 +30,11 @@ public class StubHubRepository implements HubRepository {
     @Override
     public Optional<Hub> findById(Long hubId) {
         return memory.values().stream().findFirst();
+    }
+
+    @Override
+    public HubPaginationResult findHubs(int page, int size) {
+        List<Hub> hubs = memory.values().stream().toList();
+        return new HubPaginationResult(hubs, hubs.size(), hubs.size() > 10);
     }
 }

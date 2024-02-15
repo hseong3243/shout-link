@@ -2,10 +2,13 @@ package com.seong.shoutlink.domain.hub.repository;
 
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.service.HubRepository;
+import com.seong.shoutlink.domain.hub.service.result.HubPaginationResult;
 import com.seong.shoutlink.domain.hubMember.repository.HubMemberEntity;
 import com.seong.shoutlink.domain.hubMember.repository.HubMemberJpaRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,5 +34,15 @@ public class HubRepositoryImpl implements HubRepository {
     public Optional<Hub> findById(Long hubId) {
         return hubMemberJpaRepository.findHubMasterByHubIdWithHub(hubId)
             .map(HubMemberEntity::toHub);
+    }
+
+    @Override
+    public HubPaginationResult findHubs(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<HubMemberEntity> hubs = hubMemberJpaRepository.findHubs(pageRequest);
+        return new HubPaginationResult(
+            hubs.map(HubMemberEntity::toHub).toList(),
+            hubs.getTotalElements(),
+            hubs.hasNext());
     }
 }

@@ -6,10 +6,14 @@ import static org.assertj.core.api.Assertions.catchException;
 import com.seong.shoutlink.domain.common.StubEventPublisher;
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
+import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
 import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
+import com.seong.shoutlink.domain.hub.service.response.FindHubsCommand;
+import com.seong.shoutlink.domain.hub.service.response.FindHubsResponse;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.repository.StubMemberRepository;
+import com.seong.shoutlink.fixture.HubFixture;
 import com.seong.shoutlink.fixture.MemberFixture;
 import com.seong.shoutlink.fixture.StubHubRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,14 +23,14 @@ import org.junit.jupiter.api.Test;
 
 class HubServiceTest {
 
+    private HubService hubService;
+    private StubMemberRepository memberRepository;
+    private StubHubRepository hubRepository;
+    private StubEventPublisher eventPublisher;
+
     @Nested
     @DisplayName("createHub 메서드 호출 시")
     class CreateHubTest {
-
-        private HubService hubService;
-        private StubMemberRepository memberRepository;
-        private StubHubRepository hubRepository;
-        private StubEventPublisher eventPublisher;
 
         @BeforeEach
         void setUp() {
@@ -82,6 +86,43 @@ class HubServiceTest {
                 .isInstanceOf(ShoutLinkException.class)
                 .extracting(e -> ((ShoutLinkException) e).getErrorCode())
                 .isEqualTo(ErrorCode.NOT_FOUND);
+        }
+    }
+
+    @Nested
+    @DisplayName("findHubs 메서드 호출시")
+    class FindHubsTest {
+
+        @BeforeEach
+        void setUp() {
+            memberRepository = new StubMemberRepository();
+            hubRepository = new StubHubRepository();
+            eventPublisher = new StubEventPublisher();
+            hubService = new HubService(memberRepository, hubRepository, eventPublisher);
+        }
+
+        @Test
+        @DisplayName("성공: 허브 목록 조회됨")
+        void findHubs() {
+            //given
+            Member member = MemberFixture.member();
+            Hub hub = HubFixture.hub(member);
+            hubRepository.stub(hub);
+            FindHubsCommand command = new FindHubsCommand(0, 10);
+
+            //when
+            FindHubsResponse response = hubService.findHubs(command);
+
+            //then
+            assertThat(response.hubs())
+                .hasSize(1)
+                .allSatisfy(findHub -> {
+                    assertThat(findHub.hubId()).isEqualTo(hub.getHubId());
+                    assertThat(findHub.masterId()).isEqualTo(hub.getMasterId());
+                    assertThat(findHub.name()).isEqualTo(hub.getName());
+                    assertThat(findHub.description()).isEqualTo(hub.getDescription());
+                    assertThat(findHub.isPrivate()).isEqualTo(hub.isPrivate());
+                });
         }
     }
 }
