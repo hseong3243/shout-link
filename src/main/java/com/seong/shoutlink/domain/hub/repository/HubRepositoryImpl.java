@@ -7,6 +7,8 @@ import com.seong.shoutlink.domain.hubMember.repository.HubMemberEntity;
 import com.seong.shoutlink.domain.hubMember.repository.HubMemberJpaRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,11 @@ public class HubRepositoryImpl implements HubRepository {
 
     @Override
     public HubPaginationResult findHubs(int page, int size) {
-        return null;
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<HubMemberEntity> hubs = hubMemberJpaRepository.findHubs(pageRequest);
+        return new HubPaginationResult(
+            hubs.map(HubMemberEntity::toHub).toList(),
+            hubs.getTotalElements(),
+            hubs.hasNext());
     }
 }
