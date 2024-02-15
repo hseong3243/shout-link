@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.linkbundle.repository;
 
+import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.linkbundle.HubLinkBundle;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import com.seong.shoutlink.domain.linkbundle.MemberLinkBundle;
@@ -48,5 +49,10 @@ public class LinkBundleRepositoryImpl implements LinkBundleRepository {
         linkBundleJpaRepository.save(linkBundleEntity);
         hubLinkBundle.initLinkBundleId(linkBundleEntity.getLinkBundleId());
         return linkBundleEntity.getLinkBundleId();
+    }
+
+    @Override
+    public Optional<LinkBundle> findHubLinkBundle(Long linkBundleId, Hub hub) {
+        return Optional.empty();
     }
 }
