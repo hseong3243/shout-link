@@ -27,33 +27,33 @@ class LinkServiceTest {
     private FakeLinkRepository linkRepository;
     private FakeLinkBundleRepository linkBundleRepository;
     private StubEventPublisher eventPublisher;
+    private LinkService linkService;
+
+    @BeforeEach
+    void setUp() {
+        memberRepository = new StubMemberRepository();
+        linkRepository = new FakeLinkRepository();
+        linkBundleRepository = new FakeLinkBundleRepository();
+        eventPublisher = new StubEventPublisher();
+        linkService = new LinkService(memberRepository, linkRepository, linkBundleRepository,
+            eventPublisher);
+    }
 
     @Nested
     @DisplayName("createLink 메서드 호출 시")
     class CreateLinkTest {
 
-        private LinkService linkService;
-        private LinkBundle stubLinkBundle;
-
-        @BeforeEach
-        void setUp() {
-            Member member = MemberFixture.member();
-            stubLinkBundle = LinkBundleFixture.linkBundle(member);
-            memberRepository = new StubMemberRepository(member);
-            linkRepository = new FakeLinkRepository();
-            linkBundleRepository = new FakeLinkBundleRepository(stubLinkBundle);
-            eventPublisher = new StubEventPublisher();
-            linkService = new LinkService(memberRepository, linkRepository, linkBundleRepository,
-                eventPublisher);
-        }
-
         @Test
         @DisplayName("성공: 링크 저장됨")
         void createLink() {
             //given
+            Member member = MemberFixture.member();
+            LinkBundle linkBundle = LinkBundleFixture.linkBundle();
+            memberRepository.stub(member);
+            linkBundleRepository.stub(linkBundle);
             CreateLinkCommand command = new CreateLinkCommand(
                 1L,
-                stubLinkBundle.getLinkBundleId(),
+                linkBundle.getLinkBundleId(),
                 "https://hseong.tistory.com/",
                 "내 블로그");
 
@@ -68,9 +68,13 @@ class LinkServiceTest {
         @DisplayName("성공: 링크 생성 이벤트 발행됨")
         void createLink_ThenPublishCreateLinkEvent() {
             //given
+            Member member = MemberFixture.member();
+            LinkBundle linkBundle = LinkBundleFixture.linkBundle();
+            memberRepository.stub(member);
+            linkBundleRepository.stub(linkBundle);
             CreateLinkCommand command = new CreateLinkCommand(
                 1L,
-                stubLinkBundle.getLinkBundleId(),
+                linkBundle.getLinkBundleId(),
                 "https://hseong.tistory.com/",
                 "내 블로그");
 
@@ -86,31 +90,19 @@ class LinkServiceTest {
     @DisplayName("findLinks 메서드 호출 시")
     class FindLinksTest {
 
-        private LinkService linkService;
-        private Member stubMember;
-        private LinkBundle stubLinkBundle;
-        private Link stubLink;
-
-        @BeforeEach
-        void setUp() {
-            stubMember = MemberFixture.member();
-            stubLinkBundle = LinkBundleFixture.linkBundle(stubMember);
-            stubLink = LinkFixture.link();
-            memberRepository = new StubMemberRepository(stubMember);
-            linkRepository = new FakeLinkRepository(stubLink);
-            linkBundleRepository = new FakeLinkBundleRepository(stubLinkBundle);
-            eventPublisher = new StubEventPublisher();
-            linkService = new LinkService(memberRepository, linkRepository, linkBundleRepository,
-                eventPublisher);
-        }
-
         @Test
         @DisplayName("성공: 링크 목록 조회됨")
         void findLinks() {
             //given
+            Member member = MemberFixture.member();
+            LinkBundle linkBundle = LinkBundleFixture.linkBundle();
+            Link link = LinkFixture.link();
+            memberRepository.stub(member);
+            linkBundleRepository.stub(linkBundle);
+            linkRepository.stub(link);
             FindLinksCommand command = new FindLinksCommand(
-                stubMember.getMemberId(),
-                stubLinkBundle.getLinkBundleId(),
+                member.getMemberId(),
+                linkBundle.getLinkBundleId(),
                 0,
                 20);
 
@@ -120,10 +112,10 @@ class LinkServiceTest {
             //then
             assertThat(response.totalElements()).isEqualTo(1);
             assertThat(response.links()).hasSize(1)
-                .allSatisfy(link -> {
-                    assertThat(link.linkId()).isEqualTo(stubLink.getLinkId());
-                    assertThat(link.description()).isEqualTo(stubLink.getDescription());
-                    assertThat(link.url()).isEqualTo(stubLink.getUrl());
+                .allSatisfy(findLink -> {
+                    assertThat(findLink.linkId()).isEqualTo(link.getLinkId());
+                    assertThat(findLink.description()).isEqualTo(link.getDescription());
+                    assertThat(findLink.url()).isEqualTo(link.getUrl());
                 });
         }
     }

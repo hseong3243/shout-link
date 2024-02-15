@@ -15,6 +15,10 @@ public class FakeLinkRepository implements LinkRepository {
     private final Map<Long, Link> memory = new HashMap<>();
 
     public FakeLinkRepository(Link... links) {
+        stub(links);
+    }
+
+    public void stub(Link... links) {
         for (Link link : links) {
             memory.put(getNextId(), link);
         }
