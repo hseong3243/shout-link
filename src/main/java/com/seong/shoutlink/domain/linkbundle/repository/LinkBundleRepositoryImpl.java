@@ -53,6 +53,6 @@ public class LinkBundleRepositoryImpl implements LinkBundleRepository {
 
     @Override
     public Optional<LinkBundle> findHubLinkBundle(Long linkBundleId, Hub hub) {
-        return Optional.empty();
+        return linkBundleJpaRepository.findHubLinkBundle(linkBundleId, hub.getHubId());
     }
 }
