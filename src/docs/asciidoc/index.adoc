@@ -79,6 +79,16 @@ operation::link-controller-test/create-link[snippets='http-response,response-fie
 
 operation::link-controller-test/find-links[snippets='http-request,request-headers,query-parameters']
 
+=== 허브 링크 생성
+
+==== request
+
+operation::link-controller-test/create-hub-link[snippets='http-request,request-headers,path-parameters,request-fields']
+
+==== response
+
+operation::link-controller-test/create-hub-link[snippets='http-response,response-fields']
+
 ==== response
 
 operation::link-controller-test/find-links[snippets='http-response,response-fields']

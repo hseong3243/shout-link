@@ -4,8 +4,10 @@ import com.seong.shoutlink.domain.auth.LoginUser;
 import com.seong.shoutlink.domain.link.controller.request.CreateLinkRequest;
 import com.seong.shoutlink.domain.link.controller.request.FindLinksRequest;
 import com.seong.shoutlink.domain.link.service.LinkService;
+import com.seong.shoutlink.domain.link.service.request.CreateHubLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.CreateLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.FindLinksCommand;
+import com.seong.shoutlink.domain.link.service.response.CreateHubLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.CreateLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.FindLinksResponse;
 import jakarta.validation.Valid;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,5 +51,19 @@ public class LinkController {
             request.page(),
             request.size()));
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/hubs/{hubId}/links")
+    public ResponseEntity<CreateHubLinkResponse> createHubLink(
+        @PathVariable("hubId") Long hubId,
+        @LoginUser Long memberId,
+        @Valid @RequestBody CreateLinkRequest request) {
+        CreateHubLinkResponse response = linkService.createHubLink(new CreateHubLinkCommand(
+            hubId,
+            memberId,
+            request.linkBundleId(),
+            request.url(),
+            request.description()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
