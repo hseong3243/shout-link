@@ -10,11 +10,13 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.seong.shoutlink.base.BaseControllerTest;
 import com.seong.shoutlink.domain.link.controller.request.CreateLinkRequest;
+import com.seong.shoutlink.domain.link.service.response.CreateHubLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.CreateLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.FindLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.FindLinksResponse;
@@ -102,6 +104,42 @@ class LinkControllerTest extends BaseControllerTest {
                     fieldWithPath("totalElements").type(JsonFieldType.NUMBER)
                         .description("총 요소 개수"),
                     fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 여부")
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("성공: 허브 링크 생성 api 호출 시")
+    void createHubLink() throws Exception {
+        //given
+        Long hubId = 1L;
+        CreateLinkRequest request = new CreateLinkRequest(1L, "url", "설명");
+
+        given(linkService.createHubLink(any())).willReturn(new CreateHubLinkResponse(1L));
+
+        //when
+        ResultActions resultActions = mockMvc.perform(post("/api/hubs/{hubId}/links", hubId)
+            .header(AUTHORIZATION, bearerAccessToken)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        resultActions.andExpect(status().isCreated())
+            .andDo(restDocs.document(
+                requestHeaders(
+                    headerWithName(AUTHORIZATION).description("액세스 토큰")
+                ),
+                pathParameters(
+                    parameterWithName("hubId").description("허브 ID")
+                ),
+                requestFields(
+                    fieldWithPath("linkBundleId").type(JsonFieldType.NUMBER)
+                        .description("링크 묶음 ID"),
+                    fieldWithPath("url").type(JsonFieldType.STRING).description("링크 url"),
+                    fieldWithPath("description").type(JsonFieldType.STRING).description("설명")
+                ),
+                responseFields(
+                    fieldWithPath("linkId").type(JsonFieldType.NUMBER).description("링크 ID")
                 )
             ));
     }
