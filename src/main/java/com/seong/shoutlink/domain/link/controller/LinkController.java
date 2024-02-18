@@ -1,11 +1,13 @@
 package com.seong.shoutlink.domain.link.controller;
 
 import com.seong.shoutlink.domain.auth.LoginUser;
+import com.seong.shoutlink.domain.auth.NullableUser;
 import com.seong.shoutlink.domain.link.controller.request.CreateLinkRequest;
 import com.seong.shoutlink.domain.link.controller.request.FindLinksRequest;
 import com.seong.shoutlink.domain.link.service.LinkService;
 import com.seong.shoutlink.domain.link.service.request.CreateHubLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.CreateLinkCommand;
+import com.seong.shoutlink.domain.link.service.request.FindHubLinksCommand;
 import com.seong.shoutlink.domain.link.service.request.FindLinksCommand;
 import com.seong.shoutlink.domain.link.service.response.CreateHubLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.CreateLinkResponse;
@@ -65,5 +67,19 @@ public class LinkController {
             request.url(),
             request.description()));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/hubs/{hubId}/links")
+    public ResponseEntity<FindLinksResponse> findHubLinks(
+        @PathVariable("hubId") Long hubId,
+        @NullableUser Long nullableMemberId,
+        @Valid @ModelAttribute FindLinksRequest request) {
+        FindLinksResponse response = linkService.findHubLinks(new FindHubLinksCommand(
+            request.linkBundleId(),
+            hubId,
+            nullableMemberId,
+            request.page(),
+            request.size()));
+        return ResponseEntity.ok(response);
     }
 }
