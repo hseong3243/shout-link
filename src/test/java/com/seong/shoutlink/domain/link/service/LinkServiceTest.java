@@ -7,10 +7,12 @@ import com.seong.shoutlink.domain.common.StubEventPublisher;
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.hub.Hub;
+import com.seong.shoutlink.domain.hubmember.repository.StubHubMemberRepository;
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.repository.FakeLinkRepository;
 import com.seong.shoutlink.domain.link.service.request.CreateHubLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.CreateLinkCommand;
+import com.seong.shoutlink.domain.link.service.request.FindHubLinksCommand;
 import com.seong.shoutlink.domain.link.service.request.FindLinksCommand;
 import com.seong.shoutlink.domain.link.service.response.CreateHubLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.CreateLinkResponse;
@@ -18,6 +20,7 @@ import com.seong.shoutlink.domain.link.service.response.FindLinksResponse;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import com.seong.shoutlink.domain.linkbundle.repository.FakeLinkBundleRepository;
 import com.seong.shoutlink.domain.member.Member;
+import com.seong.shoutlink.domain.member.MemberRole;
 import com.seong.shoutlink.domain.member.repository.StubMemberRepository;
 import com.seong.shoutlink.fixture.HubFixture;
 import com.seong.shoutlink.fixture.LinkBundleFixture;
@@ -35,6 +38,7 @@ class LinkServiceTest {
     private FakeLinkRepository linkRepository;
     private FakeLinkBundleRepository linkBundleRepository;
     private StubHubRepository hubRepository;
+    private StubHubMemberRepository hubMemberRepository;
     private StubEventPublisher eventPublisher;
     private LinkService linkService;
 
@@ -42,11 +46,12 @@ class LinkServiceTest {
     void setUp() {
         memberRepository = new StubMemberRepository();
         hubRepository = new StubHubRepository();
+        hubMemberRepository = new StubHubMemberRepository();
         linkRepository = new FakeLinkRepository();
         linkBundleRepository = new FakeLinkBundleRepository();
         eventPublisher = new StubEventPublisher();
-        linkService = new LinkService(memberRepository, hubRepository, linkRepository,
-            linkBundleRepository, eventPublisher);
+        linkService = new LinkService(memberRepository, hubRepository, hubMemberRepository,
+            linkRepository, linkBundleRepository, eventPublisher);
     }
 
     @Nested
@@ -138,11 +143,12 @@ class LinkServiceTest {
         void setUp() {
             memberRepository = new StubMemberRepository();
             hubRepository = new StubHubRepository();
+            hubMemberRepository = new StubHubMemberRepository();
             linkRepository = new FakeLinkRepository();
             linkBundleRepository = new FakeLinkBundleRepository();
             eventPublisher = new StubEventPublisher();
-            linkService = new LinkService(memberRepository, hubRepository, linkRepository,
-                linkBundleRepository, eventPublisher);
+            linkService = new LinkService(memberRepository, hubRepository, hubMemberRepository,
+                linkRepository, linkBundleRepository, eventPublisher);
         }
 
         @Test
@@ -239,6 +245,173 @@ class LinkServiceTest {
             assertThat(exception).isInstanceOf(ShoutLinkException.class)
                 .extracting(e -> ((ShoutLinkException) e).getErrorCode())
                 .isEqualTo(ErrorCode.UNAUTHORIZED);
+        }
+    }
+
+    @Nested
+    @DisplayName("findHubLinks 메서드 호출 시")
+    class FindHubLinksTest {
+
+        private Member member;
+        private Hub hub;
+        private LinkBundle linkBundle;
+        private Link link;
+
+        @BeforeEach
+        void setUp() {
+            memberRepository = new StubMemberRepository();
+            hubRepository = new StubHubRepository();
+            hubMemberRepository = new StubHubMemberRepository();
+            linkBundleRepository = new FakeLinkBundleRepository();
+            linkRepository = new FakeLinkRepository();
+            eventPublisher = new StubEventPublisher();
+            linkService = new LinkService(memberRepository, hubRepository, hubMemberRepository,
+                linkRepository, linkBundleRepository, eventPublisher);
+
+            member = MemberFixture.member();
+            hub = HubFixture.hub(member);
+            linkBundle = LinkBundleFixture.linkBundle();
+            link = LinkFixture.link();
+        }
+
+        @Test
+        @DisplayName("성공: 허브 링크 목록 조회됨")
+        void findHubLinks() {
+            //given
+            memberRepository.stub(member);
+            hubRepository.stub(hub);
+            linkBundleRepository.stub(linkBundle);
+            linkRepository.stub(link);
+
+            FindHubLinksCommand command = new FindHubLinksCommand(linkBundle.getLinkBundleId(),
+                hub.getHubId(), null, 0, 10);
+
+            //when
+            FindLinksResponse response = linkService.findHubLinks(command);
+
+            //then
+            assertThat(response.totalElements()).isEqualTo(1);
+            assertThat(response.hasNext()).isFalse();
+            assertThat(response.links()).hasSize(1)
+                .allSatisfy(findLink -> {
+                    assertThat(findLink.linkId()).isEqualTo(link.getLinkId());
+                    assertThat(findLink.url()).isEqualTo(link.getUrl());
+                    assertThat(findLink.description()).isEqualTo(link.getDescription());
+                });
+        }
+
+        @Test
+        @DisplayName("예외(NotFound): 존재하지 않는 허브")
+        void notFound_WhenHubNotFound() {
+            //given
+            FindHubLinksCommand command = new FindHubLinksCommand(1L, 1L, null, 0, 10);
+
+            //when
+            Exception exception = catchException(() -> linkService.findHubLinks(command));
+
+            //then
+            assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                .isEqualTo(ErrorCode.NOT_FOUND);
+        }
+
+        @Test
+        @DisplayName("예외(NotFound): 존재하지 않는 링크 묶음")
+        void notFound_WhenLinkBundleNotFound() {
+            //given
+            memberRepository.stub(member);
+            hubRepository.stub(hub);
+
+            FindHubLinksCommand command = new FindHubLinksCommand(1L, hub.getHubId(), null, 0, 10);
+
+            //when
+            Exception exception = catchException(() -> linkService.findHubLinks(command));
+
+            //then
+            assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                .isEqualTo(ErrorCode.NOT_FOUND);
+        }
+
+        @Nested
+        @DisplayName("비공개 허브인 경우")
+        class WhenHubIsPrivate {
+
+            @Test
+            @DisplayName("성공: 사용자가 허브 소속인 경우 링크 목록 조회됨")
+            void findHubLinks_WhenMemberIsHubMember() {
+                //given
+                Hub privateHub = HubFixture.privateHub(member);
+                memberRepository.stub(member);
+                hubRepository.stub(privateHub);
+                hubMemberRepository.stub(privateHub, member);
+                linkBundleRepository.stub(linkBundle);
+                linkRepository.stub(link);
+
+                FindHubLinksCommand command = new FindHubLinksCommand(linkBundle.getLinkBundleId(),
+                    privateHub.getHubId(), member.getMemberId(), 0, 10);
+
+                //when
+                FindLinksResponse response = linkService.findHubLinks(command);
+
+                //then
+                assertThat(response.totalElements()).isEqualTo(1);
+                assertThat(response.hasNext()).isFalse();
+                assertThat(response.links()).hasSize(1)
+                    .allSatisfy(findLink -> {
+                        assertThat(findLink.linkId()).isEqualTo(link.getLinkId());
+                        assertThat(findLink.url()).isEqualTo(link.getUrl());
+                        assertThat(findLink.description()).isEqualTo(link.getDescription());
+                    });
+            }
+
+            @Test
+            @DisplayName("예외(Unauthenticated): 인증되지 않은 사용자")
+            void unauthenticated_WhenMemberIsUnauthenticated() {
+                //given
+                Hub hub = HubFixture.privateHub(member);
+                memberRepository.stub(member);
+                hubRepository.stub(hub);
+                linkBundleRepository.stub(linkBundle);
+                linkRepository.stub(link);
+
+                FindHubLinksCommand command = new FindHubLinksCommand(linkBundle.getLinkBundleId(),
+                    hub.getHubId(), null, 0, 10);
+
+                //when
+                Exception exception = catchException(() -> linkService.findHubLinks(command));
+
+                //then
+                assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                    .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                    .isEqualTo(ErrorCode.UNAUTHENTICATED);
+            }
+
+            @Test
+            @DisplayName("예외(Unauthorized): 사용자가 허브 소속이 아닐 때")
+            void unauthorized_WhenMemberIsNotHubMember() {
+                //given
+                Hub privateHub = HubFixture.privateHub(member);
+                memberRepository.stub(member);
+                hubRepository.stub(privateHub);
+                hubMemberRepository.stub(hub, member);
+                linkBundleRepository.stub(linkBundle);
+                linkRepository.stub(link);
+
+                Member anotherMember = new Member(member.getMemberId() + 1, "email@email.com",
+                    "asdf123!", "nickname", MemberRole.ROLE_USER);
+                memberRepository.stub(anotherMember);
+                FindHubLinksCommand command = new FindHubLinksCommand(linkBundle.getLinkBundleId(),
+                    hub.getHubId(), anotherMember.getMemberId(), 0, 10);
+
+                //when
+                Exception exception = catchException(() -> linkService.findHubLinks(command));
+
+                //then
+                assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                    .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                    .isEqualTo(ErrorCode.UNAUTHORIZED);
+            }
         }
     }
 }
