@@ -61,6 +61,16 @@ operation::link-bundle-controller-test/create-hub-link-bundle[snippets='http-req
 
 operation::link-bundle-controller-test/create-hub-link-bundle[snippets='http-response,response-fields']
 
+=== 허브 링크 묶음 목록 조회
+
+==== request
+
+operation::link-bundle-controller-test/find-hub-link-bundles[snippets='http-request,request-headers,path-parameters']
+
+==== response
+
+operation::link-bundle-controller-test/find-hub-link-bundles[snippets='http-response,response-fields']
+
 == 링크
 
 === 링크 생성
@@ -89,19 +99,15 @@ operation::link-controller-test/create-hub-link[snippets='http-request,request-h
 
 operation::link-controller-test/create-hub-link[snippets='http-response,response-fields']
 
-==== response
-
-operation::link-controller-test/find-links[snippets='http-response,response-fields']
-
-=== 허브 링크 묶음 목록 조회
+=== 허브 링크 목록 조회
 
 ==== request
 
-operation::link-bundle-controller-test/find-hub-link-bundles[snippets='http-request,request-headers,path-parameters']
+operation::link-controller-test/find-hub-links[snippets='http-request,request-headers,path-parameters,query-parameters']
 
 ==== response
 
-operation::link-bundle-controller-test/find-hub-link-bundles[snippets='http-response,response-fields']
+operation::link-controller-test/find-hub-links[snippets='http-response,response-fields']
 
 == 허브
 
