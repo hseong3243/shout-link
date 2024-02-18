@@ -23,4 +23,6 @@ public interface LinkBundleRepository {
     Optional<LinkBundle> findHubLinkBundle(Long linkBundleId, Hub hub);
 
     List<LinkBundle> findHubLinkBundles(Hub hubId);
+
+    Optional<LinkBundle> findMemberLinkBundle(Long linkBundleId, Member member);
 }

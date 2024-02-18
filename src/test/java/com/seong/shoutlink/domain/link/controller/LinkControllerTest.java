@@ -143,4 +143,48 @@ class LinkControllerTest extends BaseControllerTest {
                 )
             ));
     }
+
+    @Test
+    @DisplayName("성공: 허브 링크 목록 조회 api 호출 시")
+    void findHubLinks() throws Exception {
+        //given
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("linkBundleId", "1");
+        params.add("page", "0");
+        params.add("size", "20");
+        long hubId = 1;
+        FindLinkResponse findLink = new FindLinkResponse(1L, "url", "설명");
+        FindLinksResponse response = new FindLinksResponse(List.of(findLink), 1, false);
+
+        given(linkService.findHubLinks(any())).willReturn(response);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(get("/api/hubs/{hubId}/links", hubId)
+            .header(AUTHORIZATION, bearerAccessToken)
+            .params(params));
+
+        //then
+        resultActions.andExpect(status().isOk())
+            .andDo(restDocs.document(
+                requestHeaders(
+                    headerWithName(AUTHORIZATION).description("액세스 토큰").optional()
+                ),
+                pathParameters(
+                    parameterWithName("hubId").description("허브 ID")
+                ),
+                queryParameters(
+                    parameterWithName("linkBundleId").description("링크 묶음 ID"),
+                    parameterWithName("page").description("페이지").optional(),
+                    parameterWithName("size").description("사이즈").optional()
+                ),
+                responseFields(
+                    fieldWithPath("links").type(JsonFieldType.ARRAY).description("허브 링크 목록"),
+                    fieldWithPath("links[].linkId").type(JsonFieldType.NUMBER).description("링크 ID"),
+                    fieldWithPath("links[].url").type(JsonFieldType.STRING).description("링크 url"),
+                    fieldWithPath("links[].description").type(JsonFieldType.STRING).description("링크 설명"),
+                    fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("총 요소 개수"),
+                    fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 여부")
+                )
+            ));
+    }
 }

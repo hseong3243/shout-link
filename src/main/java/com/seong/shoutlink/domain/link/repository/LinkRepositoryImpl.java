@@ -5,7 +5,6 @@ import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
 import com.seong.shoutlink.domain.link.service.LinkRepository;
 import com.seong.shoutlink.domain.link.service.result.LinkPaginationResult;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
-import com.seong.shoutlink.domain.member.Member;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,7 +25,6 @@ public class LinkRepositoryImpl implements LinkRepository {
 
     @Override
     public LinkPaginationResult findLinks(
-        Member member,
         LinkBundle linkBundle,
         int page,
         int size) {
