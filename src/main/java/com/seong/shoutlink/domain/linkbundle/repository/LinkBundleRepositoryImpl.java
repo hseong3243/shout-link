@@ -63,4 +63,10 @@ public class LinkBundleRepositoryImpl implements LinkBundleRepository {
             .map(LinkBundleEntity::toDomain)
             .toList();
     }
+
+    @Override
+    public Optional<LinkBundle> findMemberLinkBundle(Long linkBundleId, Member member) {
+        return linkBundleJpaRepository.findMemberLinkBundle(linkBundleId, member.getMemberId())
+            .map(LinkBundleEntity::toDomain);
+    }
 }

@@ -28,4 +28,10 @@ public interface LinkBundleJpaRepository extends JpaRepository<LinkBundleEntity,
     @Query("select lb from HubLinkBundleEntity lb "
         + "where lb.hubId = :hubId")
     List<LinkBundleEntity> findAllByHubId(@Param("hubId") Long hubId);
+
+    @Query("select lb from MemberLinkBundleEntity lb "
+        + "where lb.linkBundleId = :linkBundleId and lb.memberId = :memberId")
+    Optional<LinkBundleEntity> findMemberLinkBundle(
+        @Param("linkBundleId") Long linkBundleId,
+        @Param("memberId") Long memberId);
 }

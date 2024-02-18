@@ -35,7 +35,8 @@ public class LinkService {
 
     @Transactional
     public CreateLinkResponse createLink(CreateLinkCommand command) {
-        LinkBundle linkBundle = getLinkBundle(command.linkBundleId());
+        Member member = getMember(command.memberId());
+        LinkBundle linkBundle = getLinkBundle(command.linkBundleId(), member);
         Link link = new Link(command.url(), command.description());
         LinkWithLinkBundle linkWithLinkBundle = new LinkWithLinkBundle(link, linkBundle);
         Long linkId = linkRepository.save(linkWithLinkBundle);
@@ -46,17 +47,16 @@ public class LinkService {
     @Transactional(readOnly = true)
     public FindLinksResponse findLinks(FindLinksCommand command) {
         Member member = getMember(command.memberId());
-        LinkBundle linkBundle = getLinkBundle(command.linkBundleId());
+        LinkBundle linkBundle = getLinkBundle(command.linkBundleId(), member);
         LinkPaginationResult result = linkRepository.findLinks(
-            member,
             linkBundle,
             command.page(),
             command.size());
         return FindLinksResponse.of(result.links(), result.totalElements(), result.hasNext());
     }
 
-    private LinkBundle getLinkBundle(Long linkBundleId) {
-        return linkBundleRepository.findById(linkBundleId)
+    private LinkBundle getLinkBundle(Long linkBundleId, Member member) {
+        return linkBundleRepository.findMemberLinkBundle(linkBundleId, member)
             .orElseThrow(() -> new ShoutLinkException("존재하지 않는 링크 묶음입니다.", ErrorCode.NOT_FOUND));
     }
 
