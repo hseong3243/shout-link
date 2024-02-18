@@ -58,6 +58,9 @@ public class LinkBundleRepositoryImpl implements LinkBundleRepository {
 
     @Override
     public List<LinkBundle> findHubLinkBundles(Hub hub) {
-        return null;
+        return linkBundleJpaRepository.findAllByHubId(hub.getHubId())
+            .stream()
+            .map(LinkBundleEntity::toDomain)
+            .toList();
     }
 }
