@@ -124,4 +124,39 @@ class LinkBundleControllerTest extends BaseControllerTest {
                 )
             ));
     }
+
+    @Test
+    @DisplayName("성공: 허브 링크 묶음 목록 조회 api 호출 시")
+    void findHubLinkBundles() throws Exception {
+        //given
+        long hubId = 1L;
+        FindLinkBundleResponse content = new FindLinkBundleResponse(1L, "기본", false);
+        FindLinkBundlesResponse response = new FindLinkBundlesResponse(List.of(content));
+
+        given(linkBundleService.findHubLinkBundles(any())).willReturn(response);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(get("/api/hubs/{hubId}/link-bundles", hubId)
+            .header(AUTHORIZATION, bearerAccessToken));
+
+        //then
+        resultActions.andExpect(status().isOk())
+            .andDo(restDocs.document(
+                pathParameters(
+                    parameterWithName("hubId").description("허브 ID")
+                ),
+                requestHeaders(
+                    headerWithName(AUTHORIZATION).description("액세스 토큰").optional()
+                ),
+                responseFields(
+                    fieldWithPath("linkBundles").type(JsonFieldType.ARRAY).description("링크 묶음 목록"),
+                    fieldWithPath("linkBundles[].linkBundleId").type(JsonFieldType.NUMBER)
+                        .description("링크 묶음 ID"),
+                    fieldWithPath("linkBundles[].description").type(JsonFieldType.STRING)
+                        .description("링크 묶음 설명"),
+                    fieldWithPath("linkBundles[].isDefault").type(JsonFieldType.BOOLEAN)
+                        .description("기본 여부")
+                )
+            ));
+    }
 }

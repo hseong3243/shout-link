@@ -15,6 +15,10 @@ public final class HubFixture {
         return new Hub(HUB_ID, member.getMemberId(), NAME, DESCRIPTION, IS_PRIVATE);
     }
 
+    public static Hub privateHub(Member member) {
+        return new Hub(HUB_ID, member.getMemberId(), NAME, DESCRIPTION, true);
+    }
+
     public static HubWithMaster hubWithMaster(Member member) {
         return new HubWithMaster(hub(member), member);
     }

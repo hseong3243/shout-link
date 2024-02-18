@@ -21,4 +21,6 @@ public interface LinkBundleRepository {
     Long save(HubLinkBundle hubLinkBundle);
 
     Optional<LinkBundle> findHubLinkBundle(Long linkBundleId, Hub hub);
+
+    List<LinkBundle> findHubLinkBundles(Hub hubId);
 }

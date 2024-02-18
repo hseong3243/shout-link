@@ -4,6 +4,7 @@ import com.seong.shoutlink.global.auth.resolver.LoginUserArgumentResolver;
 import com.seong.shoutlink.global.auth.authentication.AuthenticationContext;
 import com.seong.shoutlink.global.auth.authentication.JwtAuthenticationInterceptor;
 import com.seong.shoutlink.global.auth.authentication.JwtAuthenticationProvider;
+import com.seong.shoutlink.global.auth.resolver.NullableUserArgumentResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new LoginUserArgumentResolver(authenticationContext));
+        resolvers.add(new NullableUserArgumentResolver(authenticationContext));
     }
 
     @Override

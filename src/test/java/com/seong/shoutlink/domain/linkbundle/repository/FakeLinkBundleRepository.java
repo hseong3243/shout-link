@@ -67,6 +67,11 @@ public class FakeLinkBundleRepository implements LinkBundleRepository {
         return memory.values().stream().findFirst();
     }
 
+    @Override
+    public List<LinkBundle> findHubLinkBundles(Hub hubId) {
+        return memory.values().stream().toList();
+    }
+
     private long getNextId() {
         return memory.keySet().size() + 1;
     }

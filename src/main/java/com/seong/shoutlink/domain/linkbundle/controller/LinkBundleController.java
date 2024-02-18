@@ -1,9 +1,11 @@
 package com.seong.shoutlink.domain.linkbundle.controller;
 
 import com.seong.shoutlink.domain.auth.LoginUser;
+import com.seong.shoutlink.domain.auth.NullableUser;
 import com.seong.shoutlink.domain.linkbundle.controller.request.CreateLinkBundleRequest;
 import com.seong.shoutlink.domain.linkbundle.service.LinkBundleService;
 import com.seong.shoutlink.domain.linkbundle.service.request.CreateHubLinkBundleCommand;
+import com.seong.shoutlink.domain.linkbundle.service.request.FindHubLinkBundlesCommand;
 import com.seong.shoutlink.domain.linkbundle.service.request.FindLinkBundlesCommand;
 import com.seong.shoutlink.domain.linkbundle.service.response.CreateLinkBundleCommand;
 import com.seong.shoutlink.domain.linkbundle.service.response.CreateLinkBundleResponse;
@@ -58,5 +60,14 @@ public class LinkBundleController {
                 request.description(),
                 request.isDefault()));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/hubs/{hubId}/link-bundles")
+    public ResponseEntity<FindLinkBundlesResponse> findHubLinkBundles(
+        @NullableUser Long nullableMemberId,
+        @PathVariable("hubId") Long hubId) {
+        FindLinkBundlesResponse response = linkBundleService.findHubLinkBundles(
+            new FindHubLinkBundlesCommand(hubId, nullableMemberId));
+        return ResponseEntity.ok(response);
     }
 }

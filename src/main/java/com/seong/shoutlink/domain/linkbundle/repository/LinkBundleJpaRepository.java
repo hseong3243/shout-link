@@ -24,4 +24,8 @@ public interface LinkBundleJpaRepository extends JpaRepository<LinkBundleEntity,
     Optional<LinkBundle> findHubLinkBundle(
         @Param("linkBundleId") Long linkBundleId,
         @Param("hubId") Long hubId);
+
+    @Query("select lb from HubLinkBundleEntity lb "
+        + "where lb.hubId = :hubId")
+    List<LinkBundleEntity> findAllByHubId(@Param("hubId") Long hubId);
 }
