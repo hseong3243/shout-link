@@ -1,11 +1,11 @@
 package com.seong.shoutlink.domain.hub.repository;
 
 import com.seong.shoutlink.domain.hub.Hub;
+import com.seong.shoutlink.domain.hub.HubWithMaster;
 import com.seong.shoutlink.domain.hub.service.HubRepository;
 import com.seong.shoutlink.domain.hub.service.result.HubPaginationResult;
 import com.seong.shoutlink.domain.hubmember.repository.HubMemberEntity;
 import com.seong.shoutlink.domain.hubmember.repository.HubMemberJpaRepository;
-import com.seong.shoutlink.domain.member.Member;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -45,5 +45,10 @@ public class HubRepositoryImpl implements HubRepository {
             hubs.map(HubMemberEntity::toHub).toList(),
             hubs.getTotalElements(),
             hubs.hasNext());
+    }
+
+    @Override
+    public Optional<HubWithMaster> findHubWithMaster(Long aLong) {
+        return Optional.empty();
     }
 }

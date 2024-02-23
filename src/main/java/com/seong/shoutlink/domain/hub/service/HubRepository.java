@@ -1,6 +1,7 @@
 package com.seong.shoutlink.domain.hub.service;
 
 import com.seong.shoutlink.domain.hub.Hub;
+import com.seong.shoutlink.domain.hub.HubWithMaster;
 import com.seong.shoutlink.domain.hub.service.result.HubPaginationResult;
 import java.util.Optional;
 
@@ -11,4 +12,6 @@ public interface HubRepository {
     Optional<Hub> findById(Long hubId);
 
     HubPaginationResult findHubs(int page, int size);
+
+    Optional<HubWithMaster> findHubWithMaster(Long hubId);
 }
