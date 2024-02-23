@@ -5,7 +5,9 @@ import com.seong.shoutlink.domain.hub.controller.request.CreateHubRequest;
 import com.seong.shoutlink.domain.hub.controller.request.FindHubsRequest;
 import com.seong.shoutlink.domain.hub.service.HubService;
 import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
+import com.seong.shoutlink.domain.hub.service.request.FindHubCommand;
 import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
+import com.seong.shoutlink.domain.hub.service.response.FindHubDetailResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsCommand;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsResponse;
 import jakarta.validation.Valid;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +48,12 @@ public class HubController {
             request.page(),
             request.size()
         ));
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/hubs/{hubId}")
+    public ResponseEntity<FindHubDetailResponse> findHub(@PathVariable("hubId") Long hubId) {
+        FindHubDetailResponse response = hubService.findHub(new FindHubCommand(hubId));
         return ResponseEntity.ok(response);
     }
 }
