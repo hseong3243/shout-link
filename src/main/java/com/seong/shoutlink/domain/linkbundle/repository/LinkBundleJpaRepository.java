@@ -1,6 +1,5 @@
 package com.seong.shoutlink.domain.linkbundle.repository;
 
-import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,7 +20,7 @@ public interface LinkBundleJpaRepository extends JpaRepository<LinkBundleEntity,
 
     @Query("select lb from HubLinkBundleEntity lb "
         + "where lb.linkBundleId = :linkBundleId and lb.hubId = :hubId")
-    Optional<LinkBundle> findHubLinkBundle(
+    Optional<LinkBundleEntity> findHubLinkBundle(
         @Param("linkBundleId") Long linkBundleId,
         @Param("hubId") Long hubId);
 
