@@ -13,7 +13,7 @@ public interface HubMemberJpaRepository extends JpaRepository<HubMemberEntity, L
         + "join hm.hubEntity h "
         + "where h.hubId = :hubId "
         + "and hm.hubMemberRole = com.seong.shoutlink.domain.hubmember.HubMemberRole.MASTER")
-    Optional<HubMemberEntity> findHubMasterByHubIdWithHub(@Param("hubId") Long hubId);
+    Optional<HubMemberEntity> findHubWithMaster(@Param("hubId") Long hubId);
 
     @Query("select hm from HubMemberEntity hm "
         + "join fetch hm.hubEntity h "

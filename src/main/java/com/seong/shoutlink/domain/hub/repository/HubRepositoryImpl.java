@@ -6,6 +6,7 @@ import com.seong.shoutlink.domain.hub.service.HubRepository;
 import com.seong.shoutlink.domain.hub.service.result.HubPaginationResult;
 import com.seong.shoutlink.domain.hubmember.repository.HubMemberEntity;
 import com.seong.shoutlink.domain.hubmember.repository.HubMemberJpaRepository;
+import com.seong.shoutlink.domain.member.repository.MemberJpaRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class HubRepositoryImpl implements HubRepository {
 
+    private final MemberJpaRepository memberJpaRepository;
     private final HubJpaRepository hubJpaRepository;
     private final HubMemberJpaRepository hubMemberJpaRepository;
 
@@ -33,7 +35,7 @@ public class HubRepositoryImpl implements HubRepository {
 
     @Override
     public Optional<Hub> findById(Long hubId) {
-        return hubMemberJpaRepository.findHubMasterByHubIdWithHub(hubId)
+        return hubMemberJpaRepository.findHubWithMaster(hubId)
             .map(HubMemberEntity::toHub);
     }
 
@@ -48,7 +50,9 @@ public class HubRepositoryImpl implements HubRepository {
     }
 
     @Override
-    public Optional<HubWithMaster> findHubWithMaster(Long aLong) {
-        return Optional.empty();
+    public Optional<HubWithMaster> findHubWithMaster(Long hubId) {
+        return findById(hubId)
+            .flatMap(hub -> memberJpaRepository.findById(hub.getMasterId())
+                .map(memberEntity -> new HubWithMaster(hub, memberEntity.toDomain())));
     }
 }
