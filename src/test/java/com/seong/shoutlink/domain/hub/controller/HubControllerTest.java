@@ -16,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.seong.shoutlink.base.BaseControllerTest;
 import com.seong.shoutlink.domain.hub.controller.request.CreateHubRequest;
 import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
+import com.seong.shoutlink.domain.hub.service.response.FindHubDetailResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsResponse;
 import java.util.List;
@@ -98,6 +99,37 @@ class HubControllerTest extends BaseControllerTest {
                     fieldWithPath("totalElements").type(JsonFieldType.NUMBER)
                         .description("총 요소 개수"),
                     fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 여부")
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("성공: 허브 조회 api 호출")
+    void findHub() throws Exception {
+        //given
+        long hubId = 1L;
+        FindHubDetailResponse response = new FindHubDetailResponse(hubId, 1L, "허브 이름", "허브 설명",
+            false, "마스터 이름");
+
+        given(hubService.findHub(any())).willReturn(response);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(get("/api/hubs/{hubId}", hubId));
+
+        //then
+        resultActions.andExpect(status().isOk())
+            .andDo(restDocs.document(
+                pathParameters(
+                    parameterWithName("hubId").description("허브 ID")
+                ),
+                responseFields(
+                    fieldWithPath("hubId").type(JsonFieldType.NUMBER).description("허브 ID"),
+                    fieldWithPath("name").type(JsonFieldType.STRING).description("허브 이름"),
+                    fieldWithPath("description").type(JsonFieldType.STRING).description("허브 설명"),
+                    fieldWithPath("isPrivate").type(JsonFieldType.BOOLEAN).description("허브 공개 여부"),
+                    fieldWithPath("masterId").type(JsonFieldType.NUMBER).description("허브 마스터 ID"),
+                    fieldWithPath("masterNickname").type(JsonFieldType.STRING)
+                        .description("허브 마스터 닉네임")
                 )
             ));
     }

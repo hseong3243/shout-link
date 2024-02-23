@@ -8,7 +8,9 @@ import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
+import com.seong.shoutlink.domain.hub.service.request.FindHubCommand;
 import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
+import com.seong.shoutlink.domain.hub.service.response.FindHubDetailResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsCommand;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsResponse;
 import com.seong.shoutlink.domain.member.Member;
@@ -123,6 +125,56 @@ class HubServiceTest {
                     assertThat(findHub.description()).isEqualTo(hub.getDescription());
                     assertThat(findHub.isPrivate()).isEqualTo(hub.isPrivate());
                 });
+        }
+    }
+
+    @Nested
+    @DisplayName("findHub 메서드 호출 시")
+    class FindHubTest {
+
+        @BeforeEach
+        void setUp() {
+            memberRepository = new StubMemberRepository();
+            hubRepository = new StubHubRepository();
+            eventPublisher = new StubEventPublisher();
+            hubService = new HubService(memberRepository, hubRepository, eventPublisher);
+        }
+
+        @Test
+        @DisplayName("성공: 허브 조회됨")
+        void findHub() {
+            //given
+            Member member = MemberFixture.member();
+            Hub hub = HubFixture.hub(member);
+            memberRepository.stub(member);
+            hubRepository.stub(hub, member);
+            FindHubCommand command = new FindHubCommand(hub.getHubId());
+
+            //when
+            FindHubDetailResponse findHub = hubService.findHub(command);
+
+            //then
+            assertThat(findHub.hubId()).isEqualTo(hub.getMasterId());
+            assertThat(findHub.name()).isEqualTo(hub.getName());
+            assertThat(findHub.description()).isEqualTo(hub.getDescription());
+            assertThat(findHub.isPrivate()).isEqualTo(hub.isPrivate());
+            assertThat(findHub.masterId()).isEqualTo(hub.getMasterId());
+            assertThat(findHub.masterNickname()).isEqualTo(member.getNickname());
+        }
+
+        @Test
+        @DisplayName("예외(NotFound): 존재하지 않는 허브")
+        void notFound_WhenHubNotFound() {
+            //given
+            FindHubCommand command = new FindHubCommand(1L);
+
+            //when
+            Exception exception = catchException(() -> hubService.findHub(command));
+
+            //then
+            assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                .isEqualTo(ErrorCode.NOT_FOUND);
         }
     }
 }

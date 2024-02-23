@@ -4,9 +4,12 @@ import com.seong.shoutlink.domain.common.EventPublisher;
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.hub.Hub;
+import com.seong.shoutlink.domain.hub.HubWithMaster;
 import com.seong.shoutlink.domain.hub.service.event.CreateHubEvent;
 import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
+import com.seong.shoutlink.domain.hub.service.request.FindHubCommand;
 import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
+import com.seong.shoutlink.domain.hub.service.response.FindHubDetailResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsCommand;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsResponse;
 import com.seong.shoutlink.domain.hub.service.result.HubPaginationResult;
@@ -38,8 +41,20 @@ public class HubService {
             .orElseThrow(() -> new ShoutLinkException("존재하지 않는 사용자입니다.", ErrorCode.NOT_FOUND));
     }
 
+    @Transactional(readOnly = true)
     public FindHubsResponse findHubs(FindHubsCommand command) {
         HubPaginationResult result = hubRepository.findHubs(command.page(), command.size());
         return FindHubsResponse.of(result.hubs(), result.totalElements(), result.hasNext());
+    }
+
+    @Transactional(readOnly = true)
+    public FindHubDetailResponse findHub(FindHubCommand command) {
+        HubWithMaster hubWithMaster = getHubWithMaster(command.hubId());
+        return FindHubDetailResponse.from(hubWithMaster);
+    }
+
+    private HubWithMaster getHubWithMaster(Long hubId) {
+        return hubRepository.findHubWithMaster(hubId)
+            .orElseThrow(() -> new ShoutLinkException("존재하지 않는 허브입니다.", ErrorCode.NOT_FOUND));
     }
 }
