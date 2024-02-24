@@ -1,0 +1,3 @@
+[submodule "src/main/resources/shout-link-config"]
+	path = src/main/resources/shout-link-config
+	url = https://github.com/hseong3243/shout-link-config.git
