@@ -1,0 +1,6 @@
+jwt:
+  issuer: test
+  expiry-seconds: 3600
+  secret: bAM5hBSuhrVhI6aVvNPk1r9rR3n8Ar4Atest
+  refresh-expiry-seconds: 18000
+  refresh-secret: cjOYckwZQhEqZOCZCCjCIG4W0HFPfSjMtest
