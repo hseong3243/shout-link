@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.hubmember.repository;
 
+import com.seong.shoutlink.domain.common.BaseEntity;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.repository.HubEntity;
 import com.seong.shoutlink.domain.hubmember.HubMemberRole;
@@ -22,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "hub_member")
-public class HubMemberEntity {
+public class HubMemberEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
