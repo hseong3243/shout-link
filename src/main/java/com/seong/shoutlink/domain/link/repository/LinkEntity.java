@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.link.repository;
 
+import com.seong.shoutlink.domain.common.BaseEntity;
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "link")
-public class LinkEntity {
+public class LinkEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

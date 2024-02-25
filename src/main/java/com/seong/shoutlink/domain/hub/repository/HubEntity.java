@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.hub.repository;
 
+import com.seong.shoutlink.domain.common.BaseEntity;
 import com.seong.shoutlink.domain.hub.Hub;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "hub")
-public class HubEntity {
+public class HubEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

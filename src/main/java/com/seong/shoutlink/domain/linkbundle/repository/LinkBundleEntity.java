@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.linkbundle.repository;
 
+import com.seong.shoutlink.domain.common.BaseEntity;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.linkbundle.HubLinkBundle;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @DiscriminatorColumn
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "link_bundle")
-public abstract class LinkBundleEntity {
+public abstract class LinkBundleEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

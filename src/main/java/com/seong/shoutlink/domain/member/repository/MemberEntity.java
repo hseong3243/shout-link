@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.member.repository;
 
+import com.seong.shoutlink.domain.common.BaseEntity;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.MemberRole;
 import jakarta.persistence.Entity;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Table(name = "member")
-public class MemberEntity {
+public class MemberEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
