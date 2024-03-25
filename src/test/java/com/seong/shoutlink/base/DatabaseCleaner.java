@@ -1,7 +1,6 @@
 package com.seong.shoutlink.base;
 
-import com.seong.shoutlink.domain.linkbundle.repository.HubLinkBundleEntity;
-import com.seong.shoutlink.domain.linkbundle.repository.MemberLinkBundleEntity;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Table;
 import jakarta.persistence.metamodel.Type;
@@ -22,10 +21,7 @@ public class DatabaseCleaner {
             .getEntities()
             .stream()
             .map(Type::getJavaType)
-            .filter(j ->
-                !(j.isAssignableFrom(HubLinkBundleEntity.class)
-                    || j.isAssignableFrom(MemberLinkBundleEntity.class))
-            )
+            .filter(j -> !j.isAnnotationPresent(DiscriminatorValue.class))
             .map(javaType -> javaType.getAnnotation(Table.class))
             .map(Table::name)
             .toList();

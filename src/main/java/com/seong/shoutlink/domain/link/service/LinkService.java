@@ -45,7 +45,7 @@ public class LinkService {
         Link link = new Link(command.url(), command.description());
         LinkWithLinkBundle linkWithLinkBundle = new LinkWithLinkBundle(link, linkBundle);
         Long linkId = linkRepository.save(linkWithLinkBundle);
-        eventPublisher.publishEvent(new CreateLinkEvent(command.url()));
+        eventPublisher.publishEvent(new CreateLinkEvent(linkId, command.url()));
         return new CreateLinkResponse(linkId);
     }
 
@@ -78,7 +78,7 @@ public class LinkService {
         LinkBundle hubLinkBundle = getHubLinkBundle(command.linkBundleId(), hub);
         Link link = new Link(command.url(), command.description());
         Long linkId = linkRepository.save(new LinkWithLinkBundle(link, hubLinkBundle));
-        eventPublisher.publishEvent(new CreateLinkEvent(command.url()));
+        eventPublisher.publishEvent(new CreateLinkEvent(linkId, command.url()));
         return new CreateHubLinkResponse(linkId);
     }
 

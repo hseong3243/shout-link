@@ -4,3 +4,9 @@ jwt:
   secret: bAM5hBSuhrVhI6aVvNPk1r9rR3n8Ar4Atest
   refresh-expiry-seconds: 18000
   refresh-secret: cjOYckwZQhEqZOCZCCjCIG4W0HFPfSjMtest
+spring:
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
