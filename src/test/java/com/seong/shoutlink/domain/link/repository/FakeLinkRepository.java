@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.link.repository;
 
+import com.seong.shoutlink.domain.domain.Domain;
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
 import com.seong.shoutlink.domain.link.service.LinkRepository;
@@ -8,6 +9,7 @@ import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class FakeLinkRepository implements LinkRepository {
 
@@ -41,5 +43,15 @@ public class FakeLinkRepository implements LinkRepository {
         int size) {
         List<Link> content = memory.values().stream().toList();
         return new LinkPaginationResult(content, content.size(), false);
+    }
+
+    @Override
+    public void updateLinkDomain(Link link, Domain domain) {
+
+    }
+
+    @Override
+    public Optional<Link> findById(Long linkId) {
+        return Optional.ofNullable(memory.get(linkId));
     }
 }
