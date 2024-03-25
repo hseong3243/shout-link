@@ -43,7 +43,8 @@ public class LinkRepositoryImpl implements LinkRepository {
 
     @Override
     public void updateLinkDomain(Link link, Domain domain) {
-
+        linkJpaRepository.findById(link.getLinkId())
+            .ifPresent(linkEntity -> linkEntity.updateDomainId(domain));
     }
 
     @Override

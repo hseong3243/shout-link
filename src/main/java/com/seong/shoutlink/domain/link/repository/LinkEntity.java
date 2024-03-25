@@ -1,6 +1,7 @@
 package com.seong.shoutlink.domain.link.repository;
 
 import com.seong.shoutlink.domain.common.BaseEntity;
+import com.seong.shoutlink.domain.domain.Domain;
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
@@ -26,6 +27,7 @@ public class LinkEntity extends BaseEntity {
     private String url;
     private String description;
     private Long linkBundleId;
+    private Long domainId;
 
     private LinkEntity(String url, String description, Long linkBundleId) {
         this.url = url;
@@ -44,5 +46,9 @@ public class LinkEntity extends BaseEntity {
 
     public Link toDomain() {
         return new Link(linkId, url, description);
+    }
+
+    public void updateDomainId(Domain domain) {
+        domainId = domain.getDomainId();
     }
 }
