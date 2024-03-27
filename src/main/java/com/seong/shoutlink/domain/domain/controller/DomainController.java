@@ -1,8 +1,11 @@
 package com.seong.shoutlink.domain.domain.controller;
 
+import com.seong.shoutlink.domain.domain.controller.request.FindDomainsRequest;
 import com.seong.shoutlink.domain.domain.controller.request.FindRootDomainsRequest;
 import com.seong.shoutlink.domain.domain.service.DomainService;
+import com.seong.shoutlink.domain.domain.service.request.FindDomainsCommand;
 import com.seong.shoutlink.domain.domain.service.request.FindRootDomainsCommand;
+import com.seong.shoutlink.domain.domain.service.response.FindDomainsResponse;
 import com.seong.shoutlink.domain.domain.service.response.FindRootDomainsResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +27,14 @@ public class DomainController {
         @ModelAttribute @Valid FindRootDomainsRequest request) {
         FindRootDomainsResponse response = domainService.findRootDomains(
             new FindRootDomainsCommand(request.keyword(), request.size()));
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<FindDomainsResponse> findDomains(
+        @ModelAttribute @Valid FindDomainsRequest request) {
+        FindDomainsResponse response = domainService.findDomains(new FindDomainsCommand(
+            request.keyword(), request.page(), request.size()));
         return ResponseEntity.ok(response);
     }
 }
