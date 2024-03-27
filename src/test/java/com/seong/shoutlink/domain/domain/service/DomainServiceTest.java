@@ -5,7 +5,9 @@ import static org.assertj.core.api.Assertions.catchException;
 
 import com.seong.shoutlink.domain.domain.Domain;
 import com.seong.shoutlink.domain.domain.repository.StubDomainRepository;
+import com.seong.shoutlink.domain.domain.service.request.FindRootDomainsCommand;
 import com.seong.shoutlink.domain.domain.service.request.UpdateDomainCommand;
+import com.seong.shoutlink.domain.domain.service.response.FindRootDomainsResponse;
 import com.seong.shoutlink.domain.domain.service.response.UpdateDomainResponse;
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
@@ -80,6 +82,35 @@ class DomainServiceTest {
             assertThat(exception).isInstanceOf(ShoutLinkException.class)
                 .extracting(e -> ((ShoutLinkException) e).getErrorCode())
                 .isEqualTo(ErrorCode.NOT_FOUND);
+        }
+    }
+
+    @Nested
+    @DisplayName("findRootDomains 호출 시")
+    class FindRootDomainsTest {
+
+        @BeforeEach
+        void setUp() {
+            domainRepository = new StubDomainRepository();
+            linkRepository = new FakeLinkRepository();
+            domainService = new DomainService(domainRepository, linkRepository);
+        }
+
+        @Test
+        @DisplayName("성공: 루트 도메인 문자열 목록을 반환한다.")
+        void findRootDomains() {
+            //given
+            String keyword = "git";
+            FindRootDomainsCommand command = new FindRootDomainsCommand(keyword, 10);
+            String rootDomain = "github.com";
+            Domain domain = DomainFixture.domain(rootDomain);
+            domainRepository.stub(domain);
+
+            //when
+            FindRootDomainsResponse response = domainService.findRootDomains(command);
+
+            //then
+            assertThat(response.rootDomains()).containsExactly(rootDomain);
         }
     }
 }
