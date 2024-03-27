@@ -3,6 +3,7 @@ package com.seong.shoutlink.domain.domain.repository;
 import com.seong.shoutlink.domain.common.Trie;
 import com.seong.shoutlink.domain.domain.Domain;
 import com.seong.shoutlink.domain.domain.service.DomainRepository;
+import com.seong.shoutlink.domain.domain.service.result.DomainPaginationResult;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,18 @@ public class StubDomainRepository implements DomainRepository {
         Long domainId = nextId();
         memory.put(domainId, domain);
         return new Domain(domainId, domain.getRootDomain());
+    }
+
+    @Override
+    public DomainPaginationResult findDomains(String keyword, int page, int size) {
+        List<Domain> list = memory.values().stream().toList();
+        int totalElements = list.size();
+        boolean hasNext = false;
+        if(list.size() > size) {
+            list = list.subList(0, size);
+            hasNext = true;
+        }
+        return new DomainPaginationResult(list, totalElements, hasNext);
     }
 
     private Long nextId() {

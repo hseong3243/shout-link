@@ -5,8 +5,10 @@ import static org.assertj.core.api.Assertions.catchException;
 
 import com.seong.shoutlink.domain.domain.Domain;
 import com.seong.shoutlink.domain.domain.repository.StubDomainRepository;
+import com.seong.shoutlink.domain.domain.service.request.FindDomainsCommand;
 import com.seong.shoutlink.domain.domain.service.request.FindRootDomainsCommand;
 import com.seong.shoutlink.domain.domain.service.request.UpdateDomainCommand;
+import com.seong.shoutlink.domain.domain.service.response.FindDomainsResponse;
 import com.seong.shoutlink.domain.domain.service.response.FindRootDomainsResponse;
 import com.seong.shoutlink.domain.domain.service.response.UpdateDomainResponse;
 import com.seong.shoutlink.domain.exception.ErrorCode;
@@ -111,6 +113,36 @@ class DomainServiceTest {
 
             //then
             assertThat(response.rootDomains()).containsExactly(rootDomain);
+        }
+    }
+
+    @Nested
+    @DisplayName("findDomains 호출 시")
+    class FindDomainsTest {
+
+        @BeforeEach
+        void setUp() {
+            domainRepository = new StubDomainRepository();
+            linkRepository = new FakeLinkRepository();
+            domainService = new DomainService(domainRepository, linkRepository);
+        }
+
+        @Test
+        @DisplayName("성공: 도메인 목록을 반환한다.")
+        void findDomains() {
+            //given
+            String keyword = "keyword";
+            int page = 0;
+            int size = 10;
+            FindDomainsCommand command = new FindDomainsCommand(keyword, page, size);
+            Domain domain = DomainFixture.domain();
+            domainRepository.stub(domain);
+
+            //when
+            FindDomainsResponse response = domainService.findDomains(command);
+
+            //then
+            assertThat(response.domains()).hasSize(1);
         }
     }
 }
