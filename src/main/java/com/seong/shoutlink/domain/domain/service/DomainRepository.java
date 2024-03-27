@@ -2,6 +2,7 @@ package com.seong.shoutlink.domain.domain.service;
 
 import com.seong.shoutlink.domain.domain.Domain;
 import java.util.List;
+import com.seong.shoutlink.domain.domain.service.result.DomainPaginationResult;
 import java.util.Optional;
 
 public interface DomainRepository {
@@ -13,4 +14,6 @@ public interface DomainRepository {
     List<String> findRootDomains(String keyword, int size);
 
     void synchronizeRootDomains();
+
+    DomainPaginationResult findDomains(String keyword, int page, int size);
 }
