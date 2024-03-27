@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 public class DomainRepositoryImpl implements DomainRepository {
 
     private final DomainJpaRepository domainJpaRepository;
+    private final DomainCacheRepository domainCacheRepository;
 
     @Override
     public Optional<Domain> findByRootDomain(String rootDomain) {
@@ -27,6 +28,6 @@ public class DomainRepositoryImpl implements DomainRepository {
 
     @Override
     public List<String> findRootDomains(String keyword, int size) {
-        return null;
+        return domainCacheRepository.findRootDomains(keyword, size);
     }
 }
