@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seong.shoutlink.base.BaseControllerTest.BaseControllerConfig;
 import com.seong.shoutlink.domain.auth.JwtProvider;
 import com.seong.shoutlink.domain.auth.service.AuthService;
+import com.seong.shoutlink.domain.domain.service.DomainService;
 import com.seong.shoutlink.domain.hub.service.HubService;
 import com.seong.shoutlink.domain.link.service.LinkService;
 import com.seong.shoutlink.domain.linkbundle.service.LinkBundleService;
@@ -76,6 +77,9 @@ public class BaseControllerTest {
 
     @MockBean
     protected HubService hubService;
+
+    @MockBean
+    protected DomainService domainService;
 
     @BeforeEach
     void setUp(

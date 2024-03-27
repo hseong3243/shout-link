@@ -1,13 +1,16 @@
 package com.seong.shoutlink.domain.domain.service;
 
 import com.seong.shoutlink.domain.domain.Domain;
+import com.seong.shoutlink.domain.domain.service.request.FindRootDomainsCommand;
 import com.seong.shoutlink.domain.domain.service.request.UpdateDomainCommand;
+import com.seong.shoutlink.domain.domain.service.response.FindRootDomainsResponse;
 import com.seong.shoutlink.domain.domain.service.response.UpdateDomainResponse;
 import com.seong.shoutlink.domain.domain.util.DomainExtractor;
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.service.LinkRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,5 +36,11 @@ public class DomainService {
             .orElseThrow(() -> new ShoutLinkException("존재하지 않는 링크입니다.", ErrorCode.NOT_FOUND));
         linkRepository.updateLinkDomain(link, domain);
         return new UpdateDomainResponse(domain.getDomainId());
+    }
+
+    public FindRootDomainsResponse findRootDomains(FindRootDomainsCommand command) {
+        List<String> rootDomains = domainRepository.findRootDomains(command.keyword(),
+            command.size());
+        return FindRootDomainsResponse.from(rootDomains);
     }
 }
