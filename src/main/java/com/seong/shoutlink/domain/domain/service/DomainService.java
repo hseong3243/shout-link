@@ -46,7 +46,7 @@ public class DomainService {
             command.size());
         return FindRootDomainsResponse.from(rootDomains);
     }
-    
+
     public FindDomainsResponse findDomains(FindDomainsCommand command) {
         DomainPaginationResult result = domainRepository.findDomains(command.keyword(),
             command.page(), command.size());
