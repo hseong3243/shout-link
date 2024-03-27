@@ -30,4 +30,10 @@ public class DomainRepositoryImpl implements DomainRepository {
     public List<String> findRootDomains(String keyword, int size) {
         return domainCacheRepository.findRootDomains(keyword, size);
     }
+
+    @Override
+    public void synchronizeRootDomains() {
+        domainJpaRepository.findRootDomains().forEach(domainCacheRepository::insert);
+
+    }
 }

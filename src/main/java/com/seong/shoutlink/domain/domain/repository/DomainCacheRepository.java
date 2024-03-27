@@ -5,4 +5,6 @@ import java.util.List;
 public interface DomainCacheRepository {
 
     List<String> findRootDomains(String prefix, int count);
+
+    void insert(String rootDomain);
 }

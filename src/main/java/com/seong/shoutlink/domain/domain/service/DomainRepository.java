@@ -11,4 +11,6 @@ public interface DomainRepository {
     Domain save(Domain domain);
 
     List<String> findRootDomains(String keyword, int size);
+
+    void synchronizeRootDomains();
 }

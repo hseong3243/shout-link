@@ -13,4 +13,9 @@ public class DomainMemoryRepository implements DomainCacheRepository {
     public List<String> findRootDomains(String prefix, int count) {
         return trie.search(prefix, count);
     }
+
+    @Override
+    public void insert(String rootDomain) {
+        trie.insert(rootDomain);
+    }
 }
