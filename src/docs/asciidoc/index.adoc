@@ -140,3 +140,15 @@ operation::hub-controller-test/find-hub[snippets='http-request,path-parameters']
 ==== response
 
 operation::hub-controller-test/find-hub[snippets='http-response']
+
+== 도메인
+
+=== 루트 도메인 목록 조회
+
+==== request
+
+operation::domain-controller-test/find-root-domains[snippets='http-request,query-parameters']
+
+==== response
+
+operation::domain-controller-test/find-root-domains[snippets='http-response,response-fields']
