@@ -5,9 +5,11 @@ import static org.assertj.core.api.Assertions.catchException;
 
 import com.seong.shoutlink.domain.domain.Domain;
 import com.seong.shoutlink.domain.domain.repository.StubDomainRepository;
+import com.seong.shoutlink.domain.domain.service.request.FindDomainCommand;
 import com.seong.shoutlink.domain.domain.service.request.FindDomainsCommand;
 import com.seong.shoutlink.domain.domain.service.request.FindRootDomainsCommand;
 import com.seong.shoutlink.domain.domain.service.request.UpdateDomainCommand;
+import com.seong.shoutlink.domain.domain.service.response.FindDomainDetailResponse;
 import com.seong.shoutlink.domain.domain.service.response.FindDomainsResponse;
 import com.seong.shoutlink.domain.domain.service.response.FindRootDomainsResponse;
 import com.seong.shoutlink.domain.domain.service.response.UpdateDomainResponse;
@@ -143,6 +145,49 @@ class DomainServiceTest {
 
             //then
             assertThat(response.domains()).hasSize(1);
+        }
+    }
+
+    @Nested
+    @DisplayName("findDomain 호출 시")
+    class FindDomainTest {
+
+        @BeforeEach
+        void setUp() {
+            domainRepository = new StubDomainRepository();
+            linkRepository = new FakeLinkRepository();
+            domainService = new DomainService(domainRepository, linkRepository);
+        }
+
+        @Test
+        @DisplayName("성공: 도메인을 조회한다.")
+        void findDomain() {
+            //given
+            Domain domain = DomainFixture.domain();
+            FindDomainCommand command = new FindDomainCommand(1L);
+            domainRepository.stub(domain);
+
+            //when
+            FindDomainDetailResponse response = domainService.findDomain(command);
+
+            //then
+            assertThat(response.domainId()).isEqualTo(domain.getDomainId());
+            assertThat(response.rootDomain()).isEqualTo(domain.getRootDomain());
+        }
+
+        @Test
+        @DisplayName("예외(notFound): 존재하지 않는 도메인")
+        void notFound_whenDomainNotFound() {
+            //given
+            FindDomainCommand command = new FindDomainCommand(1L);
+
+            //when
+            Exception exception = catchException(() -> domainService.findDomain(command));
+
+            //then
+            assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                .isEqualTo(ErrorCode.NOT_FOUND);
         }
     }
 }

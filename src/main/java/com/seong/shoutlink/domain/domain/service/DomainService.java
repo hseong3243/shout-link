@@ -1,9 +1,11 @@
 package com.seong.shoutlink.domain.domain.service;
 
 import com.seong.shoutlink.domain.domain.Domain;
+import com.seong.shoutlink.domain.domain.service.request.FindDomainCommand;
 import com.seong.shoutlink.domain.domain.service.request.FindDomainsCommand;
 import com.seong.shoutlink.domain.domain.service.request.FindRootDomainsCommand;
 import com.seong.shoutlink.domain.domain.service.request.UpdateDomainCommand;
+import com.seong.shoutlink.domain.domain.service.response.FindDomainDetailResponse;
 import com.seong.shoutlink.domain.domain.service.response.FindDomainsResponse;
 import com.seong.shoutlink.domain.domain.service.response.FindRootDomainsResponse;
 import com.seong.shoutlink.domain.domain.service.response.UpdateDomainResponse;
@@ -51,5 +53,11 @@ public class DomainService {
         DomainPaginationResult result = domainRepository.findDomains(command.keyword(),
             command.page(), command.size());
         return FindDomainsResponse.of(result.domains(), result.totalElements(), result.hasNext());
+    }
+
+    public FindDomainDetailResponse findDomain(FindDomainCommand command) {
+        Domain domain = domainRepository.findById(command.domainId())
+            .orElseThrow(() -> new ShoutLinkException("존재하지 않는 도메인입니다.", ErrorCode.NOT_FOUND));
+        return FindDomainDetailResponse.from(domain);
     }
 }
