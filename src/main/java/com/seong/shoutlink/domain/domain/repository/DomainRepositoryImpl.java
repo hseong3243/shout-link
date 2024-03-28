@@ -51,6 +51,7 @@ public class DomainRepositoryImpl implements DomainRepository {
 
     @Override
     public Optional<Domain> findById(Long domainId) {
-        return Optional.empty();
+        return domainJpaRepository.findById(domainId)
+            .map(DomainEntity::toDomain);
     }
 }
