@@ -1,12 +1,15 @@
 package com.seong.shoutlink.domain.domain.controller;
 
+import com.seong.shoutlink.domain.domain.controller.request.FindDomainLinksRequest;
 import com.seong.shoutlink.domain.domain.controller.request.FindDomainsRequest;
 import com.seong.shoutlink.domain.domain.controller.request.FindRootDomainsRequest;
 import com.seong.shoutlink.domain.domain.service.DomainService;
 import com.seong.shoutlink.domain.domain.service.request.FindDomainCommand;
+import com.seong.shoutlink.domain.domain.service.request.FindDomainLinksCommand;
 import com.seong.shoutlink.domain.domain.service.request.FindDomainsCommand;
 import com.seong.shoutlink.domain.domain.service.request.FindRootDomainsCommand;
 import com.seong.shoutlink.domain.domain.service.response.FindDomainDetailResponse;
+import com.seong.shoutlink.domain.domain.service.response.FindDomainLinksResponse;
 import com.seong.shoutlink.domain.domain.service.response.FindDomainsResponse;
 import com.seong.shoutlink.domain.domain.service.response.FindRootDomainsResponse;
 import jakarta.validation.Valid;
@@ -46,6 +49,15 @@ public class DomainController {
         @PathVariable("domainId") Long domainId) {
         FindDomainDetailResponse response
             = domainService.findDomain(new FindDomainCommand(domainId));
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{domainId}/links")
+    public ResponseEntity<FindDomainLinksResponse> findDomainLinks(
+        @PathVariable("domainId") Long domainId,
+        @ModelAttribute @Valid FindDomainLinksRequest request) {
+        FindDomainLinksResponse response = domainService.findDomainLinks(
+            new FindDomainLinksCommand(domainId, request.page(), request.size()));
         return ResponseEntity.ok(response);
     }
 }
