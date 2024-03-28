@@ -48,4 +48,10 @@ public class DomainRepositoryImpl implements DomainRepository {
             domains.getTotalElements(),
             domains.hasNext());
     }
+
+    @Override
+    public Optional<Domain> findById(Long domainId) {
+        return domainJpaRepository.findById(domainId)
+            .map(DomainEntity::toDomain);
+    }
 }

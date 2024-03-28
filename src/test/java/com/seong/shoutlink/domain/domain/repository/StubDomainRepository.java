@@ -45,6 +45,11 @@ public class StubDomainRepository implements DomainRepository {
         return new DomainPaginationResult(list, totalElements, hasNext);
     }
 
+    @Override
+    public Optional<Domain> findById(Long domainId) {
+        return memory.values().stream().findFirst();
+    }
+
     private Long nextId() {
         return (long) (memory.size() + 1);
     }

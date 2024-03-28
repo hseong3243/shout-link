@@ -16,4 +16,6 @@ public interface DomainRepository {
     void synchronizeRootDomains();
 
     DomainPaginationResult findDomains(String keyword, int page, int size);
+
+    Optional<Domain> findById(Long domainId);
 }
