@@ -2,6 +2,7 @@ package com.seong.shoutlink.domain.domain.repository;
 
 import com.seong.shoutlink.domain.domain.Domain;
 import com.seong.shoutlink.domain.domain.service.DomainRepository;
+import com.seong.shoutlink.domain.domain.service.result.DomainLinkPaginationResult;
 import java.util.List;
 import com.seong.shoutlink.domain.domain.service.result.DomainPaginationResult;
 import java.util.Optional;
@@ -53,5 +54,10 @@ public class DomainRepositoryImpl implements DomainRepository {
     public Optional<Domain> findById(Long domainId) {
         return domainJpaRepository.findById(domainId)
             .map(DomainEntity::toDomain);
+    }
+
+    @Override
+    public DomainLinkPaginationResult findDomainLinks(Domain domain, int page, int size) {
+        return null;
     }
 }
