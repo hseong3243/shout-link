@@ -162,3 +162,13 @@ operation::domain-controller-test/find-domains[snippets='http-request,query-para
 ==== response
 
 operation::domain-controller-test/find-domains[snippets='http-response,response-fields']
+
+=== 도메인 단건 조회
+
+==== request
+
+operation::domain-controller-test/find-domain[snippets='http-request,path-parameters']
+
+==== response
+
+operation::domain-controller-test/find-domain[snippets='http-response,response-fields']

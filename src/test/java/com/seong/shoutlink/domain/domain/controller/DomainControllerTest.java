@@ -10,10 +10,12 @@ import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.seong.shoutlink.base.BaseControllerTest;
+import com.seong.shoutlink.domain.domain.service.response.FindDomainDetailResponse;
 import com.seong.shoutlink.domain.domain.service.response.FindDomainResponse;
 import com.seong.shoutlink.domain.domain.service.response.FindDomainsResponse;
 import com.seong.shoutlink.domain.domain.service.response.FindRootDomainsResponse;
@@ -85,6 +87,29 @@ class DomainControllerTest extends BaseControllerTest {
                     fieldWithPath("domains[].rootDomain").type(STRING).description("루트 도메인"),
                     fieldWithPath("totalElements").type(NUMBER).description("총 요소 개수"),
                     fieldWithPath("hasNext").type(BOOLEAN).description("다음 페이지 여부")
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("성공: 도메인 정보 단건 조회 api 호출 시")
+    void findDomain() throws Exception {
+        //given
+        FindDomainDetailResponse response = new FindDomainDetailResponse(1L, "github.com");
+        given(domainService.findDomain(any())).willReturn(response);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(get("/api/domains/{domainId}", 1L));
+
+        //then
+        resultActions.andExpect(status().isOk())
+            .andDo(restDocs.document(
+                pathParameters(
+                    parameterWithName("domainId").description("도메인 ID")
+                ),
+                responseFields(
+                    fieldWithPath("domainId").type(NUMBER).description("도메인 ID"),
+                    fieldWithPath("rootDomain").type(STRING).description("루트 도메인")
                 )
             ));
     }
