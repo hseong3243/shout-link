@@ -1,8 +1,9 @@
 package com.seong.shoutlink.domain.domain.service;
 
 import com.seong.shoutlink.domain.domain.Domain;
-import java.util.List;
+import com.seong.shoutlink.domain.domain.service.result.DomainLinkPaginationResult;
 import com.seong.shoutlink.domain.domain.service.result.DomainPaginationResult;
+import java.util.List;
 import java.util.Optional;
 
 public interface DomainRepository {
@@ -18,4 +19,6 @@ public interface DomainRepository {
     DomainPaginationResult findDomains(String keyword, int page, int size);
 
     Optional<Domain> findById(Long domainId);
+
+    DomainLinkPaginationResult findDomainLinks(Domain domain, int page, int size);
 }

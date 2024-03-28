@@ -3,7 +3,10 @@ package com.seong.shoutlink.domain.domain.repository;
 import com.seong.shoutlink.domain.common.Trie;
 import com.seong.shoutlink.domain.domain.Domain;
 import com.seong.shoutlink.domain.domain.service.DomainRepository;
+import com.seong.shoutlink.domain.domain.service.result.DomainLinkPaginationResult;
+import com.seong.shoutlink.domain.domain.service.result.DomainLinkResult;
 import com.seong.shoutlink.domain.domain.service.result.DomainPaginationResult;
+import com.seong.shoutlink.domain.link.Link;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,11 +15,17 @@ import java.util.Optional;
 public class StubDomainRepository implements DomainRepository {
 
     private final Map<Long, Domain> memory = new HashMap<>();
+    private final Map<Domain, List<Link>> domainLinks = new HashMap<>();
     private final Trie searchAutoComplete = new Trie();
 
     public void stub(Domain domain) {
         memory.put(nextId(), domain);
         searchAutoComplete.insert(domain.getRootDomain());
+    }
+
+    public void stub(Domain domain, Link... links) {
+        memory.put(nextId(), domain);
+        domainLinks.put(domain, List.of(links));
     }
 
     @Override
@@ -52,6 +61,15 @@ public class StubDomainRepository implements DomainRepository {
 
     private Long nextId() {
         return (long) (memory.size() + 1);
+    }
+
+    @Override
+    public DomainLinkPaginationResult findDomainLinks(Domain domain, int page, int size) {
+        List<Link> links = domainLinks.get(domain);
+        List<DomainLinkResult> content = links.stream()
+            .map(link -> new DomainLinkResult(link.getLinkId(), link.getUrl(), links.size()))
+            .toList();
+        return new DomainLinkPaginationResult(content, links.size(), links.size() > size);
     }
 
     @Override

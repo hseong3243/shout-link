@@ -6,10 +6,12 @@ import static org.assertj.core.api.Assertions.catchException;
 import com.seong.shoutlink.domain.domain.Domain;
 import com.seong.shoutlink.domain.domain.repository.StubDomainRepository;
 import com.seong.shoutlink.domain.domain.service.request.FindDomainCommand;
+import com.seong.shoutlink.domain.domain.service.request.FindDomainLinksCommand;
 import com.seong.shoutlink.domain.domain.service.request.FindDomainsCommand;
 import com.seong.shoutlink.domain.domain.service.request.FindRootDomainsCommand;
 import com.seong.shoutlink.domain.domain.service.request.UpdateDomainCommand;
 import com.seong.shoutlink.domain.domain.service.response.FindDomainDetailResponse;
+import com.seong.shoutlink.domain.domain.service.response.FindDomainLinksResponse;
 import com.seong.shoutlink.domain.domain.service.response.FindDomainsResponse;
 import com.seong.shoutlink.domain.domain.service.response.FindRootDomainsResponse;
 import com.seong.shoutlink.domain.domain.service.response.UpdateDomainResponse;
@@ -183,6 +185,54 @@ class DomainServiceTest {
 
             //when
             Exception exception = catchException(() -> domainService.findDomain(command));
+
+            //then
+            assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                .isEqualTo(ErrorCode.NOT_FOUND);
+        }
+    }
+
+    @Nested
+    @DisplayName("findDomainLinks 호출 시")
+    class FindDomainLinksTest {
+
+        @BeforeEach
+        void setUp() {
+            domainRepository = new StubDomainRepository();
+            linkRepository = new FakeLinkRepository();
+            domainService = new DomainService(domainRepository, linkRepository);
+        }
+
+        @Test
+        @DisplayName("성공: 도메인 링크 목록을 조회한다.")
+        void findDomainLinks() {
+            //given
+            FindDomainLinksCommand command = new FindDomainLinksCommand(1L, 0, 10);
+            Link link = LinkFixture.link();
+            Domain domain = DomainFixture.domain();
+            domainRepository.stub(domain, link);
+
+            //when
+            FindDomainLinksResponse response = domainService.findDomainLinks(command);
+
+            //then
+            assertThat(response.links()).hasSize(1)
+                .allSatisfy(findLink -> {
+                    assertThat(findLink.linkId()).isEqualTo(link.getLinkId());
+                    assertThat(findLink.url()).isEqualTo(link.getUrl());
+                    assertThat(findLink.aggregationCount()).isEqualTo(1);
+                });
+        }
+
+        @Test
+        @DisplayName("예외(notFound): 존재하지 않는 도메인")
+        void notFound_WhenDomainNotFound() {
+            //given
+            FindDomainLinksCommand command = new FindDomainLinksCommand(1L, 0, 10);
+
+            //when
+            Exception exception = catchException(() -> domainService.findDomainLinks(command));
 
             //then
             assertThat(exception).isInstanceOf(ShoutLinkException.class)

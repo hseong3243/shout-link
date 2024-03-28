@@ -16,6 +16,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.seong.shoutlink.base.BaseControllerTest;
 import com.seong.shoutlink.domain.domain.service.response.FindDomainDetailResponse;
+import com.seong.shoutlink.domain.domain.service.response.FindDomainLinkResponse;
+import com.seong.shoutlink.domain.domain.service.response.FindDomainLinksResponse;
 import com.seong.shoutlink.domain.domain.service.response.FindDomainResponse;
 import com.seong.shoutlink.domain.domain.service.response.FindDomainsResponse;
 import com.seong.shoutlink.domain.domain.service.response.FindRootDomainsResponse;
@@ -110,6 +112,43 @@ class DomainControllerTest extends BaseControllerTest {
                 responseFields(
                     fieldWithPath("domainId").type(NUMBER).description("도메인 ID"),
                     fieldWithPath("rootDomain").type(STRING).description("루트 도메인")
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("성공: 도메인 링크 목록 조회 api 호출 시")
+    void findDomainLinks() throws Exception {
+        //given
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("page", "0");
+        params.add("size", "10");
+
+        FindDomainLinkResponse content = new FindDomainLinkResponse(1L, "github.com/hseong3243", 1);
+        FindDomainLinksResponse response = new FindDomainLinksResponse(List.of(content), 1L, false);
+        given(domainService.findDomainLinks(any())).willReturn(response);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(get("/api/domains/{domainId}/links", 1L)
+            .params(params));
+
+        //then
+        resultActions.andExpect(status().isOk())
+            .andDo(restDocs.document(
+                pathParameters(
+                    parameterWithName("domainId").description("도메인 ID")
+                ),
+                queryParameters(
+                    parameterWithName("page").description("페이지"),
+                    parameterWithName("size").description("사이즈")
+                ),
+                responseFields(
+                    fieldWithPath("links").type(ARRAY).description("링크 목록"),
+                    fieldWithPath("links[].linkId").type(NUMBER).description("링크 ID"),
+                    fieldWithPath("links[].url").type(STRING).description("링크 url"),
+                    fieldWithPath("links[].aggregationCount").type(NUMBER).description("링크 집계 카운트"),
+                    fieldWithPath("totalElements").type(NUMBER).description("총 요소 개수"),
+                    fieldWithPath("hasNext").type(BOOLEAN).description("다음 페이지 여부")
                 )
             ));
     }

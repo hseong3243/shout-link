@@ -172,3 +172,13 @@ operation::domain-controller-test/find-domain[snippets='http-request,path-parame
 ==== response
 
 operation::domain-controller-test/find-domain[snippets='http-response,response-fields']
+
+=== 도메인 링크 목록 조회
+
+==== request
+
+operation::domain-controller-test/find-domain-links[snippets='http-request,path-parameters,query-parameters']
+
+==== response
+
+operation::domain-controller-test/find-domain-links[snippets='http-response,response-fields']
