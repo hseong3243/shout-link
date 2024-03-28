@@ -3,6 +3,8 @@ package com.seong.shoutlink.domain.domain.repository;
 import com.seong.shoutlink.domain.domain.Domain;
 import com.seong.shoutlink.domain.domain.service.DomainRepository;
 import com.seong.shoutlink.domain.domain.service.result.DomainLinkPaginationResult;
+import com.seong.shoutlink.domain.domain.service.result.DomainLinkResult;
+import com.seong.shoutlink.domain.link.repository.LinkJpaRepository;
 import java.util.List;
 import com.seong.shoutlink.domain.domain.service.result.DomainPaginationResult;
 import java.util.Optional;
@@ -17,6 +19,7 @@ public class DomainRepositoryImpl implements DomainRepository {
 
     private final DomainJpaRepository domainJpaRepository;
     private final DomainCacheRepository domainCacheRepository;
+    private final LinkJpaRepository linkJpaRepository;
 
     @Override
     public Optional<Domain> findByRootDomain(String rootDomain) {
@@ -58,6 +61,12 @@ public class DomainRepositoryImpl implements DomainRepository {
 
     @Override
     public DomainLinkPaginationResult findDomainLinks(Domain domain, int page, int size) {
-        return null;
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<DomainLinkResult> domainLinks
+            = linkJpaRepository.findDomainLinks(domain.getDomainId(), pageRequest);
+        return new DomainLinkPaginationResult(
+            domainLinks.getContent(),
+            domainLinks.getTotalElements(),
+            domainLinks.hasNext());
     }
 }
