@@ -4,6 +4,11 @@ jwt:
   secret: bAM5hBSuhrVhI6aVvNPk1r9rR3n8Ar4Atest
   refresh-expiry-seconds: 18000
   refresh-secret: cjOYckwZQhEqZOCZCCjCIG4W0HFPfSjMtest
+
+gemini:
+  url: https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent
+  api-key: fakeAPIKey
+
 spring:
   jpa:
     properties:
