@@ -8,7 +8,8 @@ import com.seong.shoutlink.domain.hub.service.HubRepository;
 import com.seong.shoutlink.domain.hubmember.service.HubMemberRepository;
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
-import com.seong.shoutlink.domain.link.service.event.CreateLinkEvent;
+import com.seong.shoutlink.domain.link.service.event.CreateHubLinkEvent;
+import com.seong.shoutlink.domain.link.service.event.CreateMemberLinkEvent;
 import com.seong.shoutlink.domain.link.service.request.CreateHubLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.CreateLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.FindHubLinksCommand;
@@ -45,7 +46,8 @@ public class LinkService {
         Link link = new Link(command.url(), command.description());
         LinkWithLinkBundle linkWithLinkBundle = new LinkWithLinkBundle(link, linkBundle);
         Long linkId = linkRepository.save(linkWithLinkBundle);
-        eventPublisher.publishEvent(new CreateLinkEvent(linkId, command.url()));
+        eventPublisher.publishEvent(
+            new CreateMemberLinkEvent(linkId, link.getUrl(), member.getMemberId()));
         return new CreateLinkResponse(linkId);
     }
 
@@ -78,7 +80,7 @@ public class LinkService {
         LinkBundle hubLinkBundle = getHubLinkBundle(command.linkBundleId(), hub);
         Link link = new Link(command.url(), command.description());
         Long linkId = linkRepository.save(new LinkWithLinkBundle(link, hubLinkBundle));
-        eventPublisher.publishEvent(new CreateLinkEvent(linkId, command.url()));
+        eventPublisher.publishEvent(new CreateHubLinkEvent(linkId, link.getUrl(), hub.getHubId()));
         return new CreateHubLinkResponse(linkId);
     }
 
