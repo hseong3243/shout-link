@@ -13,7 +13,8 @@ public enum ErrorCode {
     UNAUTHORIZED("SL301", Constants.FORBIDDEN),
     NOT_FOUND("SL401", Constants.NOT_FOUND),
     DUPLICATE_EMAIL("SL901", Constants.CONFLICT),
-    DUPLICATE_NICKNAME("SL902", Constants.BAD_REQUEST);
+    DUPLICATE_NICKNAME("SL902", Constants.BAD_REQUEST),
+    NOT_MET_CONDITION("SL1001", Constants.BAD_REQUEST);
 
     private final String errorCode;
     private final int status;

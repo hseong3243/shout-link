@@ -7,7 +7,9 @@ import com.seong.shoutlink.domain.link.service.LinkRepository;
 import com.seong.shoutlink.domain.link.service.result.LinkPaginationResult;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -51,5 +53,10 @@ public class LinkRepositoryImpl implements LinkRepository {
     public Optional<Link> findById(Long linkId) {
         return linkJpaRepository.findById(linkId)
             .map(LinkEntity::toDomain);
+    }
+
+    @Override
+    public List<LinkWithLinkBundle> findAllByLinkBundlesIn(List<LinkBundle> linkBundles) {
+        return null;
     }
 }

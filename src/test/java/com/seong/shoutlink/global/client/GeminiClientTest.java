@@ -46,7 +46,7 @@ class GeminiClientTest {
             LinkBundleAndLinks linkBundleAndLinks = new LinkBundleAndLinks(linkBundle,
                 List.of(link));
             GenerateAutoTagCommand command = GenerateAutoTagCommand.create(
-                List.of(linkBundleAndLinks));
+                List.of(linkBundleAndLinks), 3);
 
             apiClient.stub(ApiFixture.geminiResponse());
 

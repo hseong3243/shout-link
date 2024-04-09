@@ -46,7 +46,8 @@ public class GeminiClient implements AutoGenerativeClient {
 
     @Override
     public List<GeneratedTag> generateTags(GenerateAutoTagCommand command) {
-        String requestPrompt = MessageFormat.format(GENERATE_TAG_PROMPT, 1);
+        String requestPrompt = MessageFormat.format(
+            GENERATE_TAG_PROMPT, command.generateTagCount());
         AutoTagPrompt autoTagPrompt = new AutoTagPrompt(requestPrompt, command);
         GeminiRequest geminiRequest = GeminiRequest.create(autoTagPrompt.toPromptString());
         String requestBody = "";

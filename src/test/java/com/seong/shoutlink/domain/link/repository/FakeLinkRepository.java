@@ -6,6 +6,7 @@ import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
 import com.seong.shoutlink.domain.link.service.LinkRepository;
 import com.seong.shoutlink.domain.link.service.result.LinkPaginationResult;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,5 +54,16 @@ public class FakeLinkRepository implements LinkRepository {
     @Override
     public Optional<Link> findById(Long linkId) {
         return Optional.ofNullable(memory.get(linkId));
+    }
+
+    @Override
+    public List<LinkWithLinkBundle> findAllByLinkBundlesIn(List<LinkBundle> linkBundles) {
+        List<LinkWithLinkBundle> result = new ArrayList<>();
+        List<Link> links = memory.values().stream().toList();
+        for(int i=0; i<links.size(); i++) {
+            LinkBundle linkBundle = linkBundles.get(i % linkBundles.size());
+            result.add(new LinkWithLinkBundle(links.get(i), linkBundle));
+        }
+        return result;
     }
 }
