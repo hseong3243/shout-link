@@ -57,6 +57,15 @@ public class LinkRepositoryImpl implements LinkRepository {
 
     @Override
     public List<LinkWithLinkBundle> findAllByLinkBundlesIn(List<LinkBundle> linkBundles) {
-        return null;
+        List<Long> linkBundleIds = linkBundles.stream()
+            .map(LinkBundle::getLinkBundleId)
+            .toList();
+        List<LinkEntity> linkEntities = linkJpaRepository.findAllByLinkBundleIdIn(linkBundleIds);
+        Map<Long, LinkBundle> linkBundleIdAndLinkBundle = linkBundles.stream()
+            .collect(Collectors.toMap(LinkBundle::getLinkBundleId, linkBundle -> linkBundle));
+        return linkEntities.stream()
+            .map(linkEntity -> new LinkWithLinkBundle(linkEntity.toDomain(),
+                linkBundleIdAndLinkBundle.get(linkEntity.getLinkBundleId())))
+            .toList();
     }
 }

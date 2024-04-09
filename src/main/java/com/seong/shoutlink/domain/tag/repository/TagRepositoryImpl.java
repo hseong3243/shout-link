@@ -11,16 +11,15 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class TagRepositoryImpl implements TagRepository {
 
-
+    private final TagJpaRepository tagJpaRepository;
 
     @Override
     public List<Tag> saveAll(List<HubTag> tags) {
-//        List<TagEntity> tagEntities = tags.stream()
-//            .map(TagEntity::from)
-//            .toList();
-//        return tagJpaRepository.saveAll(tagEntities).stream()
-//            .map(TagEntity::toDomain)
-//            .toList();
-        return null;
+        List<TagEntity> tagEntities = tags.stream()
+            .map(TagEntity::from)
+            .toList();
+        return tagJpaRepository.saveAll(tagEntities).stream()
+            .map(TagEntity::toDomain)
+            .toList();
     }
 }

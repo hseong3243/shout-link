@@ -1,6 +1,7 @@
 package com.seong.shoutlink.domain.link.repository;
 
 import com.seong.shoutlink.domain.domain.service.result.DomainLinkResult;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,4 +18,6 @@ public interface LinkJpaRepository extends JpaRepository<LinkEntity, Long> {
         + " group by l.url"
         + " order by count(l.url) desc")
     Page<DomainLinkResult> findDomainLinks(@Param("domainId") Long domainId, Pageable pageable);
+
+    List<LinkEntity> findAllByLinkBundleIdIn(List<Long> linkBundleIds);
 }
