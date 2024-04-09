@@ -19,6 +19,7 @@ import com.seong.shoutlink.fixture.LinkBundleFixture;
 import com.seong.shoutlink.fixture.LinkFixture;
 import com.seong.shoutlink.fixture.MemberFixture;
 import com.seong.shoutlink.fixture.StubHubRepository;
+import com.seong.shoutlink.fixture.TagFixture;
 import com.seong.shoutlink.global.client.StubApiClient;
 import com.seong.shoutlink.global.client.ai.GeminiClient;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,6 +75,24 @@ class TagServiceTest {
 
             //then
             assertThat(response.tagIds()).hasSize(ApiFixture.DEFAULT_FIXED_TAG_COUNT);
+        }
+
+        @Test
+        @DisplayName("성공: 기존 태그는 삭제한다.")
+        void thenDeleteOldTags() {
+            //given
+            AutoCreateTagCommand command = new AutoCreateTagCommand(1L);
+
+            hubRepository.stub(HubFixture.hub(MemberFixture.member()));
+            linkBundleRepository.stub(LinkBundleFixture.linkBundle());
+            linkRepository.stub(LinkFixture.links(5).toArray(Link[]::new));
+            tagRepository.stub(TagFixture.tag());
+
+            //when
+            tagService.autoCreateHubTags(command);
+
+            //then
+            assertThat(tagRepository.count()).isEqualTo(ApiFixture.DEFAULT_FIXED_TAG_COUNT);
         }
 
         @Test

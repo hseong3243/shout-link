@@ -46,12 +46,15 @@ public class TagService {
         GenerateAutoTagCommand generateAutoTagCommand = GenerateAutoTagCommand
             .create(linkBundlesAndLinks, generateTagCount);
 
-        List<HubTag> tags = autoGenerativeClient.generateTags(generateAutoTagCommand)
+        List<HubTag> hubTags = autoGenerativeClient.generateTags(generateAutoTagCommand)
             .stream()
             .map(generatedTag -> new Tag(generatedTag.name()))
             .map(tag -> new HubTag(hub, tag))
             .toList();
-        return CreateTagResponse.from(tagRepository.saveAll(tags));
+        if(!hubTags.isEmpty()) {
+            tagRepository.deleteHubTags(hub);
+        }
+        return CreateTagResponse.from(tagRepository.saveAll(hubTags));
     }
 
     private List<LinkBundleAndLinks> groupingLinks(List<LinkWithLinkBundle> links) {

@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.tag.repository;
 
+import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.tag.HubTag;
 import com.seong.shoutlink.domain.tag.Tag;
 import com.seong.shoutlink.domain.tag.service.TagRepository;
@@ -21,6 +22,10 @@ public class StubTagRepository implements TagRepository {
         return (long) (memory.size() + 1);
     }
 
+    public long count() {
+        return memory.size();
+    }
+
     @Override
     public List<Tag> saveAll(List<HubTag> hubTags) {
         for (HubTag hubTag : hubTags) {
@@ -30,5 +35,12 @@ public class StubTagRepository implements TagRepository {
             Tag value = entry.getValue();
             return new Tag(entry.getKey(), value.getName());
         }).toList();
+    }
+
+    @Override
+    public long deleteHubTags(Hub hub) {
+        int size = memory.size();
+        memory.clear();
+        return size;
     }
 }

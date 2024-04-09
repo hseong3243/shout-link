@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.tag.repository;
 
+import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.tag.HubTag;
 import com.seong.shoutlink.domain.tag.Tag;
 import com.seong.shoutlink.domain.tag.service.TagRepository;
@@ -21,5 +22,10 @@ public class TagRepositoryImpl implements TagRepository {
         return tagJpaRepository.saveAll(tagEntities).stream()
             .map(TagEntity::toDomain)
             .toList();
+    }
+
+    @Override
+    public long deleteHubTags(Hub hub) {
+        return tagJpaRepository.deleteByHubId(hub.getHubId());
     }
 }
