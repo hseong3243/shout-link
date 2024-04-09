@@ -41,6 +41,6 @@ public abstract class TagEntity extends BaseEntity {
     }
 
     public Tag toDomain() {
-        return new Tag(tagId, name);
+        return new Tag(tagId, name, getCreatedAt(), getUpdatedAt());
     }
 }

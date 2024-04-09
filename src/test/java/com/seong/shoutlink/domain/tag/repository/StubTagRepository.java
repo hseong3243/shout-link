@@ -33,7 +33,7 @@ public class StubTagRepository implements TagRepository {
         }
         return memory.entrySet().stream().map(entry -> {
             Tag value = entry.getValue();
-            return new Tag(entry.getKey(), value.getName());
+            return new Tag(entry.getKey(), value.getName(), value.getCreatedAt(), value.getUpdatedAt());
         }).toList();
     }
 
