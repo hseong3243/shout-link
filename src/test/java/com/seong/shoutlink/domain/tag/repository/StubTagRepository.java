@@ -7,6 +7,7 @@ import com.seong.shoutlink.domain.tag.service.TagRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class StubTagRepository implements TagRepository {
 
@@ -42,5 +43,10 @@ public class StubTagRepository implements TagRepository {
         int size = memory.size();
         memory.clear();
         return size;
+    }
+
+    @Override
+    public Optional<Tag> findLatestTagByHub(Hub hub) {
+        return memory.values().stream().findFirst();
     }
 }

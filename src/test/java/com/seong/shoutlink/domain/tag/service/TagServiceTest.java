@@ -10,6 +10,7 @@ import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.repository.FakeLinkRepository;
 import com.seong.shoutlink.domain.linkbundle.repository.FakeLinkBundleRepository;
+import com.seong.shoutlink.domain.tag.Tag;
 import com.seong.shoutlink.domain.tag.repository.StubTagRepository;
 import com.seong.shoutlink.domain.tag.service.request.AutoCreateTagCommand;
 import com.seong.shoutlink.domain.tag.service.response.CreateTagResponse;
@@ -22,10 +23,13 @@ import com.seong.shoutlink.fixture.StubHubRepository;
 import com.seong.shoutlink.fixture.TagFixture;
 import com.seong.shoutlink.global.client.StubApiClient;
 import com.seong.shoutlink.global.client.ai.GeminiClient;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class TagServiceTest {
 
@@ -60,15 +64,16 @@ class TagServiceTest {
                 linkRepository, autoGenerativeClient);
         }
 
-        @Test
-        @DisplayName("성공: 링크가 5개 이상인 경우 자동 태그 생성한다.")
-        void autoCreateTag() {
+        @ParameterizedTest
+        @CsvSource({"5", "10", "15", "20", "25"})
+        @DisplayName("성공: 링크가 5의 배수인 경우 자동 태그 생성한다.")
+        void autoCreateTag(int totalLinkSize) {
             //given
             AutoCreateTagCommand command = new AutoCreateTagCommand(1L);
 
             hubRepository.stub(HubFixture.hub(MemberFixture.member()));
             linkBundleRepository.stub(LinkBundleFixture.linkBundle());
-            linkRepository.stub(LinkFixture.links(5).toArray(Link[]::new));
+            linkRepository.stub(LinkFixture.links(totalLinkSize).toArray(Link[]::new));
 
             //when
             CreateTagResponse response = tagService.autoCreateHubTags(command);
@@ -96,25 +101,6 @@ class TagServiceTest {
         }
 
         @Test
-        @DisplayName("예외(notMetCondition): 링크가 5개 미만인 경우")
-        void notMetCondition_WhenTotalLinkCountLT5() {
-            //given
-            AutoCreateTagCommand command = new AutoCreateTagCommand(1L);
-
-            hubRepository.stub(HubFixture.hub(MemberFixture.member()));
-            linkBundleRepository.stub(LinkBundleFixture.linkBundle());
-            linkRepository.stub(LinkFixture.links(4).toArray(Link[]::new));
-
-            //when
-            Exception exception = catchException(() -> tagService.autoCreateHubTags(command));
-
-            //then
-            assertThat(exception).isInstanceOf(ShoutLinkException.class)
-                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
-                .isEqualTo(ErrorCode.NOT_MET_CONDITION);
-        }
-
-        @Test
         @DisplayName("예외(notFound): 존재하지 않는 허브인 경우")
         void notFound_WhenHubNotFound() {
             //given
@@ -127,6 +113,66 @@ class TagServiceTest {
             assertThat(exception).isInstanceOf(ShoutLinkException.class)
                 .extracting(e -> ((ShoutLinkException) e).getErrorCode())
                 .isEqualTo(ErrorCode.NOT_FOUND);
+        }
+
+        @Test
+        @DisplayName("예외(notMetCondition): 하루 안에 생성된 태그가 존재하는 경우")
+        void notMetCondition_WhenLatestTagCreatedWithinADay() {
+            //given
+            AutoCreateTagCommand command = new AutoCreateTagCommand(1L);
+            LocalDateTime createdWithinADay = LocalDateTime.now().minusHours(23);
+            Tag tag = new Tag(1L, "태그", createdWithinADay, createdWithinADay);
+
+            hubRepository.stub(HubFixture.hub(MemberFixture.member()));
+            tagRepository.stub(tag);
+
+            //when
+            Exception exception = catchException(() -> tagService.autoCreateHubTags(command));
+
+            //then
+            assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                .isEqualTo(ErrorCode.NOT_MET_CONDITION);
+        }
+
+        @ParameterizedTest
+        @CsvSource({"0","1","2","3","4"})
+        @DisplayName("예외(notMetCondition): 링크가 5개 미만인 경우")
+        void notMetCondition_WhenTotalLinkCountLT5(int totalLinkSize) {
+            //given
+            AutoCreateTagCommand command = new AutoCreateTagCommand(1L);
+
+            hubRepository.stub(HubFixture.hub(MemberFixture.member()));
+            linkBundleRepository.stub(LinkBundleFixture.linkBundle());
+            linkRepository.stub(LinkFixture.links(totalLinkSize).toArray(Link[]::new));
+
+            //when
+            Exception exception = catchException(() -> tagService.autoCreateHubTags(command));
+
+            //then
+            assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                .isEqualTo(ErrorCode.NOT_MET_CONDITION);
+        }
+
+        @ParameterizedTest
+        @CsvSource({"6","9","11","14","16","19","21","24"})
+        @DisplayName("예외(notMetCondition): 링크 개수가 5의 배수가 아닐 때")
+        void notMetCondition_WhenTotalLinkCountIsNotMultiplesOf5(int totalLinkSize) {
+            //given
+            AutoCreateTagCommand command = new AutoCreateTagCommand(1L);
+
+            hubRepository.stub(HubFixture.hub(MemberFixture.member()));
+            linkBundleRepository.stub(LinkBundleFixture.linkBundle());
+            linkRepository.stub(LinkFixture.links(totalLinkSize).toArray(Link[]::new));
+
+            //when
+            Exception exception = catchException(() -> tagService.autoCreateHubTags(command));
+
+            //then
+            assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                .isEqualTo(ErrorCode.NOT_MET_CONDITION);
         }
     }
 }
