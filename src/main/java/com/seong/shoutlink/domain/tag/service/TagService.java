@@ -27,6 +27,7 @@ public class TagService {
 
     private static final int MINIMUM_TAG_CONDITION = 5;
     private static final int MAXIMUM_TAG_COUNT = 5;
+    private static final int ZERO = 0;
 
     private final TagRepository tagRepository;
     private final HubRepository hubRepository;
@@ -37,9 +38,9 @@ public class TagService {
     @Transactional
     public CreateTagResponse autoCreateHubTags(AutoCreateTagCommand command) {
         Hub hub = getHub(command.hubId());
+        checkTagIsCreatedWithinADay(hub);
         List<LinkBundle> hubLinkBundles = linkBundleRepository.findHubLinkBundles(hub);
-        List<LinkWithLinkBundle> links = linkRepository.findAllByLinkBundlesIn(
-            hubLinkBundles);
+        List<LinkWithLinkBundle> links = linkRepository.findAllByLinkBundlesIn(hubLinkBundles);
 
         List<LinkBundleAndLinks> linkBundlesAndLinks = groupingLinks(links);
         int generateTagCount = calculateNumberOfTag(links);
@@ -51,10 +52,17 @@ public class TagService {
             .map(generatedTag -> new Tag(generatedTag.name()))
             .map(tag -> new HubTag(hub, tag))
             .toList();
-        if(!hubTags.isEmpty()) {
+        if (!hubTags.isEmpty()) {
             tagRepository.deleteHubTags(hub);
         }
         return CreateTagResponse.from(tagRepository.saveAll(hubTags));
+    }
+
+    private void checkTagIsCreatedWithinADay(Hub hub) {
+        tagRepository.findLatestTagByHub(hub)
+            .filter(Tag::isCreatedWithinADay)
+            .ifPresent(tag -> {
+                throw new ShoutLinkException("태그 생성된 지 하루가 지나지 않았습니다.", ErrorCode.NOT_MET_CONDITION);});
     }
 
     private List<LinkBundleAndLinks> groupingLinks(List<LinkWithLinkBundle> links) {
@@ -69,7 +77,8 @@ public class TagService {
 
     private int calculateNumberOfTag(List<LinkWithLinkBundle> links) {
         int totalLinkCount = links.size();
-        if (totalLinkCount < MINIMUM_TAG_CONDITION) {
+        if (totalLinkCount < MINIMUM_TAG_CONDITION
+            || totalLinkCount % MINIMUM_TAG_CONDITION != ZERO) {
             throw new ShoutLinkException("태그 생성 조건을 충족하지 못했습니다.", ErrorCode.NOT_MET_CONDITION);
         }
         return Math.min(MAXIMUM_TAG_COUNT, totalLinkCount / MINIMUM_TAG_CONDITION);

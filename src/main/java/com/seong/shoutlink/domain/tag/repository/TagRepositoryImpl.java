@@ -5,6 +5,7 @@ import com.seong.shoutlink.domain.tag.HubTag;
 import com.seong.shoutlink.domain.tag.Tag;
 import com.seong.shoutlink.domain.tag.service.TagRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -27,5 +28,11 @@ public class TagRepositoryImpl implements TagRepository {
     @Override
     public long deleteHubTags(Hub hub) {
         return tagJpaRepository.deleteByHubId(hub.getHubId());
+    }
+
+    @Override
+    public Optional<Tag> findLatestTagByHub(Hub hub) {
+        return tagJpaRepository.findLatestTagByHubId(hub.getHubId())
+            .map(TagEntity::toDomain);
     }
 }
