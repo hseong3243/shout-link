@@ -5,7 +5,7 @@ import com.seong.shoutlink.domain.link.LinkBundleAndLinks;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import java.util.List;
 
-public record GenerateAutoTagCommand(List<AutoTagLinkBundle> linkBundles) {
+public record GenerateAutoTagCommand(List<AutoTagLinkBundle> linkBundles, int generateTagCount) {
 
     public record AutoTagLinkBundle(String description, List<AutoTagLink> links) {
 
@@ -21,7 +21,9 @@ public record GenerateAutoTagCommand(List<AutoTagLinkBundle> linkBundles) {
         }
     }
 
-    public static GenerateAutoTagCommand create(List<LinkBundleAndLinks> linkBundlesAndLinks) {
+    public static GenerateAutoTagCommand create(
+        List<LinkBundleAndLinks> linkBundlesAndLinks,
+        int generateTagCount) {
         List<AutoTagLinkBundle> content = linkBundlesAndLinks.stream()
             .map(linkBundleAndLinks -> {
                 List<AutoTagLink> autoTagLinks = linkBundleAndLinks.getLinks().stream()
@@ -30,6 +32,6 @@ public record GenerateAutoTagCommand(List<AutoTagLinkBundle> linkBundles) {
                 return AutoTagLinkBundle.from(linkBundleAndLinks.getLinkBundle(), autoTagLinks);
             })
             .toList();
-        return new GenerateAutoTagCommand(content);
+        return new GenerateAutoTagCommand(content, generateTagCount);
     }
 }

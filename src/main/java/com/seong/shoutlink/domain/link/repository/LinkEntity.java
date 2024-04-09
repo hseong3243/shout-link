@@ -51,4 +51,8 @@ public class LinkEntity extends BaseEntity {
     public void updateDomainId(Domain domain) {
         domainId = domain.getDomainId();
     }
+
+    public boolean isContainsIn(LinkBundle linkBundle) {
+        return linkBundleId.equals(linkBundle.getLinkBundleId());
+    }
 }

@@ -5,6 +5,7 @@ import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
 import com.seong.shoutlink.domain.link.service.result.LinkPaginationResult;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
+import java.util.List;
 import java.util.Optional;
 
 public interface LinkRepository {
@@ -16,4 +17,6 @@ public interface LinkRepository {
     void updateLinkDomain(Link link, Domain domain);
 
     Optional<Link> findById(Long linkId);
+
+    List<LinkWithLinkBundle> findAllByLinkBundlesIn(List<LinkBundle> linkBundles);
 }
