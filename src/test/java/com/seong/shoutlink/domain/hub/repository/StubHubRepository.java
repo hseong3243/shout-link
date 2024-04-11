@@ -1,4 +1,4 @@
-package com.seong.shoutlink.fixture;
+package com.seong.shoutlink.domain.hub.repository;
 
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.HubWithMaster;

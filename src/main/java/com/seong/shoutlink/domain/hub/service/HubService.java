@@ -10,11 +10,17 @@ import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
 import com.seong.shoutlink.domain.hub.service.request.FindHubCommand;
 import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubDetailResponse;
+import com.seong.shoutlink.domain.hub.service.response.FindHubResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsCommand;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsResponse;
 import com.seong.shoutlink.domain.hub.service.result.HubPaginationResult;
+import com.seong.shoutlink.domain.hub.service.result.HubTagResult;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.service.MemberRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +31,7 @@ public class HubService {
 
     private final MemberRepository memberRepository;
     private final HubRepository hubRepository;
+    private final HubTagReader hubTagReader;
     private final EventPublisher eventPublisher;
 
     @Transactional
@@ -44,7 +51,16 @@ public class HubService {
     @Transactional(readOnly = true)
     public FindHubsResponse findHubs(FindHubsCommand command) {
         HubPaginationResult result = hubRepository.findHubs(command.page(), command.size());
-        return FindHubsResponse.of(result.hubs(), result.totalElements(), result.hasNext());
+        List<Hub> hubs = result.hubs();
+        List<HubTagResult> tagsInHubs = hubTagReader.findTagsInHubs(hubs);
+
+        Map<Hub, List<HubTagResult>> tagsCollectedByHub = tagsInHubs.stream()
+            .collect(Collectors.groupingBy(HubTagResult::hub));
+        List<FindHubResponse> findHubs = hubs.stream()
+            .map(hub -> HubMapper.findHubResponse(hub,
+                tagsCollectedByHub.getOrDefault(hub, new ArrayList<>())))
+            .toList();
+        return new FindHubsResponse(findHubs, result.totalElements(), result.hasNext());
     }
 
     @Transactional(readOnly = true)

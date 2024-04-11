@@ -19,6 +19,7 @@ import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubDetailResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsResponse;
+import com.seong.shoutlink.domain.hub.service.result.HubTagResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -70,7 +71,9 @@ class HubControllerTest extends BaseControllerTest {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("page", "0");
         params.add("size", "0");
-        FindHubResponse content = new FindHubResponse(1L, 1L, "허브 이름", "설명", false);
+        HubTagResponse tagResponse = new HubTagResponse(1L, "태그1");
+        FindHubResponse content = new FindHubResponse(1L, 1L, "허브 이름", "설명", false,
+            List.of(tagResponse));
         FindHubsResponse response = new FindHubsResponse(List.of(content), 1, false);
 
         given(hubService.findHubs(any())).willReturn(response);
@@ -96,6 +99,12 @@ class HubControllerTest extends BaseControllerTest {
                         .description("허브 설명"),
                     fieldWithPath("hubs[].isPrivate").type(JsonFieldType.BOOLEAN)
                         .description("허브 공개 여부"),
+                    fieldWithPath("hubs[].tags[]").type(JsonFieldType.ARRAY)
+                        .description("허브 태그 목록"),
+                    fieldWithPath("hubs[].tags[].tagId").type(JsonFieldType.NUMBER)
+                        .description("허브 태그 ID"),
+                    fieldWithPath("hubs[].tags[].name").type(JsonFieldType.STRING)
+                        .description("허브 태그 이름"),
                     fieldWithPath("totalElements").type(JsonFieldType.NUMBER)
                         .description("총 요소 개수"),
                     fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 여부")

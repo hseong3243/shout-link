@@ -7,17 +7,20 @@ import com.seong.shoutlink.domain.common.StubEventPublisher;
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.hub.Hub;
+import com.seong.shoutlink.domain.hub.repository.StubHubRepository;
+import com.seong.shoutlink.domain.hub.repository.StubHubTagReader;
 import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
 import com.seong.shoutlink.domain.hub.service.request.FindHubCommand;
 import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubDetailResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsCommand;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsResponse;
+import com.seong.shoutlink.domain.hub.service.result.HubTagResponse;
+import com.seong.shoutlink.domain.hub.service.result.HubTagResult;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.repository.StubMemberRepository;
 import com.seong.shoutlink.fixture.HubFixture;
 import com.seong.shoutlink.fixture.MemberFixture;
-import com.seong.shoutlink.fixture.StubHubRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -29,6 +32,7 @@ class HubServiceTest {
     private StubMemberRepository memberRepository;
     private StubHubRepository hubRepository;
     private StubEventPublisher eventPublisher;
+    private StubHubTagReader hubTagReader;
 
     @Nested
     @DisplayName("createHub 메서드 호출 시")
@@ -39,7 +43,8 @@ class HubServiceTest {
             memberRepository = new StubMemberRepository();
             hubRepository = new StubHubRepository();
             eventPublisher = new StubEventPublisher();
-            hubService = new HubService(memberRepository, hubRepository, eventPublisher);
+            hubTagReader = new StubHubTagReader();
+            hubService = new HubService(memberRepository, hubRepository, hubTagReader, eventPublisher);
         }
 
         @Test
@@ -100,7 +105,8 @@ class HubServiceTest {
             memberRepository = new StubMemberRepository();
             hubRepository = new StubHubRepository();
             eventPublisher = new StubEventPublisher();
-            hubService = new HubService(memberRepository, hubRepository, eventPublisher);
+            hubTagReader = new StubHubTagReader();
+            hubService = new HubService(memberRepository, hubRepository, hubTagReader, eventPublisher);
         }
 
         @Test
@@ -126,6 +132,34 @@ class HubServiceTest {
                     assertThat(findHub.isPrivate()).isEqualTo(hub.isPrivate());
                 });
         }
+
+        @Test
+        @DisplayName("성공: 태그와 함께 조회됨")
+        void findHubsWithTags() {
+            //given
+            Member member = MemberFixture.member();
+            Hub hubA = new Hub(1L, member.getMemberId(), "허브1", "설명", false);
+            Hub hubB = new Hub(2L, member.getMemberId(), "허브2", "설명", false);
+            HubTagResult tagA = new HubTagResult(1L, "태그A", hubA);
+            HubTagResult tagB = new HubTagResult(2L, "태그B", hubA);
+            HubTagResult tagC = new HubTagResult(3L, "태그C", hubB);
+            HubTagResult tagD = new HubTagResult(4L, "태그D", hubB);
+            hubRepository.stub(hubA, hubB);
+            hubTagReader.stub(tagA, tagB, tagC, tagD);
+            FindHubsCommand command = new FindHubsCommand(0, 10);
+
+            //when
+            FindHubsResponse response = hubService.findHubs(command);
+
+            //then
+            assertThat(response.hubs()).hasSize(2);
+            assertThat(response.hubs()).filteredOn(hub -> hub.hubId().equals(hubA.getHubId()))
+                .flatMap(hub -> hub.tags().stream().map(HubTagResponse::name).toList())
+                .containsExactly(tagA.name(), tagB.name());
+            assertThat(response.hubs()).filteredOn(hub -> hub.hubId().equals(hubB.getHubId()))
+                .flatMap(hub -> hub.tags().stream().map(HubTagResponse::name).toList())
+                .containsExactly(tagC.name(), tagD.name());
+        }
     }
 
     @Nested
@@ -137,7 +171,8 @@ class HubServiceTest {
             memberRepository = new StubMemberRepository();
             hubRepository = new StubHubRepository();
             eventPublisher = new StubEventPublisher();
-            hubService = new HubService(memberRepository, hubRepository, eventPublisher);
+            hubTagReader = new StubHubTagReader();
+            hubService = new HubService(memberRepository, hubRepository, hubTagReader, eventPublisher);
         }
 
         @Test
