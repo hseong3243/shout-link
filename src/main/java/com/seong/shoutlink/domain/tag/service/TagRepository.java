@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface TagRepository {
 
-    List<Tag> saveAll(List<HubTag> tags);
+    List<Tag> saveHubTags(List<HubTag> tags);
 
     void deleteHubTags(Hub hub);
 

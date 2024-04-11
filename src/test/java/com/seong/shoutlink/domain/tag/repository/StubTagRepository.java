@@ -30,7 +30,7 @@ public class StubTagRepository implements TagRepository {
     }
 
     @Override
-    public List<Tag> saveAll(List<HubTag> hubTags) {
+    public List<Tag> saveHubTags(List<HubTag> hubTags) {
         for (HubTag hubTag : hubTags) {
             memory.put(nextId(), hubTag.getTag());
         }

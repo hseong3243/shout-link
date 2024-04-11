@@ -60,7 +60,7 @@ public class TagService {
         if (!hubTags.isEmpty()) {
             tagRepository.deleteHubTags(hub);
         }
-        return CreateTagResponse.from(tagRepository.saveAll(hubTags));
+        return CreateTagResponse.from(tagRepository.saveHubTags(hubTags));
     }
 
     private void checkHubTagIsCreatedWithinADay(Hub hub) {

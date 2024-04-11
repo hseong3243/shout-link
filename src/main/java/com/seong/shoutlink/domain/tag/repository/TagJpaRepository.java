@@ -22,4 +22,14 @@ public interface TagJpaRepository extends JpaRepository<TagEntity, Long> {
     @Query("select t from HubTagEntity t"
         + " where t.hubId in :hubIds")
     List<HubTagEntity> findTagsInHubIds(@Param("hubIds") List<Long> hubIds);
+
+    @Modifying
+    @Query("delete from MemberTagEntity t where t.memberId=:memberId")
+    void deleteByMemberId(Long memberId);
+
+    @Query("select t from MemberTagEntity t"
+        + " where t.memberId=:memberId"
+        + " order by t.createdAt"
+        + " limit 1")
+    Optional<TagEntity> findLatestTagByMemberId(Long memberId);
 }

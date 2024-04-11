@@ -22,7 +22,7 @@ public class TagRepositoryImpl implements TagRepository, HubTagReader {
     private final TagJpaRepository tagJpaRepository;
 
     @Override
-    public List<Tag> saveAll(List<HubTag> tags) {
+    public List<Tag> saveHubTags(List<HubTag> tags) {
         List<TagEntity> tagEntities = tags.stream()
             .map(TagEntity::from)
             .toList();
@@ -44,17 +44,23 @@ public class TagRepositoryImpl implements TagRepository, HubTagReader {
 
     @Override
     public Optional<Tag> findLatestTagByMember(Member member) {
-        return Optional.empty();
+        return tagJpaRepository.findLatestTagByMemberId(member.getMemberId())
+            .map(TagEntity::toDomain);
     }
 
     @Override
     public void deleteMemberTags(Member member) {
-
+        tagJpaRepository.deleteByMemberId(member.getMemberId());
     }
 
     @Override
     public List<Tag> saveMemberTags(List<MemberTag> memberTags) {
-        return null;
+        List<TagEntity> tagEntities = memberTags.stream()
+            .map(TagEntity::from)
+            .toList();
+        return tagJpaRepository.saveAll(tagEntities).stream()
+            .map(TagEntity::toDomain)
+            .toList();
     }
 
     @Override
