@@ -1,7 +1,9 @@
 package com.seong.shoutlink.domain.tag.repository;
 
 import com.seong.shoutlink.domain.hub.Hub;
+import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.tag.HubTag;
+import com.seong.shoutlink.domain.tag.MemberTag;
 import com.seong.shoutlink.domain.tag.Tag;
 import com.seong.shoutlink.domain.tag.service.TagRepository;
 import java.util.HashMap;
@@ -32,10 +34,7 @@ public class StubTagRepository implements TagRepository {
         for (HubTag hubTag : hubTags) {
             memory.put(nextId(), hubTag.getTag());
         }
-        return memory.entrySet().stream().map(entry -> {
-            Tag value = entry.getValue();
-            return new Tag(entry.getKey(), value.getName(), value.getCreatedAt(), value.getUpdatedAt());
-        }).toList();
+        return memory.values().stream().toList();
     }
 
     @Override
@@ -46,5 +45,23 @@ public class StubTagRepository implements TagRepository {
     @Override
     public Optional<Tag> findLatestTagByHub(Hub hub) {
         return memory.values().stream().findFirst();
+    }
+
+    @Override
+    public Optional<Tag> findLatestTagByMember(Member member) {
+        return memory.values().stream().findFirst();
+    }
+
+    @Override
+    public void deleteMemberTags(Member member) {
+        memory.clear();
+    }
+
+    @Override
+    public List<Tag> saveMemberTags(List<MemberTag> memberTags) {
+        for (MemberTag memberTag : memberTags) {
+            memory.put(nextId(), memberTag.getTag());
+        }
+        return memory.values().stream().toList();
     }
 }
