@@ -39,10 +39,8 @@ public class StubTagRepository implements TagRepository {
     }
 
     @Override
-    public long deleteHubTags(Hub hub) {
-        int size = memory.size();
+    public void deleteHubTags(Hub hub) {
         memory.clear();
-        return size;
     }
 
     @Override

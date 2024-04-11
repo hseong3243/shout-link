@@ -10,7 +10,7 @@ public interface TagRepository {
 
     List<Tag> saveAll(List<HubTag> tags);
 
-    long deleteHubTags(Hub hub);
+    void deleteHubTags(Hub hub);
 
     Optional<Tag> findLatestTagByHub(Hub hub);
 }

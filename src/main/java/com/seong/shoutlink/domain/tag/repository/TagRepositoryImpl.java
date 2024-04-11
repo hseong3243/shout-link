@@ -30,8 +30,8 @@ public class TagRepositoryImpl implements TagRepository, HubTagReader {
     }
 
     @Override
-    public long deleteHubTags(Hub hub) {
-        return tagJpaRepository.deleteByHubId(hub.getHubId());
+    public void deleteHubTags(Hub hub) {
+        tagJpaRepository.deleteByHubId(hub.getHubId());
     }
 
     @Override
