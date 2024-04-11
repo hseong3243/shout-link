@@ -22,7 +22,7 @@ import com.seong.shoutlink.domain.member.repository.StubMemberRepository;
 import com.seong.shoutlink.fixture.HubFixture;
 import com.seong.shoutlink.fixture.LinkBundleFixture;
 import com.seong.shoutlink.fixture.MemberFixture;
-import com.seong.shoutlink.fixture.StubHubRepository;
+import com.seong.shoutlink.domain.hub.repository.StubHubRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -26,7 +26,7 @@ import com.seong.shoutlink.fixture.HubFixture;
 import com.seong.shoutlink.fixture.LinkBundleFixture;
 import com.seong.shoutlink.fixture.LinkFixture;
 import com.seong.shoutlink.fixture.MemberFixture;
-import com.seong.shoutlink.fixture.StubHubRepository;
+import com.seong.shoutlink.domain.hub.repository.StubHubRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

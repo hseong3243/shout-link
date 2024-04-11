@@ -19,7 +19,7 @@ import com.seong.shoutlink.fixture.HubFixture;
 import com.seong.shoutlink.fixture.LinkBundleFixture;
 import com.seong.shoutlink.fixture.LinkFixture;
 import com.seong.shoutlink.fixture.MemberFixture;
-import com.seong.shoutlink.fixture.StubHubRepository;
+import com.seong.shoutlink.domain.hub.repository.StubHubRepository;
 import com.seong.shoutlink.fixture.TagFixture;
 import com.seong.shoutlink.global.client.StubApiClient;
 import com.seong.shoutlink.global.client.ai.GeminiClient;
