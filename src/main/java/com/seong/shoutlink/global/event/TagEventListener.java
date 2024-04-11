@@ -3,8 +3,10 @@ package com.seong.shoutlink.global.event;
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.link.service.event.CreateHubLinkEvent;
+import com.seong.shoutlink.domain.link.service.event.CreateMemberLinkEvent;
 import com.seong.shoutlink.domain.tag.service.TagService;
-import com.seong.shoutlink.domain.tag.service.request.AutoCreateTagCommand;
+import com.seong.shoutlink.domain.tag.service.request.AutoCreateHubTagCommand;
+import com.seong.shoutlink.domain.tag.service.request.AutoCreateMemberTagCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,9 +22,25 @@ public class TagEventListener {
     @TransactionalEventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void createHubTags(CreateHubLinkEvent event) {
-        AutoCreateTagCommand command = new AutoCreateTagCommand(event.hubId());
+        AutoCreateHubTagCommand command = new AutoCreateHubTagCommand(event.hubId());
         try {
             tagService.autoCreateHubTags(command);
+            log.debug("[Tag] 링크 개수가 최소 태그 자동 생성 조건을 만족");
+        } catch (ShoutLinkException e) {
+            if(e.getErrorCode().equals(ErrorCode.NOT_MET_CONDITION)) {
+                log.debug("[Tag] 링크 개수가 최소 태그 자동 생성 조건을 만족하지 않음");
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    @TransactionalEventListener
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void createMemberTags(CreateMemberLinkEvent event) {
+        AutoCreateMemberTagCommand command = new AutoCreateMemberTagCommand(event.memberId());
+        try {
+            tagService.autoCreateMemberTags(command);
             log.debug("[Tag] 링크 개수가 최소 태그 자동 생성 조건을 만족");
         } catch (ShoutLinkException e) {
             if(e.getErrorCode().equals(ErrorCode.NOT_MET_CONDITION)) {
