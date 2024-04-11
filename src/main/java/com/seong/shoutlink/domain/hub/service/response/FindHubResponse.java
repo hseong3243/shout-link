@@ -1,20 +1,14 @@
 package com.seong.shoutlink.domain.hub.service.response;
 
-import com.seong.shoutlink.domain.hub.Hub;
+import com.seong.shoutlink.domain.hub.service.result.HubTagResponse;
+import java.util.List;
 
 public record FindHubResponse(
     Long hubId,
     Long masterId,
     String name,
     String description,
-    boolean isPrivate) {
+    boolean isPrivate,
+    List<HubTagResponse> tags) {
 
-    public static FindHubResponse from(Hub hub) {
-        return new FindHubResponse(
-            hub.getHubId(),
-            hub.getMasterId(),
-            hub.getName(),
-            hub.getDescription(),
-            hub.isPrivate());
-    }
 }
