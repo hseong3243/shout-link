@@ -2,9 +2,9 @@ package com.seong.shoutlink.global.config;
 
 import com.seong.shoutlink.domain.auth.JwtProvider;
 import com.seong.shoutlink.domain.auth.PasswordEncoder;
-import com.seong.shoutlink.domain.auth.SimplePasswordEncoder;
 import com.seong.shoutlink.global.auth.authentication.AuthenticationContext;
 import com.seong.shoutlink.global.auth.authentication.JwtAuthenticationProvider;
+import com.seong.shoutlink.global.auth.crypto.BCryptPasswordEncoder;
 import com.seong.shoutlink.global.auth.jwt.JJwtProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +25,7 @@ public class AuthConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new SimplePasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
