@@ -11,6 +11,7 @@ import com.seong.shoutlink.domain.hub.repository.StubHubRepository;
 import com.seong.shoutlink.domain.hub.repository.StubHubTagReader;
 import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
 import com.seong.shoutlink.domain.hub.service.request.FindHubCommand;
+import com.seong.shoutlink.domain.hub.service.request.FindMyHubsCommand;
 import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubDetailResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsCommand;
@@ -44,7 +45,8 @@ class HubServiceTest {
             hubRepository = new StubHubRepository();
             eventPublisher = new StubEventPublisher();
             hubTagReader = new StubHubTagReader();
-            hubService = new HubService(memberRepository, hubRepository, hubTagReader, eventPublisher);
+            hubService = new HubService(memberRepository, hubRepository, hubTagReader,
+                eventPublisher);
         }
 
         @Test
@@ -106,7 +108,8 @@ class HubServiceTest {
             hubRepository = new StubHubRepository();
             eventPublisher = new StubEventPublisher();
             hubTagReader = new StubHubTagReader();
-            hubService = new HubService(memberRepository, hubRepository, hubTagReader, eventPublisher);
+            hubService = new HubService(memberRepository, hubRepository, hubTagReader,
+                eventPublisher);
         }
 
         @Test
@@ -172,7 +175,8 @@ class HubServiceTest {
             hubRepository = new StubHubRepository();
             eventPublisher = new StubEventPublisher();
             hubTagReader = new StubHubTagReader();
-            hubService = new HubService(memberRepository, hubRepository, hubTagReader, eventPublisher);
+            hubService = new HubService(memberRepository, hubRepository, hubTagReader,
+                eventPublisher);
         }
 
         @Test
@@ -205,6 +209,61 @@ class HubServiceTest {
 
             //when
             Exception exception = catchException(() -> hubService.findHub(command));
+
+            //then
+            assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                .isEqualTo(ErrorCode.NOT_FOUND);
+        }
+    }
+
+    @Nested
+    @DisplayName("findMyHubs 호출 시")
+    class FindMyHubsTest {
+
+        @BeforeEach
+        void setUp() {
+            memberRepository = new StubMemberRepository();
+            hubRepository = new StubHubRepository();
+            eventPublisher = new StubEventPublisher();
+            hubTagReader = new StubHubTagReader();
+            hubService = new HubService(memberRepository, hubRepository, hubTagReader,
+                eventPublisher);
+        }
+
+        @Test
+        @DisplayName("성공: 사용자가 소속된 허브 목록 조회됨")
+        void findMyHubs() {
+            //given
+            Member member = MemberFixture.member();
+            Hub hub = HubFixture.hub(member);
+            memberRepository.stub(member);
+            hubRepository.stub(hub);
+            FindMyHubsCommand command = new FindMyHubsCommand(0, 10, 1L);
+
+            //when
+            FindHubsResponse response = hubService.findMemberHubs(command);
+
+            //then
+            assertThat(response.hubs())
+                .hasSize(1)
+                .allSatisfy(findHub -> {
+                    assertThat(findHub.hubId()).isEqualTo(hub.getHubId());
+                    assertThat(findHub.masterId()).isEqualTo(hub.getMasterId());
+                    assertThat(findHub.name()).isEqualTo(hub.getName());
+                    assertThat(findHub.description()).isEqualTo(hub.getDescription());
+                    assertThat(findHub.isPrivate()).isEqualTo(hub.isPrivate());
+                });
+        }
+
+        @Test
+        @DisplayName("예외(notFound): 존재하지 않는 사용자")
+        void notFound_WhenMemberNotFound() {
+            //given
+            FindMyHubsCommand command = new FindMyHubsCommand(0, 10, 1L);
+
+            //when
+            Exception exception = catchException(() -> hubService.findMemberHubs(command));
 
             //then
             assertThat(exception).isInstanceOf(ShoutLinkException.class)

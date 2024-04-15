@@ -19,4 +19,10 @@ public interface HubMemberJpaRepository extends JpaRepository<HubMemberEntity, L
         + "join fetch hm.hubEntity h "
         + "where hm.hubMemberRole = com.seong.shoutlink.domain.hubmember.HubMemberRole.MASTER")
     Page<HubMemberEntity> findHubs(PageRequest pageRequest);
+
+    @Query("select hm from HubMemberEntity hm "
+        + "join fetch hm.hubEntity h "
+        + "where hm.memberId=:memberId "
+        + "and hm.hubMemberRole = com.seong.shoutlink.domain.hubmember.HubMemberRole.MASTER")
+    Page<HubMemberEntity> findMemberHubs(@Param("memberId") Long memberId, PageRequest pageRequest);
 }

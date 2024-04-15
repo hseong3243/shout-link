@@ -6,6 +6,7 @@ import com.seong.shoutlink.domain.hub.service.HubRepository;
 import com.seong.shoutlink.domain.hub.service.result.HubPaginationResult;
 import com.seong.shoutlink.domain.hubmember.repository.HubMemberEntity;
 import com.seong.shoutlink.domain.hubmember.repository.HubMemberJpaRepository;
+import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.repository.MemberJpaRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -54,5 +55,16 @@ public class HubRepositoryImpl implements HubRepository {
         return findById(hubId)
             .flatMap(hub -> memberJpaRepository.findById(hub.getMasterId())
                 .map(memberEntity -> new HubWithMaster(hub, memberEntity.toDomain())));
+    }
+
+    @Override
+    public HubPaginationResult findMemberHubs(Member member, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<HubMemberEntity> hubs = hubMemberJpaRepository.findMemberHubs(
+            member.getMemberId(), pageRequest);
+        return new HubPaginationResult(
+            hubs.map(HubMemberEntity::toHub).toList(),
+            hubs.getTotalElements(),
+            hubs.hasNext());
     }
 }

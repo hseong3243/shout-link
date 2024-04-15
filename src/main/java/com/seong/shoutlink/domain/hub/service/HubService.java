@@ -8,6 +8,7 @@ import com.seong.shoutlink.domain.hub.HubWithMaster;
 import com.seong.shoutlink.domain.hub.service.event.CreateHubEvent;
 import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
 import com.seong.shoutlink.domain.hub.service.request.FindHubCommand;
+import com.seong.shoutlink.domain.hub.service.request.FindMyHubsCommand;
 import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubDetailResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubResponse;
@@ -43,20 +44,29 @@ public class HubService {
         return new CreateHubResponse(hubId);
     }
 
-    private Member getMember(Long memberId) {
-        return memberRepository.findById(memberId)
-            .orElseThrow(() -> new ShoutLinkException("존재하지 않는 사용자입니다.", ErrorCode.NOT_FOUND));
-    }
-
     @Transactional(readOnly = true)
     public FindHubsResponse findHubs(FindHubsCommand command) {
         HubPaginationResult result = hubRepository.findHubs(command.page(), command.size());
         List<Hub> hubs = result.hubs();
         List<HubTagResult> tagsInHubs = hubTagReader.findTagsInHubs(hubs);
+        return createFindHubResponses(result, tagsInHubs);
+    }
 
+    @Transactional(readOnly = true)
+    public FindHubsResponse findMemberHubs(FindMyHubsCommand command) {
+        Member member = getMember(command.memberId());
+        HubPaginationResult result = hubRepository.findMemberHubs(member, command.page(),
+            command.size());
+        List<Hub> hubs = result.hubs();
+        List<HubTagResult> tagsInHubs = hubTagReader.findTagsInHubs(hubs);
+        return createFindHubResponses(result, tagsInHubs);
+    }
+
+    private FindHubsResponse createFindHubResponses(HubPaginationResult result,
+        List<HubTagResult> tagsInHubs) {
         Map<Hub, List<HubTagResult>> tagsCollectedByHub = tagsInHubs.stream()
             .collect(Collectors.groupingBy(HubTagResult::hub));
-        List<FindHubResponse> findHubs = hubs.stream()
+        List<FindHubResponse> findHubs = result.hubs().stream()
             .map(hub -> HubMapper.findHubResponse(hub,
                 tagsCollectedByHub.getOrDefault(hub, new ArrayList<>())))
             .toList();
@@ -67,6 +77,11 @@ public class HubService {
     public FindHubDetailResponse findHub(FindHubCommand command) {
         HubWithMaster hubWithMaster = getHubWithMaster(command.hubId());
         return FindHubDetailResponse.from(hubWithMaster);
+    }
+
+    private Member getMember(Long memberId) {
+        return memberRepository.findById(memberId)
+            .orElseThrow(() -> new ShoutLinkException("존재하지 않는 사용자입니다.", ErrorCode.NOT_FOUND));
     }
 
     private HubWithMaster getHubWithMaster(Long hubId) {
