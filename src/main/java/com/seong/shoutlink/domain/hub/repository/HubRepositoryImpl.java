@@ -59,6 +59,12 @@ public class HubRepositoryImpl implements HubRepository {
 
     @Override
     public HubPaginationResult findMemberHubs(Member member, int page, int size) {
-        return null;
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<HubMemberEntity> hubs = hubMemberJpaRepository.findMemberHubs(
+            member.getMemberId(), pageRequest);
+        return new HubPaginationResult(
+            hubs.map(HubMemberEntity::toHub).toList(),
+            hubs.getTotalElements(),
+            hubs.hasNext());
     }
 }
