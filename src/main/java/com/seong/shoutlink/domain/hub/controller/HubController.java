@@ -6,6 +6,7 @@ import com.seong.shoutlink.domain.hub.controller.request.FindHubsRequest;
 import com.seong.shoutlink.domain.hub.service.HubService;
 import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
 import com.seong.shoutlink.domain.hub.service.request.FindHubCommand;
+import com.seong.shoutlink.domain.hub.service.request.FindMyHubsCommand;
 import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubDetailResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsCommand;
@@ -54,6 +55,15 @@ public class HubController {
     @GetMapping("/hubs/{hubId}")
     public ResponseEntity<FindHubDetailResponse> findHub(@PathVariable("hubId") Long hubId) {
         FindHubDetailResponse response = hubService.findHub(new FindHubCommand(hubId));
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/hubs/me")
+    public ResponseEntity<FindHubsResponse> findMyHubs(
+        @Valid @ModelAttribute FindHubsRequest request,
+        @LoginUser Long memberId) {
+        FindHubsResponse response = hubService.findMemberHubs(
+            new FindMyHubsCommand(request.page(), request.size(), memberId));
         return ResponseEntity.ok(response);
     }
 }
