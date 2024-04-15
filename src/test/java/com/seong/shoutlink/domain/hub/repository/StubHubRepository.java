@@ -54,4 +54,9 @@ public class StubHubRepository implements HubRepository {
         return optionalHub.flatMap(
             hub -> optionalMember.map(member -> new HubWithMaster(hub, member)));
     }
+
+    @Override
+    public HubPaginationResult findMemberHubs(Member member, int page, int size) {
+        return findHubs(page, size);
+    }
 }
