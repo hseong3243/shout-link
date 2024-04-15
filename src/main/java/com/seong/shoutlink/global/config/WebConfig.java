@@ -38,6 +38,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
             .allowedOrigins(
+                "chrome-extension://ijebghdhpmloohcgfkapenhopmfmgdka",
                 "http://localhost:3000",
                 "https://shoutlink.me",
                 "https://www.shoutlink.me",
