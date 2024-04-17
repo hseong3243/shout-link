@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class FakeLinkRepository implements LinkRepository {
+public class StubLinkRepository implements LinkRepository {
 
     private final Map<Long, Link> memory = new HashMap<>();
 
-    public FakeLinkRepository(Link... links) {
+    public StubLinkRepository(Link... links) {
         stub(links);
     }
 

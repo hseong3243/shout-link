@@ -9,7 +9,7 @@ import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hubmember.repository.StubHubMemberRepository;
 import com.seong.shoutlink.domain.link.Link;
-import com.seong.shoutlink.domain.link.repository.FakeLinkRepository;
+import com.seong.shoutlink.domain.link.repository.StubLinkRepository;
 import com.seong.shoutlink.domain.link.service.request.CreateHubLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.CreateLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.FindHubLinksCommand;
@@ -18,7 +18,7 @@ import com.seong.shoutlink.domain.link.service.response.CreateHubLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.CreateLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.FindLinksResponse;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
-import com.seong.shoutlink.domain.linkbundle.repository.FakeLinkBundleRepository;
+import com.seong.shoutlink.domain.linkbundle.repository.StubLinkBundleRepository;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.MemberRole;
 import com.seong.shoutlink.domain.member.repository.StubMemberRepository;
@@ -35,8 +35,8 @@ import org.junit.jupiter.api.Test;
 class LinkServiceTest {
 
     private StubMemberRepository memberRepository;
-    private FakeLinkRepository linkRepository;
-    private FakeLinkBundleRepository linkBundleRepository;
+    private StubLinkRepository linkRepository;
+    private StubLinkBundleRepository linkBundleRepository;
     private StubHubRepository hubRepository;
     private StubHubMemberRepository hubMemberRepository;
     private StubEventPublisher eventPublisher;
@@ -47,8 +47,8 @@ class LinkServiceTest {
         memberRepository = new StubMemberRepository();
         hubRepository = new StubHubRepository();
         hubMemberRepository = new StubHubMemberRepository();
-        linkRepository = new FakeLinkRepository();
-        linkBundleRepository = new FakeLinkBundleRepository();
+        linkRepository = new StubLinkRepository();
+        linkBundleRepository = new StubLinkBundleRepository();
         eventPublisher = new StubEventPublisher();
         linkService = new LinkService(memberRepository, hubRepository, hubMemberRepository,
             linkRepository, linkBundleRepository, eventPublisher);
@@ -144,8 +144,8 @@ class LinkServiceTest {
             memberRepository = new StubMemberRepository();
             hubRepository = new StubHubRepository();
             hubMemberRepository = new StubHubMemberRepository();
-            linkRepository = new FakeLinkRepository();
-            linkBundleRepository = new FakeLinkBundleRepository();
+            linkRepository = new StubLinkRepository();
+            linkBundleRepository = new StubLinkBundleRepository();
             eventPublisher = new StubEventPublisher();
             linkService = new LinkService(memberRepository, hubRepository, hubMemberRepository,
                 linkRepository, linkBundleRepository, eventPublisher);
@@ -262,8 +262,8 @@ class LinkServiceTest {
             memberRepository = new StubMemberRepository();
             hubRepository = new StubHubRepository();
             hubMemberRepository = new StubHubMemberRepository();
-            linkBundleRepository = new FakeLinkBundleRepository();
-            linkRepository = new FakeLinkRepository();
+            linkBundleRepository = new StubLinkBundleRepository();
+            linkRepository = new StubLinkRepository();
             eventPublisher = new StubEventPublisher();
             linkService = new LinkService(memberRepository, hubRepository, hubMemberRepository,
                 linkRepository, linkBundleRepository, eventPublisher);

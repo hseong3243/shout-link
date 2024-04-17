@@ -8,7 +8,7 @@ import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hubmember.repository.StubHubMemberRepository;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
-import com.seong.shoutlink.domain.linkbundle.repository.FakeLinkBundleRepository;
+import com.seong.shoutlink.domain.linkbundle.repository.StubLinkBundleRepository;
 import com.seong.shoutlink.domain.linkbundle.service.request.CreateHubLinkBundleCommand;
 import com.seong.shoutlink.domain.linkbundle.service.request.FindHubLinkBundlesCommand;
 import com.seong.shoutlink.domain.linkbundle.service.request.FindLinkBundlesCommand;
@@ -33,7 +33,7 @@ class LinkBundleServiceTest {
 
     private LinkBundleService linkBundleService;
     private StubMemberRepository memberRepository;
-    private FakeLinkBundleRepository linkBundleRepository;
+    private StubLinkBundleRepository linkBundleRepository;
     private StubHubRepository hubRepository;
     private StubHubMemberRepository hubMemberRepository;
 
@@ -47,7 +47,7 @@ class LinkBundleServiceTest {
         void setUp() {
             savedMember = MemberFixture.member();
             memberRepository = new StubMemberRepository(savedMember);
-            linkBundleRepository = new FakeLinkBundleRepository();
+            linkBundleRepository = new StubLinkBundleRepository();
             hubRepository = new StubHubRepository();
             hubMemberRepository = new StubHubMemberRepository();
             linkBundleService = new LinkBundleService(memberRepository, hubRepository,
@@ -100,7 +100,7 @@ class LinkBundleServiceTest {
         @BeforeEach
         void setUp() {
             memberRepository = new StubMemberRepository();
-            linkBundleRepository = new FakeLinkBundleRepository();
+            linkBundleRepository = new StubLinkBundleRepository();
             hubRepository = new StubHubRepository();
             hubMemberRepository = new StubHubMemberRepository();
             linkBundleService = new LinkBundleService(memberRepository, hubRepository,
@@ -141,7 +141,7 @@ class LinkBundleServiceTest {
         void setUp() {
             memberRepository = new StubMemberRepository();
             hubRepository = new StubHubRepository();
-            linkBundleRepository = new FakeLinkBundleRepository();
+            linkBundleRepository = new StubLinkBundleRepository();
             hubMemberRepository = new StubHubMemberRepository();
             linkBundleService = new LinkBundleService(memberRepository, hubRepository,
                 hubMemberRepository, linkBundleRepository);
@@ -219,7 +219,7 @@ class LinkBundleServiceTest {
         void setUp() {
             memberRepository = new StubMemberRepository();
             hubRepository = new StubHubRepository();
-            linkBundleRepository = new FakeLinkBundleRepository();
+            linkBundleRepository = new StubLinkBundleRepository();
             hubMemberRepository = new StubHubMemberRepository();
             linkBundleService = new LinkBundleService(memberRepository, hubRepository,
                 hubMemberRepository, linkBundleRepository);

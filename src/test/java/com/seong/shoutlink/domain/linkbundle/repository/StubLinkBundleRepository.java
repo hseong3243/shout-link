@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class FakeLinkBundleRepository implements LinkBundleRepository {
+public class StubLinkBundleRepository implements LinkBundleRepository {
 
     private final Map<Long, LinkBundle> memory = new HashMap<>();
 
-    public FakeLinkBundleRepository(LinkBundle... linkBundles) {
+    public StubLinkBundleRepository(LinkBundle... linkBundles) {
         for (LinkBundle linkBundle : linkBundles) {
             memory.put(getNextId(), linkBundle);
         }
