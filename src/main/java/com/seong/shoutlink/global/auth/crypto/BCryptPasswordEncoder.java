@@ -1,6 +1,6 @@
 package com.seong.shoutlink.global.auth.crypto;
 
-import com.seong.shoutlink.domain.auth.PasswordEncoder;
+import com.seong.shoutlink.domain.member.service.PasswordEncoder;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class BCryptPasswordEncoder implements PasswordEncoder {

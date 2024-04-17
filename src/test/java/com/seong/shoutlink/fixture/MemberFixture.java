@@ -1,7 +1,7 @@
 package com.seong.shoutlink.fixture;
 
 import com.seong.shoutlink.domain.auth.FakePasswordEncoder;
-import com.seong.shoutlink.domain.auth.PasswordEncoder;
+import com.seong.shoutlink.domain.member.service.PasswordEncoder;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.MemberRole;
 

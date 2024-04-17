@@ -1,7 +1,7 @@
 package com.seong.shoutlink.global.config;
 
 import com.seong.shoutlink.domain.auth.JwtProvider;
-import com.seong.shoutlink.domain.auth.PasswordEncoder;
+import com.seong.shoutlink.domain.member.service.PasswordEncoder;
 import com.seong.shoutlink.global.auth.authentication.AuthenticationContext;
 import com.seong.shoutlink.global.auth.authentication.JwtAuthenticationProvider;
 import com.seong.shoutlink.global.auth.crypto.BCryptPasswordEncoder;
