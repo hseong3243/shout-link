@@ -9,8 +9,8 @@ import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.hub.repository.StubHubRepository;
 import com.seong.shoutlink.domain.link.Link;
-import com.seong.shoutlink.domain.link.repository.FakeLinkRepository;
-import com.seong.shoutlink.domain.linkbundle.repository.FakeLinkBundleRepository;
+import com.seong.shoutlink.domain.link.repository.StubLinkRepository;
+import com.seong.shoutlink.domain.linkbundle.repository.StubLinkBundleRepository;
 import com.seong.shoutlink.domain.member.repository.StubMemberRepository;
 import com.seong.shoutlink.domain.tag.Tag;
 import com.seong.shoutlink.domain.tag.repository.StubTagRepository;
@@ -39,8 +39,8 @@ class TagServiceTest {
     StubTagRepository tagRepository;
     StubHubRepository hubRepository;
     StubMemberRepository memberRepository;
-    FakeLinkBundleRepository linkBundleRepository;
-    FakeLinkRepository linkRepository;
+    StubLinkBundleRepository linkBundleRepository;
+    StubLinkRepository linkRepository;
     AutoGenerativeClient autoGenerativeClient;
 
     @BeforeEach
@@ -48,8 +48,8 @@ class TagServiceTest {
         tagRepository = new StubTagRepository();
         hubRepository = new StubHubRepository();
         memberRepository = new StubMemberRepository();
-        linkBundleRepository = new FakeLinkBundleRepository();
-        linkRepository = new FakeLinkRepository();
+        linkBundleRepository = new StubLinkBundleRepository();
+        linkRepository = new StubLinkRepository();
         ObjectMapper objectMapper = new ObjectMapper().configure(
             DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         StubApiClient apiClient = new StubApiClient();

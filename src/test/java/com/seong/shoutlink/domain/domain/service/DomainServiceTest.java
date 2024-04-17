@@ -18,7 +18,7 @@ import com.seong.shoutlink.domain.domain.service.response.UpdateDomainResponse;
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.link.Link;
-import com.seong.shoutlink.domain.link.repository.FakeLinkRepository;
+import com.seong.shoutlink.domain.link.repository.StubLinkRepository;
 import com.seong.shoutlink.fixture.DomainFixture.DomainFixture;
 import com.seong.shoutlink.fixture.LinkFixture;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 class DomainServiceTest {
 
     StubDomainRepository domainRepository;
-    FakeLinkRepository linkRepository;
+    StubLinkRepository linkRepository;
     DomainService domainService;
 
     @Nested
@@ -39,7 +39,7 @@ class DomainServiceTest {
         @BeforeEach
         void setUp() {
             domainRepository = new StubDomainRepository();
-            linkRepository = new FakeLinkRepository();
+            linkRepository = new StubLinkRepository();
             domainService = new DomainService(domainRepository, linkRepository);
         }
 
@@ -98,7 +98,7 @@ class DomainServiceTest {
         @BeforeEach
         void setUp() {
             domainRepository = new StubDomainRepository();
-            linkRepository = new FakeLinkRepository();
+            linkRepository = new StubLinkRepository();
             domainService = new DomainService(domainRepository, linkRepository);
         }
 
@@ -127,7 +127,7 @@ class DomainServiceTest {
         @BeforeEach
         void setUp() {
             domainRepository = new StubDomainRepository();
-            linkRepository = new FakeLinkRepository();
+            linkRepository = new StubLinkRepository();
             domainService = new DomainService(domainRepository, linkRepository);
         }
 
@@ -157,7 +157,7 @@ class DomainServiceTest {
         @BeforeEach
         void setUp() {
             domainRepository = new StubDomainRepository();
-            linkRepository = new FakeLinkRepository();
+            linkRepository = new StubLinkRepository();
             domainService = new DomainService(domainRepository, linkRepository);
         }
 
@@ -200,7 +200,7 @@ class DomainServiceTest {
         @BeforeEach
         void setUp() {
             domainRepository = new StubDomainRepository();
-            linkRepository = new FakeLinkRepository();
+            linkRepository = new StubLinkRepository();
             domainService = new DomainService(domainRepository, linkRepository);
         }
 
