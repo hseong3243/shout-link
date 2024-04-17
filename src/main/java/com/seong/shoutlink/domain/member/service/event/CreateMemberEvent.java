@@ -1,4 +1,4 @@
-package com.seong.shoutlink.domain.auth.service.event;
+package com.seong.shoutlink.domain.member.service.event;
 
 import com.seong.shoutlink.domain.common.Event;
 

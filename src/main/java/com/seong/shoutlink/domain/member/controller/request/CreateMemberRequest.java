@@ -1,4 +1,4 @@
-package com.seong.shoutlink.domain.auth.controller.request;
+package com.seong.shoutlink.domain.member.controller.request;
 
 import jakarta.validation.constraints.NotBlank;
 

@@ -1,6 +1,6 @@
 package com.seong.shoutlink.global.event;
 
-import com.seong.shoutlink.domain.auth.service.event.CreateMemberEvent;
+import com.seong.shoutlink.domain.member.service.event.CreateMemberEvent;
 import com.seong.shoutlink.domain.hub.service.event.CreateHubEvent;
 import com.seong.shoutlink.domain.linkbundle.service.LinkBundleUseCase;
 import com.seong.shoutlink.domain.linkbundle.service.request.CreateHubLinkBundleCommand;

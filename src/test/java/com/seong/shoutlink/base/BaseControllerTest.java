@@ -11,6 +11,7 @@ import com.seong.shoutlink.domain.hub.service.HubService;
 import com.seong.shoutlink.domain.link.service.LinkService;
 import com.seong.shoutlink.domain.linkbundle.service.LinkBundleService;
 import com.seong.shoutlink.domain.member.MemberRole;
+import com.seong.shoutlink.domain.member.service.MemberService;
 import com.seong.shoutlink.fixture.AuthFixture;
 import com.seong.shoutlink.global.auth.authentication.AuthenticationContext;
 import com.seong.shoutlink.global.auth.authentication.JwtAuthenticationProvider;
@@ -65,6 +66,9 @@ public class BaseControllerTest {
 
     @Autowired
     protected ObjectMapper objectMapper;
+
+    @MockBean
+    protected MemberService memberService;
 
     @MockBean
     protected AuthService authService;

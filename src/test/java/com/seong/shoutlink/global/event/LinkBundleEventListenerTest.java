@@ -3,14 +3,14 @@ package com.seong.shoutlink.global.event;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.seong.shoutlink.base.BaseIntegrationTest;
-import com.seong.shoutlink.domain.auth.service.AuthService;
-import com.seong.shoutlink.domain.auth.service.request.CreateMemberCommand;
 import com.seong.shoutlink.domain.hub.service.HubService;
 import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
 import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
 import com.seong.shoutlink.domain.linkbundle.repository.LinkBundleEntity;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.service.MemberRepository;
+import com.seong.shoutlink.domain.member.service.MemberService;
+import com.seong.shoutlink.domain.member.service.request.CreateMemberCommand;
 import com.seong.shoutlink.fixture.MemberFixture;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +23,7 @@ import org.springframework.test.context.event.RecordApplicationEvents;
 class LinkBundleEventListenerTest extends BaseIntegrationTest {
 
     @Autowired
-    private AuthService authService;
+    private MemberService memberService;
 
     @Autowired
     private HubService hubService;
@@ -49,7 +49,7 @@ class LinkBundleEventListenerTest extends BaseIntegrationTest {
                 member.getNickname());
 
             //when
-            authService.createMember(createMemberCommand);
+            memberService.createMember(createMemberCommand);
 
             //then
             LinkBundleEntity linkBundleEntity = em.createQuery(
