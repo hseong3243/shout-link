@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public class Domain {
 
-    private Long domainId;
-    private String rootDomain;
+    private final Long domainId;
+    private final String rootDomain;
 
     public Domain(String rootDomain) {
         this(null, rootDomain);

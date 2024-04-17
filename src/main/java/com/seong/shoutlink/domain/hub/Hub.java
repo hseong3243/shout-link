@@ -14,11 +14,11 @@ public class Hub {
     private static final String DESCRIPTION_DEFAULT = "";
     private static final int DESCRIPTION_MAX_SIZE = 200;
 
-    private Long hubId;
-    private Long masterId;
-    private String name;
-    private String description;
-    private boolean isPrivate;
+    private final Long hubId;
+    private final Long masterId;
+    private final String name;
+    private final String description;
+    private final boolean isPrivate;
 
     public Hub(Member master, String name, String description, boolean isPrivate) {
         this(null, master.getMemberId(), name, description, isPrivate);
