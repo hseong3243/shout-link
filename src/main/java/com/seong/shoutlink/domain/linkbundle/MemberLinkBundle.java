@@ -13,8 +13,4 @@ public class MemberLinkBundle {
         this.member = member;
         this.linkBundle = linkBundle;
     }
-
-    public void initLinkBundleId(Long linkBundleId) {
-        linkBundle.initId(linkBundleId);
-    }
 }

@@ -13,8 +13,4 @@ public class HubLinkBundle {
         this.hub = hub;
         this.linkBundle = linkBundle;
     }
-
-    public void initLinkBundleId(Long linkBundleId) {
-        linkBundle.initId(linkBundleId);
-    }
 }

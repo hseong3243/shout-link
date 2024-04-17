@@ -6,10 +6,10 @@ import lombok.Getter;
 @Getter
 public class Tag {
 
-    private Long tagId;
-    private String name;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private final Long tagId;
+    private final String name;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
     public Tag(String name) {
         this(null, name, null, null);

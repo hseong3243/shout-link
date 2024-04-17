@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class Link {
 
-    private Long linkId;
-    private String url;
-    private String description;
+    private final Long linkId;
+    private final String url;
+    private final String description;
 
 
     public Link(String url, String description) {

@@ -13,11 +13,11 @@ public class Member {
         Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]{1,64}@([\\w-]+\\.)+[\\w-]{2,4}$");
     private static final Pattern NICKNAME_PATTERN = Pattern.compile("^[a-zA-Z가-힣0-9]{1,20}$");
 
-    private Long memberId;
-    private String email;
-    private String password;
-    private String nickname;
-    private MemberRole memberRole;
+    private final Long memberId;
+    private final String email;
+    private final String password;
+    private final String nickname;
+    private final MemberRole memberRole;
 
     public Member(String email, String password, String nickname, MemberRole memberRole) {
         this(null, email, password, nickname, memberRole);

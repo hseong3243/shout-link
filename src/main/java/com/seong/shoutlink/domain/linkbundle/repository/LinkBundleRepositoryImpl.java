@@ -21,7 +21,6 @@ public class LinkBundleRepositoryImpl implements LinkBundleRepository {
     public Long save(MemberLinkBundle memberLinkBundle) {
         LinkBundleEntity linkBundleEntity = LinkBundleEntity.create(memberLinkBundle);
         linkBundleJpaRepository.save(linkBundleEntity);
-        memberLinkBundle.initLinkBundleId(linkBundleEntity.getLinkBundleId());
         return linkBundleEntity.getLinkBundleId();
     }
 
@@ -47,7 +46,6 @@ public class LinkBundleRepositoryImpl implements LinkBundleRepository {
     public Long save(HubLinkBundle hubLinkBundle) {
         LinkBundleEntity linkBundleEntity = LinkBundleEntity.create(hubLinkBundle);
         linkBundleJpaRepository.save(linkBundleEntity);
-        hubLinkBundle.initLinkBundleId(linkBundleEntity.getLinkBundleId());
         return linkBundleEntity.getLinkBundleId();
     }
 
