@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class TagService {
+public class TagService implements TagUseCase {
 
     private static final int MINIMUM_TAG_CONDITION = 5;
     private static final int MAXIMUM_TAG_COUNT = 5;
@@ -40,6 +40,7 @@ public class TagService {
     private final LinkRepository linkRepository;
     private final AutoGenerativeClient autoGenerativeClient;
 
+    @Override
     @Transactional
     public CreateTagResponse autoCreateHubTags(AutoCreateHubTagCommand command) {
         Hub hub = getHub(command.hubId());
@@ -70,6 +71,7 @@ public class TagService {
                 throw new ShoutLinkException("태그 생성된 지 하루가 지나지 않았습니다.", ErrorCode.NOT_MET_CONDITION);});
     }
 
+    @Override
     @Transactional
     public CreateTagResponse autoCreateMemberTags(AutoCreateMemberTagCommand command) {
         Member member = getMember(command.memberId());

@@ -3,7 +3,7 @@ package com.seong.shoutlink.domain.linkbundle.controller;
 import com.seong.shoutlink.domain.auth.LoginUser;
 import com.seong.shoutlink.domain.auth.NullableUser;
 import com.seong.shoutlink.domain.linkbundle.controller.request.CreateLinkBundleRequest;
-import com.seong.shoutlink.domain.linkbundle.service.LinkBundleService;
+import com.seong.shoutlink.domain.linkbundle.service.LinkBundleUseCase;
 import com.seong.shoutlink.domain.linkbundle.service.request.CreateHubLinkBundleCommand;
 import com.seong.shoutlink.domain.linkbundle.service.request.FindHubLinkBundlesCommand;
 import com.seong.shoutlink.domain.linkbundle.service.request.FindLinkBundlesCommand;
@@ -26,13 +26,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class LinkBundleController {
 
-    private final LinkBundleService linkBundleService;
+    private final LinkBundleUseCase linkBundleUseCase;
 
     @PostMapping("/link-bundles")
     public ResponseEntity<CreateLinkBundleResponse> createLinkBundle(
         @LoginUser Long memberId,
         @Valid @RequestBody CreateLinkBundleRequest request) {
-        CreateLinkBundleResponse response = linkBundleService.createLinkBundle(
+        CreateLinkBundleResponse response = linkBundleUseCase.createLinkBundle(
             new CreateLinkBundleCommand(
                 memberId,
                 request.description(),
@@ -43,7 +43,7 @@ public class LinkBundleController {
     @GetMapping("/link-bundles")
     public ResponseEntity<FindLinkBundlesResponse> findLinkBundles(
         @LoginUser Long memberId) {
-        FindLinkBundlesResponse response = linkBundleService.findLinkBundles(
+        FindLinkBundlesResponse response = linkBundleUseCase.findLinkBundles(
             new FindLinkBundlesCommand(memberId));
         return ResponseEntity.ok(response);
     }
@@ -53,7 +53,7 @@ public class LinkBundleController {
         @LoginUser Long memberId,
         @PathVariable("hubId") Long hubId,
         @Valid @RequestBody CreateLinkBundleRequest request) {
-        CreateLinkBundleResponse response = linkBundleService.createHubLinkBundle(
+        CreateLinkBundleResponse response = linkBundleUseCase.createHubLinkBundle(
             new CreateHubLinkBundleCommand(
                 hubId,
                 memberId,
@@ -66,7 +66,7 @@ public class LinkBundleController {
     public ResponseEntity<FindLinkBundlesResponse> findHubLinkBundles(
         @NullableUser Long nullableMemberId,
         @PathVariable("hubId") Long hubId) {
-        FindLinkBundlesResponse response = linkBundleService.findHubLinkBundles(
+        FindLinkBundlesResponse response = linkBundleUseCase.findHubLinkBundles(
             new FindHubLinkBundlesCommand(hubId, nullableMemberId));
         return ResponseEntity.ok(response);
     }

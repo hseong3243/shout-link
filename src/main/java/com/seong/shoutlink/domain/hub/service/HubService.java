@@ -28,13 +28,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class HubService {
+public class HubService implements HubUseCase {
 
     private final MemberRepository memberRepository;
     private final HubRepository hubRepository;
     private final HubTagReader hubTagReader;
     private final EventPublisher eventPublisher;
 
+    @Override
     @Transactional
     public CreateHubResponse createHub(CreateHubCommand command) {
         Member member = getMember(command.memberId());
@@ -44,6 +45,7 @@ public class HubService {
         return new CreateHubResponse(hubId);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public FindHubsResponse findHubs(FindHubsCommand command) {
         HubPaginationResult result = hubRepository.findHubs(command.page(), command.size());
@@ -52,6 +54,7 @@ public class HubService {
         return createFindHubResponses(result, tagsInHubs);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public FindHubsResponse findMemberHubs(FindMyHubsCommand command) {
         Member member = getMember(command.memberId());
@@ -73,6 +76,7 @@ public class HubService {
         return new FindHubsResponse(findHubs, result.totalElements(), result.hasNext());
     }
 
+    @Override
     @Transactional(readOnly = true)
     public FindHubDetailResponse findHub(FindHubCommand command) {
         HubWithMaster hubWithMaster = getHubWithMaster(command.hubId());

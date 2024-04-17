@@ -3,7 +3,7 @@ package com.seong.shoutlink.domain.hub.controller;
 import com.seong.shoutlink.domain.auth.LoginUser;
 import com.seong.shoutlink.domain.hub.controller.request.CreateHubRequest;
 import com.seong.shoutlink.domain.hub.controller.request.FindHubsRequest;
-import com.seong.shoutlink.domain.hub.service.HubService;
+import com.seong.shoutlink.domain.hub.service.HubUseCase;
 import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
 import com.seong.shoutlink.domain.hub.service.request.FindHubCommand;
 import com.seong.shoutlink.domain.hub.service.request.FindMyHubsCommand;
@@ -28,13 +28,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api")
 public class HubController {
 
-    private final HubService hubService;
+    private final HubUseCase hubUseCase;
 
     @PostMapping("/hubs")
     public ResponseEntity<CreateHubResponse> createHub(
         @RequestBody @Valid CreateHubRequest request,
         @LoginUser Long memberId) {
-        CreateHubResponse response = hubService.createHub(new CreateHubCommand(
+        CreateHubResponse response = hubUseCase.createHub(new CreateHubCommand(
             memberId,
             request.name(),
             request.description(),
@@ -45,7 +45,7 @@ public class HubController {
     @GetMapping("/hubs")
     public ResponseEntity<FindHubsResponse> findHubs(
         @Valid @ModelAttribute FindHubsRequest request) {
-        FindHubsResponse response = hubService.findHubs(new FindHubsCommand(
+        FindHubsResponse response = hubUseCase.findHubs(new FindHubsCommand(
             request.page(),
             request.size()
         ));
@@ -54,7 +54,7 @@ public class HubController {
 
     @GetMapping("/hubs/{hubId}")
     public ResponseEntity<FindHubDetailResponse> findHub(@PathVariable("hubId") Long hubId) {
-        FindHubDetailResponse response = hubService.findHub(new FindHubCommand(hubId));
+        FindHubDetailResponse response = hubUseCase.findHub(new FindHubCommand(hubId));
         return ResponseEntity.ok(response);
     }
 
@@ -62,7 +62,7 @@ public class HubController {
     public ResponseEntity<FindHubsResponse> findMyHubs(
         @Valid @ModelAttribute FindHubsRequest request,
         @LoginUser Long memberId) {
-        FindHubsResponse response = hubService.findMemberHubs(
+        FindHubsResponse response = hubUseCase.findMemberHubs(
             new FindMyHubsCommand(request.page(), request.size(), memberId));
         return ResponseEntity.ok(response);
     }

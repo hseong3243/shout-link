@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthService implements AuthUseCase {
 
     private static final Pattern PASSWORD_PATTEN = Pattern.compile(
         "^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,20}$");
@@ -38,6 +38,7 @@ public class AuthService {
         }
     }
 
+    @Override
     @Transactional
     public CreateMemberResponse createMember(CreateMemberCommand command) {
         validatePassword(command);
@@ -59,6 +60,7 @@ public class AuthService {
         return new CreateMemberResponse(memberId);
     }
 
+    @Override
     public LoginResponse login(LoginCommand command) {
         Member member = memberRepository.findByEmail(command.email())
             .orElseThrow(() -> new ShoutLinkException(
