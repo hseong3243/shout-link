@@ -1,7 +1,7 @@
 package com.seong.shoutlink.domain.auth.service;
 
 import com.seong.shoutlink.domain.auth.JwtProvider;
-import com.seong.shoutlink.domain.auth.PasswordEncoder;
+import com.seong.shoutlink.domain.member.service.PasswordEncoder;
 import com.seong.shoutlink.domain.auth.service.request.LoginCommand;
 import com.seong.shoutlink.domain.auth.service.response.LoginResponse;
 import com.seong.shoutlink.domain.auth.service.response.TokenResponse;

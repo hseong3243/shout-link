@@ -1,4 +1,4 @@
-package com.seong.shoutlink.domain.auth;
+package com.seong.shoutlink.domain.member.service;
 
 public interface PasswordEncoder {
 

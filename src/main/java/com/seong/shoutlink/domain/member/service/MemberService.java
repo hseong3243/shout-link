@@ -1,6 +1,5 @@
 package com.seong.shoutlink.domain.member.service;
 
-import com.seong.shoutlink.domain.auth.PasswordEncoder;
 import com.seong.shoutlink.domain.member.service.event.CreateMemberEvent;
 import com.seong.shoutlink.domain.common.EventPublisher;
 import com.seong.shoutlink.domain.exception.ErrorCode;
