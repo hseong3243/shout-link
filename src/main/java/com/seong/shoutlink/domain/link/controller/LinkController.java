@@ -4,7 +4,7 @@ import com.seong.shoutlink.domain.auth.LoginUser;
 import com.seong.shoutlink.domain.auth.NullableUser;
 import com.seong.shoutlink.domain.link.controller.request.CreateLinkRequest;
 import com.seong.shoutlink.domain.link.controller.request.FindLinksRequest;
-import com.seong.shoutlink.domain.link.service.LinkService;
+import com.seong.shoutlink.domain.link.service.LinkUseCase;
 import com.seong.shoutlink.domain.link.service.request.CreateHubLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.CreateLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.FindHubLinksCommand;
@@ -29,13 +29,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class LinkController {
 
-    private final LinkService linkService;
+    private final LinkUseCase linkUseCase;
 
     @PostMapping("/links")
     public ResponseEntity<CreateLinkResponse> createLink(
         @LoginUser Long memberId,
         @Valid @RequestBody CreateLinkRequest request) {
-        CreateLinkResponse response = linkService.createLink(new CreateLinkCommand(
+        CreateLinkResponse response = linkUseCase.createLink(new CreateLinkCommand(
             memberId,
             request.linkBundleId(),
             request.url(),
@@ -47,7 +47,7 @@ public class LinkController {
     public ResponseEntity<FindLinksResponse> findLinks(
         @LoginUser Long memberId,
         @Valid @ModelAttribute FindLinksRequest request) {
-        FindLinksResponse response = linkService.findLinks(new FindLinksCommand(
+        FindLinksResponse response = linkUseCase.findLinks(new FindLinksCommand(
             memberId,
             request.linkBundleId(),
             request.page(),
@@ -60,7 +60,7 @@ public class LinkController {
         @PathVariable("hubId") Long hubId,
         @LoginUser Long memberId,
         @Valid @RequestBody CreateLinkRequest request) {
-        CreateHubLinkResponse response = linkService.createHubLink(new CreateHubLinkCommand(
+        CreateHubLinkResponse response = linkUseCase.createHubLink(new CreateHubLinkCommand(
             hubId,
             memberId,
             request.linkBundleId(),
@@ -74,7 +74,7 @@ public class LinkController {
         @PathVariable("hubId") Long hubId,
         @NullableUser Long nullableMemberId,
         @Valid @ModelAttribute FindLinksRequest request) {
-        FindLinksResponse response = linkService.findHubLinks(new FindHubLinksCommand(
+        FindLinksResponse response = linkUseCase.findHubLinks(new FindHubLinksCommand(
             request.linkBundleId(),
             hubId,
             nullableMemberId,

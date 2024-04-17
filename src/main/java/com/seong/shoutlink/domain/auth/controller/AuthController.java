@@ -3,7 +3,7 @@ package com.seong.shoutlink.domain.auth.controller;
 import com.seong.shoutlink.domain.auth.controller.request.CreateMemberRequest;
 import com.seong.shoutlink.domain.auth.controller.request.LoginRequest;
 import com.seong.shoutlink.domain.auth.controller.response.LoginApiResponse;
-import com.seong.shoutlink.domain.auth.service.AuthService;
+import com.seong.shoutlink.domain.auth.service.AuthUseCase;
 import com.seong.shoutlink.domain.auth.service.request.CreateMemberCommand;
 import com.seong.shoutlink.domain.auth.service.request.LoginCommand;
 import com.seong.shoutlink.domain.auth.service.response.CreateMemberResponse;
@@ -24,12 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthService authService;
+    private final AuthUseCase authUseCase;
 
     @PostMapping("/members")
     public ResponseEntity<CreateMemberResponse> createMember(
         @Valid @RequestBody CreateMemberRequest request) {
-        CreateMemberResponse response = authService.createMember(new CreateMemberCommand(
+        CreateMemberResponse response = authUseCase.createMember(new CreateMemberCommand(
             request.email(),
             request.password(),
             request.nickname()
@@ -41,7 +41,7 @@ public class AuthController {
     public ResponseEntity<LoginApiResponse> login(
         @Valid @RequestBody LoginRequest request,
         HttpServletResponse res) {
-        LoginResponse response = authService.login(new LoginCommand(
+        LoginResponse response = authUseCase.login(new LoginCommand(
             request.email(),
             request.password()
         ));

@@ -25,13 +25,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class LinkBundleService {
+public class LinkBundleService implements LinkBundleUseCase {
 
     private final MemberRepository memberRepository;
     private final HubRepository hubRepository;
     private final HubMemberRepository hubMemberRepository;
     private final LinkBundleRepository linkBundleRepository;
 
+    @Override
     @Transactional
     public CreateLinkBundleResponse createLinkBundle(CreateLinkBundleCommand command) {
         Member member = getMember(command.memberId());
@@ -45,6 +46,7 @@ public class LinkBundleService {
         return new CreateLinkBundleResponse(linkBundleRepository.save(memberLinkBundle));
     }
 
+    @Override
     public FindLinkBundlesResponse findLinkBundles(FindLinkBundlesCommand command) {
         Member member = getMember(command.memberId());
         List<LinkBundle> linkBundles
@@ -57,6 +59,7 @@ public class LinkBundleService {
             .orElseThrow(() -> new ShoutLinkException("존재하지 않는 사용자입니다.", ErrorCode.NOT_FOUND));
     }
 
+    @Override
     @Transactional
     public CreateLinkBundleResponse createHubLinkBundle(CreateHubLinkBundleCommand command) {
         Hub hub = getHub(command.hubId());
@@ -68,6 +71,7 @@ public class LinkBundleService {
         return new CreateLinkBundleResponse(linkBundleRepository.save(hubLinkBundle));
     }
 
+    @Override
     @Transactional(readOnly = true)
     public FindLinkBundlesResponse findHubLinkBundles(FindHubLinkBundlesCommand command) {
         Hub hub = getHub(command.hubId());

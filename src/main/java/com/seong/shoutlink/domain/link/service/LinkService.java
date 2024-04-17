@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class LinkService {
+public class LinkService implements LinkUseCase {
 
     private final MemberRepository memberRepository;
     private final HubRepository hubRepository;
@@ -40,6 +40,7 @@ public class LinkService {
     private final EventPublisher eventPublisher;
 
     @Transactional
+    @Override
     public CreateLinkResponse createLink(CreateLinkCommand command) {
         Member member = getMember(command.memberId());
         LinkBundle linkBundle = getLinkBundle(command.linkBundleId(), member);
@@ -52,6 +53,7 @@ public class LinkService {
     }
 
     @Transactional(readOnly = true)
+    @Override
     public FindLinksResponse findLinks(FindLinksCommand command) {
         Member member = getMember(command.memberId());
         LinkBundle linkBundle = getLinkBundle(command.linkBundleId(), member);
@@ -72,6 +74,7 @@ public class LinkService {
             .orElseThrow(() -> new ShoutLinkException("존재하지 않는 사용자입니다.", ErrorCode.NOT_FOUND));
     }
 
+    @Override
     @Transactional
     public CreateHubLinkResponse createHubLink(CreateHubLinkCommand command) {
         Hub hub = getHub(command.hubId());
@@ -84,6 +87,7 @@ public class LinkService {
         return new CreateHubLinkResponse(linkId);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public FindLinksResponse findHubLinks(FindHubLinksCommand command) {
         Hub hub = getHub(command.hubId());

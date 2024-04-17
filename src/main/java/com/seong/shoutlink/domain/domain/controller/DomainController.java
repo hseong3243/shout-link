@@ -3,7 +3,7 @@ package com.seong.shoutlink.domain.domain.controller;
 import com.seong.shoutlink.domain.domain.controller.request.FindDomainLinksRequest;
 import com.seong.shoutlink.domain.domain.controller.request.FindDomainsRequest;
 import com.seong.shoutlink.domain.domain.controller.request.FindRootDomainsRequest;
-import com.seong.shoutlink.domain.domain.service.DomainService;
+import com.seong.shoutlink.domain.domain.service.DomainUseCase;
 import com.seong.shoutlink.domain.domain.service.request.FindDomainCommand;
 import com.seong.shoutlink.domain.domain.service.request.FindDomainLinksCommand;
 import com.seong.shoutlink.domain.domain.service.request.FindDomainsCommand;
@@ -26,12 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/domains")
 public class DomainController {
 
-    private final DomainService domainService;
+    private final DomainUseCase domainUseCase;
 
     @GetMapping("/search")
     public ResponseEntity<FindRootDomainsResponse> findRootDomains(
         @ModelAttribute @Valid FindRootDomainsRequest request) {
-        FindRootDomainsResponse response = domainService.findRootDomains(
+        FindRootDomainsResponse response = domainUseCase.findRootDomains(
             new FindRootDomainsCommand(request.keyword(), request.size()));
         return ResponseEntity.ok(response);
     }
@@ -39,7 +39,7 @@ public class DomainController {
     @GetMapping
     public ResponseEntity<FindDomainsResponse> findDomains(
         @ModelAttribute @Valid FindDomainsRequest request) {
-        FindDomainsResponse response = domainService.findDomains(new FindDomainsCommand(
+        FindDomainsResponse response = domainUseCase.findDomains(new FindDomainsCommand(
             request.keyword(), request.page(), request.size()));
         return ResponseEntity.ok(response);
     }
@@ -48,7 +48,7 @@ public class DomainController {
     public ResponseEntity<FindDomainDetailResponse> findDomain(
         @PathVariable("domainId") Long domainId) {
         FindDomainDetailResponse response
-            = domainService.findDomain(new FindDomainCommand(domainId));
+            = domainUseCase.findDomain(new FindDomainCommand(domainId));
         return ResponseEntity.ok(response);
     }
 
@@ -56,7 +56,7 @@ public class DomainController {
     public ResponseEntity<FindDomainLinksResponse> findDomainLinks(
         @PathVariable("domainId") Long domainId,
         @ModelAttribute @Valid FindDomainLinksRequest request) {
-        FindDomainLinksResponse response = domainService.findDomainLinks(
+        FindDomainLinksResponse response = domainUseCase.findDomainLinks(
             new FindDomainLinksCommand(domainId, request.page(), request.size()));
         return ResponseEntity.ok(response);
     }

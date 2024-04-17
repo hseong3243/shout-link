@@ -27,11 +27,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DomainService {
+public class DomainService implements DomainUseCase {
 
     private final DomainRepository domainRepository;
     private final LinkRepository linkRepository;
 
+    @Override
     @Transactional
     public UpdateDomainResponse updateDomain(UpdateDomainCommand command) {
         String rootDomain = DomainExtractor.extractRootDomain(command.url());
@@ -46,23 +47,27 @@ public class DomainService {
         return new UpdateDomainResponse(domain.getDomainId());
     }
 
+    @Override
     public FindRootDomainsResponse findRootDomains(FindRootDomainsCommand command) {
         List<String> rootDomains = domainRepository.findRootDomains(command.keyword(),
             command.size());
         return FindRootDomainsResponse.from(rootDomains);
     }
 
+    @Override
     public FindDomainsResponse findDomains(FindDomainsCommand command) {
         DomainPaginationResult result = domainRepository.findDomains(command.keyword(),
             command.page(), command.size());
         return FindDomainsResponse.of(result.domains(), result.totalElements(), result.hasNext());
     }
 
+    @Override
     public FindDomainDetailResponse findDomain(FindDomainCommand command) {
         Domain domain = getDomain(command.domainId());
         return FindDomainDetailResponse.from(domain);
     }
 
+    @Override
     public FindDomainLinksResponse findDomainLinks(FindDomainLinksCommand command) {
         Domain domain = getDomain(command.domainId());
         DomainLinkPaginationResult result
