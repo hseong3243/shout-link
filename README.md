@@ -6,6 +6,24 @@
 <br/>
 [프론트엔드 저장소](https://github.com/hseong3243/shout-link-front)
 
+## 사용 기술
+
+<div>
+  <div>
+  <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> 
+  <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white">
+  <img src="https://img.shields.io/badge/MySQL-4479A1.svg?style=for-the-badge&logo=MySQL&logoColor=white">
+  </div>
+  <div>
+  <img src="https://img.shields.io/badge/amazon ec2-FF9900?style=for-the-badge&logo=amazon ec2&logoColor=white">
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white">
+  <img src="https://img.shields.io/badge/Nginx-009630?style=for-the-badge&logo=Nginx&logoColor=white">
+  </div>
+  <div>
+  <img src="https://img.shields.io/badge/github actions-2088FF?style=for-the-badge&logo=github actions&logoColor=white">
+  </div>
+</div>
+
 ## 주요 기능
 
 - 사용자 인증을 위한 로그인
