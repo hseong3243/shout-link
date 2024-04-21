@@ -7,15 +7,18 @@ import com.seong.shoutlink.domain.link.controller.request.FindLinksRequest;
 import com.seong.shoutlink.domain.link.service.LinkUseCase;
 import com.seong.shoutlink.domain.link.service.request.CreateHubLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.CreateLinkCommand;
+import com.seong.shoutlink.domain.link.service.request.DeleteLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.FindHubLinksCommand;
 import com.seong.shoutlink.domain.link.service.request.FindLinksCommand;
 import com.seong.shoutlink.domain.link.service.response.CreateHubLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.CreateLinkResponse;
+import com.seong.shoutlink.domain.link.service.response.DeleteLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.FindLinksResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -81,5 +84,14 @@ public class LinkController {
             request.page(),
             request.size()));
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/links/{linkId}")
+    public ResponseEntity<DeleteLinkResponse> deleteLink(
+        @LoginUser Long memberId,
+        @PathVariable("linkId") Long linkId) {
+        DeleteLinkResponse deleteLinkResponse = linkUseCase.deleteLink(
+            new DeleteLinkCommand(memberId, linkId));
+        return ResponseEntity.ok(deleteLinkResponse);
     }
 }
