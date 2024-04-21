@@ -2,6 +2,7 @@ package com.seong.shoutlink.domain.link.repository;
 
 import com.seong.shoutlink.domain.domain.service.result.DomainLinkResult;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,4 +21,9 @@ public interface LinkJpaRepository extends JpaRepository<LinkEntity, Long> {
     Page<DomainLinkResult> findDomainLinks(@Param("domainId") Long domainId, Pageable pageable);
 
     List<LinkEntity> findAllByLinkBundleIdIn(List<Long> linkBundleIds);
+
+    @Query("select l from LinkEntity l "
+        + "join MemberLinkBundleEntity lb on l.linkBundleId = lb.linkBundleId "
+        + "where l.linkId = :linkId and lb.memberId = :memberId")
+    Optional<LinkEntity> findByIdAndMemberId(@Param("linkId") Long linkId, @Param("memberId") Long memberId);
 }

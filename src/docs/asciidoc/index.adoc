@@ -109,6 +109,16 @@ operation::link-controller-test/find-hub-links[snippets='http-request,request-he
 
 operation::link-controller-test/find-hub-links[snippets='http-response,response-fields']
 
+=== 회원 링크 삭제
+
+==== request
+
+operation::link-controller-test/delete-link[snippets='http-request,request-headers,path-parameters']
+
+==== response
+
+operation::link-controller-test/delete-link[snippets='http-response,response-fields']
+
 == 허브
 
 === 허브 생성

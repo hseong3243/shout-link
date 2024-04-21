@@ -12,10 +12,12 @@ import com.seong.shoutlink.domain.link.service.event.CreateHubLinkEvent;
 import com.seong.shoutlink.domain.link.service.event.CreateMemberLinkEvent;
 import com.seong.shoutlink.domain.link.service.request.CreateHubLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.CreateLinkCommand;
+import com.seong.shoutlink.domain.link.service.request.DeleteLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.FindHubLinksCommand;
 import com.seong.shoutlink.domain.link.service.request.FindLinksCommand;
 import com.seong.shoutlink.domain.link.service.response.CreateHubLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.CreateLinkResponse;
+import com.seong.shoutlink.domain.link.service.response.DeleteLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.FindLinksResponse;
 import com.seong.shoutlink.domain.link.service.result.LinkPaginationResult;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
@@ -101,6 +103,15 @@ public class LinkService implements LinkUseCase {
         LinkPaginationResult result = linkRepository.findLinks(hubLinkBundle, command.page(),
             command.size());
         return FindLinksResponse.of(result.links(), result.totalElements(), result.hasNext());
+    }
+
+    @Override
+    public DeleteLinkResponse deleteLink(DeleteLinkCommand command) {
+        Member member = getMember(command.memberId());
+        Link link = linkRepository.findMemberLink(command.linkId(), member)
+            .orElseThrow(() -> new ShoutLinkException("존재하지 않는 링크입니다.", ErrorCode.NOT_FOUND));
+        linkRepository.delete(link);
+        return new DeleteLinkResponse(link.getLinkId());
     }
 
     private void checkAuthenticated(@Nullable Long nullableMemberId) {

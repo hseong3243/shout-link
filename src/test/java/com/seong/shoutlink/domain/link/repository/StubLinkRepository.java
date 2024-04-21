@@ -6,6 +6,7 @@ import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
 import com.seong.shoutlink.domain.link.service.LinkRepository;
 import com.seong.shoutlink.domain.link.service.result.LinkPaginationResult;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
+import com.seong.shoutlink.domain.member.Member;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,10 @@ public class StubLinkRepository implements LinkRepository {
         for (Link link : links) {
             memory.put(getNextId(), link);
         }
+    }
+
+    public int count() {
+        return memory.size();
     }
 
     @Override
@@ -65,5 +70,15 @@ public class StubLinkRepository implements LinkRepository {
             result.add(new LinkWithLinkBundle(links.get(i), linkBundle));
         }
         return result;
+    }
+
+    @Override
+    public Optional<Link> findMemberLink(Long linkId, Member member) {
+        return memory.values().stream().findFirst();
+    }
+
+    @Override
+    public void delete(Link link) {
+        memory.values().remove(link);
     }
 }

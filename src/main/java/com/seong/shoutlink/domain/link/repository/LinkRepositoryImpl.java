@@ -6,6 +6,7 @@ import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
 import com.seong.shoutlink.domain.link.service.LinkRepository;
 import com.seong.shoutlink.domain.link.service.result.LinkPaginationResult;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
+import com.seong.shoutlink.domain.member.Member;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -67,5 +68,16 @@ public class LinkRepositoryImpl implements LinkRepository {
             .map(linkEntity -> new LinkWithLinkBundle(linkEntity.toDomain(),
                 linkBundleIdAndLinkBundle.get(linkEntity.getLinkBundleId())))
             .toList();
+    }
+
+    @Override
+    public Optional<Link> findMemberLink(Long linkId, Member member) {
+        return linkJpaRepository.findByIdAndMemberId(linkId, member.getMemberId())
+            .map(LinkEntity::toDomain);
+    }
+
+    @Override
+    public void delete(Link link) {
+        linkJpaRepository.deleteById(link.getLinkId());
     }
 }
