@@ -79,7 +79,8 @@ public class LinkRepositoryImpl implements LinkRepository {
 
     @Override
     public Optional<Link> findHubLink(Long linkId, Hub hub) {
-        return Optional.empty();
+        return linkJpaRepository.findByIdAndHubId(linkId, hub.getHubId())
+            .map(LinkEntity::toDomain);
     }
 
     @Override

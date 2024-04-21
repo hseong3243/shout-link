@@ -26,4 +26,9 @@ public interface LinkJpaRepository extends JpaRepository<LinkEntity, Long> {
         + "join MemberLinkBundleEntity lb on l.linkBundleId = lb.linkBundleId "
         + "where l.linkId = :linkId and lb.memberId = :memberId")
     Optional<LinkEntity> findByIdAndMemberId(@Param("linkId") Long linkId, @Param("memberId") Long memberId);
+
+    @Query("select l from LinkEntity l "
+        + "join HubLinkBundleEntity lb on l.linkBundleId = lb.linkBundleId "
+        + "where l.linkId = :linkId and lb.hubId = :hubId")
+    Optional<LinkEntity> findByIdAndHubId(@Param("linkId") Long linkId, @Param("hubId") Long hubId);
 }
