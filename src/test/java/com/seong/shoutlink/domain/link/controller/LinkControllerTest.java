@@ -216,4 +216,31 @@ class LinkControllerTest extends BaseControllerTest {
                 )
             ));
     }
+
+    @Test
+    @DisplayName("성공: 허브 링크 삭제 api 호출 시")
+    void deleteHubLink() throws Exception {
+        //given
+        given(linkService.deleteHubLink(any())).willReturn(new DeleteLinkResponse(1L));
+
+        //when
+        ResultActions resultActions = mockMvc.perform(
+            delete("/api/hubs/{hubId}/links/{linkId}", 1L, 1L)
+                .header(AUTHORIZATION, bearerAccessToken));
+
+        //then
+        resultActions.andExpect(status().isOk())
+            .andDo(restDocs.document(
+                requestHeaders(
+                    headerWithName(AUTHORIZATION).description("액세스 토큰")
+                ),
+                pathParameters(
+                    parameterWithName("hubId").description("허브 ID"),
+                    parameterWithName("linkId").description("링크 ID")
+                ),
+                responseFields(
+                    fieldWithPath("linkId").description("삭제된 링크 ID")
+                )
+            ));
+    }
 }
