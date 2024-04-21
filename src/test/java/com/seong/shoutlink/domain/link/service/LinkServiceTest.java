@@ -12,6 +12,7 @@ import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.repository.StubLinkRepository;
 import com.seong.shoutlink.domain.link.service.request.CreateHubLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.CreateLinkCommand;
+import com.seong.shoutlink.domain.link.service.request.DeleteLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.FindHubLinksCommand;
 import com.seong.shoutlink.domain.link.service.request.FindLinksCommand;
 import com.seong.shoutlink.domain.link.service.response.CreateHubLinkResponse;
@@ -412,6 +413,61 @@ class LinkServiceTest {
                     .extracting(e -> ((ShoutLinkException) e).getErrorCode())
                     .isEqualTo(ErrorCode.UNAUTHORIZED);
             }
+        }
+    }
+
+    @Nested
+    @DisplayName("deleteLink 호출 시")
+    class DeleteLinkTest {
+
+        @Test
+        @DisplayName("성공: 링크 삭제됨")
+        void deleteLink() {
+            //given
+            Member member = MemberFixture.member();
+            Link link = LinkFixture.link();
+            DeleteLinkCommand command = new DeleteLinkCommand(member.getMemberId(),
+                link.getLinkId());
+            memberRepository.stub(member);
+            linkRepository.stub(link);
+
+            //when
+            linkService.deleteLink(command);
+
+            //then
+            assertThat(linkRepository.count()).isZero();
+        }
+
+        @Test
+        @DisplayName("예외(notFound): 존재하지 않는 링크")
+        void notFound_WhenLinkNotFound() {
+            //given
+            Member member = MemberFixture.member();
+            memberRepository.stub(member);
+            DeleteLinkCommand command = new DeleteLinkCommand(member.getMemberId(), 1L);
+
+            //when
+            Exception exception = catchException(() -> linkService.deleteLink(command));
+
+            //then
+            assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                .isEqualTo(ErrorCode.NOT_FOUND);
+        }
+
+        @Test
+        @DisplayName("예외(notFound): 존재하지 않는 회원")
+        void notFound_WhenMemberNotFound() {
+            //given
+            DeleteLinkCommand command = new DeleteLinkCommand(1L, 1L);
+
+            //when
+            Exception exception = catchException(() -> linkService.deleteLink(command));
+
+            //then
+            assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                .isEqualTo(ErrorCode.NOT_FOUND);
         }
     }
 }
