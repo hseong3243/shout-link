@@ -1,6 +1,7 @@
 package com.seong.shoutlink.domain.link.repository;
 
 import com.seong.shoutlink.domain.domain.Domain;
+import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
 import com.seong.shoutlink.domain.link.service.LinkRepository;
@@ -74,6 +75,11 @@ public class StubLinkRepository implements LinkRepository {
 
     @Override
     public Optional<Link> findMemberLink(Long linkId, Member member) {
+        return memory.values().stream().findFirst();
+    }
+
+    @Override
+    public Optional<Link> findHubLink(Long linkId, Hub hub) {
         return memory.values().stream().findFirst();
     }
 

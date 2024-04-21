@@ -1,6 +1,7 @@
 package com.seong.shoutlink.domain.link.service;
 
 import com.seong.shoutlink.domain.domain.Domain;
+import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
 import com.seong.shoutlink.domain.link.service.result.LinkPaginationResult;
@@ -22,6 +23,8 @@ public interface LinkRepository {
     List<LinkWithLinkBundle> findAllByLinkBundlesIn(List<LinkBundle> linkBundles);
 
     Optional<Link> findMemberLink(Long linkId, Member member);
+
+    Optional<Link> findHubLink(Long linkId, Hub hub);
 
     void delete(Link link);
 }

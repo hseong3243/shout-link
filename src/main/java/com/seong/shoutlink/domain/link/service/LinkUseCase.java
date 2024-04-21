@@ -2,6 +2,7 @@ package com.seong.shoutlink.domain.link.service;
 
 import com.seong.shoutlink.domain.link.service.request.CreateHubLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.CreateLinkCommand;
+import com.seong.shoutlink.domain.link.service.request.DeleteHubLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.DeleteLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.FindHubLinksCommand;
 import com.seong.shoutlink.domain.link.service.request.FindLinksCommand;
@@ -21,4 +22,6 @@ public interface LinkUseCase {
     FindLinksResponse findHubLinks(FindHubLinksCommand command);
 
     DeleteLinkResponse deleteLink(DeleteLinkCommand command);
+
+    DeleteLinkResponse deleteHubLink(DeleteHubLinkCommand command);
 }
