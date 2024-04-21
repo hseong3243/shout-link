@@ -231,13 +231,15 @@ class LinkServiceTest {
         @DisplayName("예외(Unahthorized): 사용자가 허브 마스터가 아님")
         void unauthorized_WhenMemberIsNotMaster() {
             //given
-            Member member = MemberFixture.member();
-            Hub hub = HubFixture.hub(member);
+            Member master = MemberFixture.member();
+            Member member = new Member(2L, "asdf1234@gmail.com", "asdf1234!", "asdf",
+                MemberRole.ROLE_USER);
+            Hub hub = HubFixture.hub(master);
+            memberRepository.stub(master);
             memberRepository.stub(member);
             hubRepository.stub(hub);
-            Long notMasterId = hub.getMasterId() + 1;
-            CreateHubLinkCommand command = new CreateHubLinkCommand(hub.getHubId(), notMasterId, 1L,
-                "url", "설명");
+            CreateHubLinkCommand command = new CreateHubLinkCommand(hub.getHubId(),
+                member.getMemberId(), 1L, "url", "설명");
 
             //when
             Exception exception = catchException(() -> linkService.createHubLink(command));

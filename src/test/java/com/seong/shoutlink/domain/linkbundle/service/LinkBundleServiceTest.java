@@ -189,14 +189,16 @@ class LinkBundleServiceTest {
         @DisplayName("예외(Unauthorized): 링크 묶음 생성 권한 없음")
         void unauthorized_WhenMemberIsNotHubMaster() {
             //given
-            Member member = MemberFixture.member();
-            Hub hub = HubFixture.hub(member);
+            Member master = MemberFixture.member();
+            Hub hub = HubFixture.hub(master);
+            Member member = new Member(2L, "asdf1234@gmail.com", "asdf1234!", "asdf",
+                MemberRole.ROLE_USER);
+            memberRepository.stub(master);
             memberRepository.stub(member);
             hubRepository.stub(hub);
-            long unknownMemberId = member.getMemberId() + 1;
             CreateHubLinkBundleCommand command = new CreateHubLinkBundleCommand(
                 hub.getHubId(),
-                unknownMemberId,
+                member.getMemberId(),
                 "허브",
                 false);
 

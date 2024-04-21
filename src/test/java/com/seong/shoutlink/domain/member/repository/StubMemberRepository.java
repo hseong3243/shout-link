@@ -2,31 +2,36 @@ package com.seong.shoutlink.domain.member.repository;
 
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.service.MemberRepository;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public final class StubMemberRepository implements MemberRepository {
 
-    private List<Member> memory = new ArrayList<>();
+    private Map<Long, Member> memory = new HashMap<>();
 
     public StubMemberRepository(Member... members) {
-        memory.addAll(Arrays.stream(members).toList());
+        stub(members);
     }
 
     public void stub(Member... members) {
-        memory.addAll(Arrays.stream(members).toList());
+        for (Member member : members) {
+            memory.put(getNextId(), member);
+        }
+    }
+
+    public Long getNextId() {
+        return (long) (memory.size() + 1);
     }
 
     @Override
     public Optional<Member> findByEmail(String email) {
-        return memory.stream().filter(member -> member.getEmail().equals(email)).findFirst();
+        return memory.values().stream().filter(member -> member.getEmail().equals(email)).findFirst();
     }
 
     @Override
     public Optional<Member> findByNickname(String nickname) {
-        return memory.stream().filter(member -> member.getNickname().equals(nickname)).findFirst();
+        return memory.values().stream().filter(member -> member.getNickname().equals(nickname)).findFirst();
     }
 
     @Override
@@ -36,6 +41,6 @@ public final class StubMemberRepository implements MemberRepository {
 
     @Override
     public Optional<Member> findById(Long memberId) {
-        return memory.stream().filter(member -> member.getMemberId().equals(memberId)).findFirst();
+        return Optional.ofNullable(memory.get(memberId));
     }
 }

@@ -56,8 +56,8 @@ public class Hub {
         return description;
     }
 
-    public void checkMasterAuthority(Long memberId) {
-        if(Objects.equals(masterId, memberId)) {
+    public void checkMasterAuthority(Member member) {
+        if(Objects.equals(masterId, member.getMemberId())) {
             return;
         }
         throw new ShoutLinkException("권한이 없습니다.", ErrorCode.UNAUTHORIZED);

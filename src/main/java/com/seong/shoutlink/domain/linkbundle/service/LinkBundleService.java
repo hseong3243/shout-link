@@ -63,7 +63,8 @@ public class LinkBundleService implements LinkBundleUseCase {
     @Transactional
     public CreateLinkBundleResponse createHubLinkBundle(CreateHubLinkBundleCommand command) {
         Hub hub = getHub(command.hubId());
-        hub.checkMasterAuthority(command.memberId());
+        Member member = getMember(command.memberId());
+        hub.checkMasterAuthority(member);
         LinkBundle linkBundle = new LinkBundle(
             command.description(),
             command.isDefault());

@@ -80,7 +80,8 @@ public class LinkService implements LinkUseCase {
     @Transactional
     public CreateHubLinkResponse createHubLink(CreateHubLinkCommand command) {
         Hub hub = getHub(command.hubId());
-        hub.checkMasterAuthority(command.memberId());
+        Member member = getMember(command.memberId());
+        hub.checkMasterAuthority(member);
 
         LinkBundle hubLinkBundle = getHubLinkBundle(command.linkBundleId(), hub);
         Link link = new Link(command.url(), command.description());
