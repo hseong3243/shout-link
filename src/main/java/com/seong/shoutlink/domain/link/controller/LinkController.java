@@ -7,6 +7,7 @@ import com.seong.shoutlink.domain.link.controller.request.FindLinksRequest;
 import com.seong.shoutlink.domain.link.service.LinkUseCase;
 import com.seong.shoutlink.domain.link.service.request.CreateHubLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.CreateLinkCommand;
+import com.seong.shoutlink.domain.link.service.request.DeleteHubLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.DeleteLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.FindHubLinksCommand;
 import com.seong.shoutlink.domain.link.service.request.FindLinksCommand;
@@ -93,5 +94,15 @@ public class LinkController {
         DeleteLinkResponse deleteLinkResponse = linkUseCase.deleteLink(
             new DeleteLinkCommand(memberId, linkId));
         return ResponseEntity.ok(deleteLinkResponse);
+    }
+
+    @DeleteMapping("/hubs/{hubId}/links/{linkId}")
+    public ResponseEntity<DeleteLinkResponse> deleteHubLink(
+        @LoginUser Long memberId,
+        @PathVariable("hubId") Long hubId,
+        @PathVariable("linkId") Long linkId) {
+        DeleteLinkResponse response = linkUseCase.deleteHubLink(
+            new DeleteHubLinkCommand(linkId, memberId, hubId));
+        return ResponseEntity.ok(response);
     }
 }

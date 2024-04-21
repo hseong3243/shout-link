@@ -1,6 +1,7 @@
 package com.seong.shoutlink.domain.link.repository;
 
 import com.seong.shoutlink.domain.domain.Domain;
+import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
 import com.seong.shoutlink.domain.link.service.LinkRepository;
@@ -73,6 +74,12 @@ public class LinkRepositoryImpl implements LinkRepository {
     @Override
     public Optional<Link> findMemberLink(Long linkId, Member member) {
         return linkJpaRepository.findByIdAndMemberId(linkId, member.getMemberId())
+            .map(LinkEntity::toDomain);
+    }
+
+    @Override
+    public Optional<Link> findHubLink(Long linkId, Hub hub) {
+        return linkJpaRepository.findByIdAndHubId(linkId, hub.getHubId())
             .map(LinkEntity::toDomain);
     }
 

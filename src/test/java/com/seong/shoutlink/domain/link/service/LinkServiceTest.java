@@ -12,11 +12,13 @@ import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.repository.StubLinkRepository;
 import com.seong.shoutlink.domain.link.service.request.CreateHubLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.CreateLinkCommand;
+import com.seong.shoutlink.domain.link.service.request.DeleteHubLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.DeleteLinkCommand;
 import com.seong.shoutlink.domain.link.service.request.FindHubLinksCommand;
 import com.seong.shoutlink.domain.link.service.request.FindLinksCommand;
 import com.seong.shoutlink.domain.link.service.response.CreateHubLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.CreateLinkResponse;
+import com.seong.shoutlink.domain.link.service.response.DeleteLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.FindLinksResponse;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import com.seong.shoutlink.domain.linkbundle.repository.StubLinkBundleRepository;
@@ -231,13 +233,15 @@ class LinkServiceTest {
         @DisplayName("예외(Unahthorized): 사용자가 허브 마스터가 아님")
         void unauthorized_WhenMemberIsNotMaster() {
             //given
-            Member member = MemberFixture.member();
-            Hub hub = HubFixture.hub(member);
+            Member master = MemberFixture.member();
+            Member member = new Member(2L, "asdf1234@gmail.com", "asdf1234!", "asdf",
+                MemberRole.ROLE_USER);
+            Hub hub = HubFixture.hub(master);
+            memberRepository.stub(master);
             memberRepository.stub(member);
             hubRepository.stub(hub);
-            Long notMasterId = hub.getMasterId() + 1;
-            CreateHubLinkCommand command = new CreateHubLinkCommand(hub.getHubId(), notMasterId, 1L,
-                "url", "설명");
+            CreateHubLinkCommand command = new CreateHubLinkCommand(hub.getHubId(),
+                member.getMemberId(), 1L, "url", "설명");
 
             //when
             Exception exception = catchException(() -> linkService.createHubLink(command));
@@ -463,6 +467,116 @@ class LinkServiceTest {
 
             //when
             Exception exception = catchException(() -> linkService.deleteLink(command));
+
+            //then
+            assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                .isEqualTo(ErrorCode.NOT_FOUND);
+        }
+    }
+
+    @Nested
+    @DisplayName("deleteHubLink 호출 시")
+    class DeleteHubLinkTest {
+
+        @Test
+        @DisplayName("성공: 허브 링크 삭제됨")
+        void deleteHubLink() {
+            //given
+            Member member = MemberFixture.member();
+            Hub hub = HubFixture.hub(member);
+            Link link = LinkFixture.link();
+            memberRepository.stub(member);
+            hubRepository.stub(hub);
+            linkRepository.stub(link);
+            DeleteHubLinkCommand command = new DeleteHubLinkCommand(link.getLinkId(),
+                member.getMemberId(), hub.getHubId());
+
+            //when
+            DeleteLinkResponse response = linkService.deleteHubLink(command);
+
+            //then
+            assertThat(linkRepository.count()).isZero();
+        }
+
+        @Test
+        @DisplayName("예외(unauthorized): 회원이 허브의 마스터가 아님")
+        void unauthorized_WhenMemberIsNotHubMaster() {
+            //given
+            Member hubMaster = MemberFixture.member();
+            Hub hub = HubFixture.hub(hubMaster);
+            Link link = LinkFixture.link();
+            Member member = new Member(2L, "asdf1234@gmail.com", "asdf1234!", "asdf",
+                MemberRole.ROLE_USER);
+            memberRepository.stub(hubMaster);
+            memberRepository.stub(member);
+            hubRepository.stub(hub);
+            linkRepository.stub(link);
+            DeleteHubLinkCommand command = new DeleteHubLinkCommand(link.getLinkId(),
+                member.getMemberId(), hub.getHubId());
+
+            //when
+            Exception exception = catchException(() -> linkService.deleteHubLink(command));
+
+            //then
+            assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                .isEqualTo(ErrorCode.UNAUTHORIZED);
+        }
+
+        @Test
+        @DisplayName("예외(notFound): 존재하지 않는 허브")
+        void notFound_WhenHubNotFound() {
+            //given
+            Member member = MemberFixture.member();
+            Link link = LinkFixture.link();
+            memberRepository.stub(member);
+            linkRepository.stub(link);
+            DeleteHubLinkCommand command = new DeleteHubLinkCommand(link.getLinkId(),
+                member.getMemberId(), 1L);
+
+            //when
+            Exception exception = catchException(() -> linkService.deleteHubLink(command));
+
+            //then
+            assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                .isEqualTo(ErrorCode.NOT_FOUND);
+        }
+
+        @Test
+        @DisplayName("예외(notFound): 존재하지 않는 회원")
+        void notFound_WhenMemberNotFound() {
+            //given
+            Hub hub = HubFixture.hub(MemberFixture.member());
+            Link link = LinkFixture.link();
+            hubRepository.stub(hub);
+            linkRepository.stub(link);
+            DeleteHubLinkCommand command = new DeleteHubLinkCommand(link.getLinkId(),
+                1L, hub.getHubId());
+
+            //when
+            Exception exception = catchException(() -> linkService.deleteHubLink(command));
+
+            //then
+            assertThat(exception).isInstanceOf(ShoutLinkException.class)
+                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
+                .isEqualTo(ErrorCode.NOT_FOUND);
+        }
+
+        @Test
+        @DisplayName("예외(notFound): 존재하지 않는 링크")
+        void notFound_WhenLinkNotFound() {
+            //given
+            Member member = MemberFixture.member();
+            Hub hub = HubFixture.hub(member);
+            memberRepository.stub(member);
+            hubRepository.stub(hub);
+            DeleteHubLinkCommand command = new DeleteHubLinkCommand(1L, member.getMemberId(),
+                hub.getHubId());
+
+            //when
+            Exception exception = catchException(() -> linkService.deleteHubLink(command));
 
             //then
             assertThat(exception).isInstanceOf(ShoutLinkException.class)
