@@ -72,10 +72,12 @@ public class LinkRepositoryImpl implements LinkRepository {
 
     @Override
     public Optional<Link> findMemberLink(Long linkId, Member member) {
-        return null;
+        return linkJpaRepository.findByIdAndMemberId(linkId, member.getMemberId())
+            .map(LinkEntity::toDomain);
     }
 
     @Override
     public void delete(Link link) {
+        linkJpaRepository.deleteById(link.getLinkId());
     }
 }
