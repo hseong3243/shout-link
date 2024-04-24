@@ -1,24 +1,26 @@
 package com.seong.shoutlink.domain.tag.service;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
 
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.service.HubRepository;
+import com.seong.shoutlink.domain.link.LinkBundleAndLinks;
 import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
 import com.seong.shoutlink.domain.link.service.LinkRepository;
 import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import com.seong.shoutlink.domain.linkbundle.service.LinkBundleRepository;
-import com.seong.shoutlink.domain.link.LinkBundleAndLinks;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.service.MemberRepository;
 import com.seong.shoutlink.domain.tag.HubTag;
 import com.seong.shoutlink.domain.tag.MemberTag;
 import com.seong.shoutlink.domain.tag.Tag;
 import com.seong.shoutlink.domain.tag.service.ai.GenerateAutoTagCommand;
-import com.seong.shoutlink.domain.tag.service.request.AutoCreateMemberTagCommand;
 import com.seong.shoutlink.domain.tag.service.request.AutoCreateHubTagCommand;
+import com.seong.shoutlink.domain.tag.service.request.AutoCreateMemberTagCommand;
 import com.seong.shoutlink.domain.tag.service.response.CreateTagResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

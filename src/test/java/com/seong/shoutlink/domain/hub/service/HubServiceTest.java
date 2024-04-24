@@ -12,6 +12,7 @@ import com.seong.shoutlink.domain.hub.repository.StubHubTagReader;
 import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
 import com.seong.shoutlink.domain.hub.service.request.FindHubCommand;
 import com.seong.shoutlink.domain.hub.service.request.FindMyHubsCommand;
+import com.seong.shoutlink.domain.hub.service.request.SearchHubsCommand;
 import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubDetailResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsCommand;
@@ -35,19 +36,19 @@ class HubServiceTest {
     private StubEventPublisher eventPublisher;
     private StubHubTagReader hubTagReader;
 
+    @BeforeEach
+    void setUp() {
+        memberRepository = new StubMemberRepository();
+        hubRepository = new StubHubRepository();
+        eventPublisher = new StubEventPublisher();
+        hubTagReader = new StubHubTagReader();
+        hubService = new HubService(memberRepository, hubRepository, hubTagReader,
+            eventPublisher);
+    }
+
     @Nested
     @DisplayName("createHub 메서드 호출 시")
     class CreateHubTest {
-
-        @BeforeEach
-        void setUp() {
-            memberRepository = new StubMemberRepository();
-            hubRepository = new StubHubRepository();
-            eventPublisher = new StubEventPublisher();
-            hubTagReader = new StubHubTagReader();
-            hubService = new HubService(memberRepository, hubRepository, hubTagReader,
-                eventPublisher);
-        }
 
         @Test
         @DisplayName("성공: 허브 생성됨")
@@ -101,16 +102,6 @@ class HubServiceTest {
     @Nested
     @DisplayName("findHubs 메서드 호출시")
     class FindHubsTest {
-
-        @BeforeEach
-        void setUp() {
-            memberRepository = new StubMemberRepository();
-            hubRepository = new StubHubRepository();
-            eventPublisher = new StubEventPublisher();
-            hubTagReader = new StubHubTagReader();
-            hubService = new HubService(memberRepository, hubRepository, hubTagReader,
-                eventPublisher);
-        }
 
         @Test
         @DisplayName("성공: 허브 목록 조회됨")
@@ -169,16 +160,6 @@ class HubServiceTest {
     @DisplayName("findHub 메서드 호출 시")
     class FindHubTest {
 
-        @BeforeEach
-        void setUp() {
-            memberRepository = new StubMemberRepository();
-            hubRepository = new StubHubRepository();
-            eventPublisher = new StubEventPublisher();
-            hubTagReader = new StubHubTagReader();
-            hubService = new HubService(memberRepository, hubRepository, hubTagReader,
-                eventPublisher);
-        }
-
         @Test
         @DisplayName("성공: 허브 조회됨")
         void findHub() {
@@ -221,16 +202,6 @@ class HubServiceTest {
     @DisplayName("findMyHubs 호출 시")
     class FindMyHubsTest {
 
-        @BeforeEach
-        void setUp() {
-            memberRepository = new StubMemberRepository();
-            hubRepository = new StubHubRepository();
-            eventPublisher = new StubEventPublisher();
-            hubTagReader = new StubHubTagReader();
-            hubService = new HubService(memberRepository, hubRepository, hubTagReader,
-                eventPublisher);
-        }
-
         @Test
         @DisplayName("성공: 사용자가 소속된 허브 목록 조회됨")
         void findMyHubs() {
@@ -269,6 +240,37 @@ class HubServiceTest {
             assertThat(exception).isInstanceOf(ShoutLinkException.class)
                 .extracting(e -> ((ShoutLinkException) e).getErrorCode())
                 .isEqualTo(ErrorCode.NOT_FOUND);
+        }
+    }
+
+    @Nested
+    @DisplayName("searchHubs 호출 시")
+    class SearchHubsTest {
+
+        @Test
+        @DisplayName("성공: 태그 키워드에 해당하는 태그를 가진 허브가 조회됨")
+        void searchHubs() {
+            //given
+            Member member = MemberFixture.member();
+            Hub hub = HubFixture.hub(member);
+            HubTagResult hubTag = new HubTagResult(1L, "태그A", hub);
+            hubRepository.stub(hub);
+            hubTagReader.stub(hubTag);
+            SearchHubsCommand command = new SearchHubsCommand("태그A", 0, 0);
+
+            //when
+            FindHubsResponse response = hubService.searchHubs(command);
+
+            //then
+            assertThat(response.hubs())
+                .hasSize(1)
+                .allSatisfy(findHub -> {
+                    assertThat(findHub.hubId()).isEqualTo(hub.getHubId());
+                    assertThat(findHub.masterId()).isEqualTo(hub.getMasterId());
+                    assertThat(findHub.name()).isEqualTo(hub.getName());
+                    assertThat(findHub.description()).isEqualTo(hub.getDescription());
+                    assertThat(findHub.isPrivate()).isEqualTo(hub.isPrivate());
+                });
         }
     }
 }

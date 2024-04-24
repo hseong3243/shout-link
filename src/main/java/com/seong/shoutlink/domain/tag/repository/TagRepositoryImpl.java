@@ -3,6 +3,7 @@ package com.seong.shoutlink.domain.tag.repository;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.service.HubTagReader;
 import com.seong.shoutlink.domain.hub.service.result.HubTagResult;
+import com.seong.shoutlink.domain.hub.service.result.TagResult;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.tag.HubTag;
 import com.seong.shoutlink.domain.tag.MemberTag;
@@ -76,5 +77,10 @@ public class TagRepositoryImpl implements TagRepository, HubTagReader {
                 return new HubTagResult(hubTagEntity.getTagId(), hubTagEntity.getName(), hub);
             })
             .toList();
+    }
+
+    @Override
+    public List<TagResult> searchTags(String tagKeyword) {
+        return null;
     }
 }

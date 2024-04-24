@@ -9,6 +9,7 @@ import com.seong.shoutlink.domain.hub.service.event.CreateHubEvent;
 import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
 import com.seong.shoutlink.domain.hub.service.request.FindHubCommand;
 import com.seong.shoutlink.domain.hub.service.request.FindMyHubsCommand;
+import com.seong.shoutlink.domain.hub.service.request.SearchHubsCommand;
 import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubDetailResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubResponse;
@@ -16,6 +17,7 @@ import com.seong.shoutlink.domain.hub.service.response.FindHubsCommand;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsResponse;
 import com.seong.shoutlink.domain.hub.service.result.HubPaginationResult;
 import com.seong.shoutlink.domain.hub.service.result.HubTagResult;
+import com.seong.shoutlink.domain.hub.service.result.TagResult;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.service.MemberRepository;
 import java.util.ArrayList;
@@ -62,6 +64,16 @@ public class HubService implements HubUseCase {
             command.size());
         List<Hub> hubs = result.hubs();
         List<HubTagResult> tagsInHubs = hubTagReader.findTagsInHubs(hubs);
+        return createFindHubResponses(result, tagsInHubs);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public FindHubsResponse searchHubs(SearchHubsCommand command) {
+        List<TagResult> tagResults = hubTagReader.searchTags(command.tagKeyword());
+        HubPaginationResult result = hubRepository.findHubsByTags(tagResults, command.page(),
+            command.size());
+        List<HubTagResult> tagsInHubs = hubTagReader.findTagsInHubs(result.hubs());
         return createFindHubResponses(result, tagsInHubs);
     }
 
