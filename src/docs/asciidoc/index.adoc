@@ -145,11 +145,21 @@ operation::hub-controller-test/create-hub[snippets='http-response,response-field
 
 ==== request
 
-operation::hub-controller-test/find-hubs[snippets='http-request,path-parameters']
+operation::hub-controller-test/find-hubs[snippets='http-request,query-parameters']
 
 ==== response
 
 operation::hub-controller-test/find-hubs[snippets='http-response,response-fields']
+
+=== 허브 목록 검색
+
+==== request
+
+operation::hub-controller-test/search-hubs[snippets='http-request,query-parameters']
+
+==== response
+
+operation::hub-controller-test/search-hubs[snippets='http-response,response-fields']
 
 === 허브 조회
 

@@ -3,10 +3,12 @@ package com.seong.shoutlink.domain.hub.controller;
 import com.seong.shoutlink.domain.auth.LoginUser;
 import com.seong.shoutlink.domain.hub.controller.request.CreateHubRequest;
 import com.seong.shoutlink.domain.hub.controller.request.FindHubsRequest;
+import com.seong.shoutlink.domain.hub.controller.request.SearchHubsRequest;
 import com.seong.shoutlink.domain.hub.service.HubUseCase;
 import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
 import com.seong.shoutlink.domain.hub.service.request.FindHubCommand;
 import com.seong.shoutlink.domain.hub.service.request.FindMyHubsCommand;
+import com.seong.shoutlink.domain.hub.service.request.SearchHubsCommand;
 import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubDetailResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsCommand;
@@ -46,6 +48,17 @@ public class HubController {
     public ResponseEntity<FindHubsResponse> findHubs(
         @Valid @ModelAttribute FindHubsRequest request) {
         FindHubsResponse response = hubUseCase.findHubs(new FindHubsCommand(
+            request.page(),
+            request.size()
+        ));
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/hubs/search")
+    public ResponseEntity<FindHubsResponse> searchHubs(
+        @Valid @ModelAttribute SearchHubsRequest request) {
+        FindHubsResponse response = hubUseCase.searchHubs(new SearchHubsCommand(
+            request.tagKeyword(),
             request.page(),
             request.size()
         ));
