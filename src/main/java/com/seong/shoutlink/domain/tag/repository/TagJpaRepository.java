@@ -32,4 +32,8 @@ public interface TagJpaRepository extends JpaRepository<TagEntity, Long> {
         + " order by t.createdAt"
         + " limit 1")
     Optional<TagEntity> findLatestTagByMemberId(Long memberId);
+
+    @Query("select t from HubTagEntity t "
+        + "where t.name like %:tagKeyword%")
+    List<HubTagEntity> findHubTagsContainsKeyword(@Param("tagKeyword") String tagKeyword);
 }

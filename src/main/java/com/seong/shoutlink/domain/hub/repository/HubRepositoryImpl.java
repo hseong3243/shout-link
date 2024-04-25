@@ -72,6 +72,15 @@ public class HubRepositoryImpl implements HubRepository {
 
     @Override
     public HubPaginationResult findHubsByTags(List<TagResult> tagResults, int page, int size) {
-        return null;
+        List<Long> tagIds = tagResults.stream()
+            .map(TagResult::tagId)
+            .toList();
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<HubMemberEntity> hubs = hubMemberJpaRepository.findHubsContainsTagIds(
+            tagIds, pageRequest);
+        return new HubPaginationResult(
+            hubs.map(HubMemberEntity::toHub).toList(),
+            hubs.getTotalElements(),
+            hubs.hasNext());
     }
 }

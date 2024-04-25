@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.hubmember.repository;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,4 +26,11 @@ public interface HubMemberJpaRepository extends JpaRepository<HubMemberEntity, L
         + "where hm.memberId=:memberId "
         + "and hm.hubMemberRole = com.seong.shoutlink.domain.hubmember.HubMemberRole.MASTER")
     Page<HubMemberEntity> findMemberHubs(@Param("memberId") Long memberId, PageRequest pageRequest);
+
+    @Query("select hm from HubTagEntity t "
+        + "join HubMemberEntity hm on hm.hubEntity.hubId = t.hubId "
+        + "join fetch hm.hubEntity "
+        + "where t.tagId in :tagIds "
+        + "and hm.hubMemberRole = com.seong.shoutlink.domain.hubmember.HubMemberRole.MASTER")
+    Page<HubMemberEntity> findHubsContainsTagIds(@Param("tagIds") List<Long> tagIds, PageRequest pageRequest);
 }

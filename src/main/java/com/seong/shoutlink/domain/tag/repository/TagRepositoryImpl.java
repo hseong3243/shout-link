@@ -81,6 +81,9 @@ public class TagRepositoryImpl implements TagRepository, HubTagReader {
 
     @Override
     public List<TagResult> searchTags(String tagKeyword) {
-        return null;
+        List<HubTagEntity> hubTags = tagJpaRepository.findHubTagsContainsKeyword(tagKeyword);
+        return hubTags.stream()
+            .map(hubTagEntity -> new TagResult(hubTagEntity.getTagId(), hubTagEntity.getName()))
+            .toList();
     }
 }
