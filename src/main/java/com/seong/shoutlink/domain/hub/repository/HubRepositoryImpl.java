@@ -4,10 +4,12 @@ import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.HubWithMaster;
 import com.seong.shoutlink.domain.hub.service.HubRepository;
 import com.seong.shoutlink.domain.hub.service.result.HubPaginationResult;
+import com.seong.shoutlink.domain.hub.service.result.TagResult;
 import com.seong.shoutlink.domain.hubmember.repository.HubMemberEntity;
 import com.seong.shoutlink.domain.hubmember.repository.HubMemberJpaRepository;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.repository.MemberJpaRepository;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -62,6 +64,20 @@ public class HubRepositoryImpl implements HubRepository {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<HubMemberEntity> hubs = hubMemberJpaRepository.findMemberHubs(
             member.getMemberId(), pageRequest);
+        return new HubPaginationResult(
+            hubs.map(HubMemberEntity::toHub).toList(),
+            hubs.getTotalElements(),
+            hubs.hasNext());
+    }
+
+    @Override
+    public HubPaginationResult findHubsByTags(List<TagResult> tagResults, int page, int size) {
+        List<Long> tagIds = tagResults.stream()
+            .map(TagResult::tagId)
+            .toList();
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<HubMemberEntity> hubs = hubMemberJpaRepository.findHubsContainsTagIds(
+            tagIds, pageRequest);
         return new HubPaginationResult(
             hubs.map(HubMemberEntity::toHub).toList(),
             hubs.getTotalElements(),

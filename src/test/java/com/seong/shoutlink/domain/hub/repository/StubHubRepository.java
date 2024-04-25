@@ -4,6 +4,7 @@ import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.HubWithMaster;
 import com.seong.shoutlink.domain.hub.service.HubRepository;
 import com.seong.shoutlink.domain.hub.service.result.HubPaginationResult;
+import com.seong.shoutlink.domain.hub.service.result.TagResult;
 import com.seong.shoutlink.domain.member.Member;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +58,11 @@ public class StubHubRepository implements HubRepository {
 
     @Override
     public HubPaginationResult findMemberHubs(Member member, int page, int size) {
+        return findHubs(page, size);
+    }
+
+    @Override
+    public HubPaginationResult findHubsByTags(List<TagResult> tagResults, int page, int size) {
         return findHubs(page, size);
     }
 }

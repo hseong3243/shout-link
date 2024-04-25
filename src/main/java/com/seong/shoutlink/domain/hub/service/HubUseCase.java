@@ -7,6 +7,7 @@ import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubDetailResponse;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsCommand;
 import com.seong.shoutlink.domain.hub.service.response.FindHubsResponse;
+import com.seong.shoutlink.domain.hub.service.request.SearchHubsCommand;
 
 public interface HubUseCase {
 
@@ -17,4 +18,6 @@ public interface HubUseCase {
     FindHubsResponse findMemberHubs(FindMyHubsCommand command);
 
     FindHubDetailResponse findHub(FindHubCommand command);
+
+    FindHubsResponse searchHubs(SearchHubsCommand command);
 }

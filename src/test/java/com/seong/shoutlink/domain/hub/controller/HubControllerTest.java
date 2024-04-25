@@ -86,7 +86,7 @@ class HubControllerTest extends BaseControllerTest {
         //then
         resultActions.andExpect(status().isOk())
             .andDo(restDocs.document(
-                pathParameters(
+                queryParameters(
                     parameterWithName("page").description("페이지").optional(),
                     parameterWithName("size").description("사이즈").optional()
                 ),
@@ -172,6 +172,56 @@ class HubControllerTest extends BaseControllerTest {
                 queryParameters(
                     parameterWithName("page").description("페이지"),
                     parameterWithName("size").description("사이즈")
+                ),
+                responseFields(
+                    fieldWithPath("hubs").type(JsonFieldType.ARRAY).description("허브 목록"),
+                    fieldWithPath("hubs[].hubId").type(JsonFieldType.NUMBER).description("허브 ID"),
+                    fieldWithPath("hubs[].masterId").type(JsonFieldType.NUMBER)
+                        .description("사용자 ID"),
+                    fieldWithPath("hubs[].name").type(JsonFieldType.STRING).description("허브 이름"),
+                    fieldWithPath("hubs[].description").type(JsonFieldType.STRING)
+                        .description("허브 설명"),
+                    fieldWithPath("hubs[].isPrivate").type(JsonFieldType.BOOLEAN)
+                        .description("허브 공개 여부"),
+                    fieldWithPath("hubs[].tags[]").type(JsonFieldType.ARRAY)
+                        .description("허브 태그 목록"),
+                    fieldWithPath("hubs[].tags[].tagId").type(JsonFieldType.NUMBER)
+                        .description("허브 태그 ID"),
+                    fieldWithPath("hubs[].tags[].name").type(JsonFieldType.STRING)
+                        .description("허브 태그 이름"),
+                    fieldWithPath("totalElements").type(JsonFieldType.NUMBER)
+                        .description("총 요소 개수"),
+                    fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 여부")
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("성공: 허브 검색 api 호출 시")
+    void searchHubs() throws Exception {
+        //given
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("tagKeyword", "태그");
+        params.add("page", "0");
+        params.add("size", "20");
+        HubTagResponse tagResponse = new HubTagResponse(1L, "태그 이름");
+        FindHubResponse findHub = new FindHubResponse(1L, 1L, "허브 이름", "허브 설명", false,
+            List.of(tagResponse));
+        FindHubsResponse response = new FindHubsResponse(List.of(findHub), 1, false);
+
+        given(hubService.searchHubs(any())).willReturn(response);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(get("/api/hubs/search")
+            .params(params));
+
+        //then
+        resultActions.andExpect(status().isOk())
+            .andDo(restDocs.document(
+                queryParameters(
+                    parameterWithName("tagKeyword").description("태그 검색어").optional(),
+                    parameterWithName("page").description("페이지").optional(),
+                    parameterWithName("size").description("사이즈").optional()
                 ),
                 responseFields(
                     fieldWithPath("hubs").type(JsonFieldType.ARRAY).description("허브 목록"),
