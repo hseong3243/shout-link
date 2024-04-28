@@ -40,7 +40,6 @@ public class DomainRepositoryImpl implements DomainRepository {
         return domainCacheRepository.findRootDomains(keyword, size);
     }
 
-    @Override
     public void synchronizeRootDomains() {
         domainJpaRepository.findRootDomains().forEach(domainCacheRepository::insert);
     }

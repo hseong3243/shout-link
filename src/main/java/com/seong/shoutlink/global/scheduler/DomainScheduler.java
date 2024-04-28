@@ -1,13 +1,13 @@
 package com.seong.shoutlink.global.scheduler;
 
-import com.seong.shoutlink.domain.domain.service.DomainRepository;
+import com.seong.shoutlink.domain.domain.repository.DomainRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 
 @RequiredArgsConstructor
 public class DomainScheduler {
 
-    private final DomainRepository domainRepository;
+    private final DomainRepositoryImpl domainRepository;
 
     @Scheduled(cron = "0 0 * * * *")
     public void synchronizeRootDomains() {

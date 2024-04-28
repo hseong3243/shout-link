@@ -14,8 +14,6 @@ public interface DomainRepository {
 
     List<String> findRootDomains(String keyword, int size);
 
-    void synchronizeRootDomains();
-
     DomainPaginationResult findDomains(String keyword, int page, int size);
 
     Optional<Domain> findById(Long domainId);

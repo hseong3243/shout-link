@@ -76,11 +76,4 @@ public class StubDomainRepository implements DomainRepository {
     public List<String> findRootDomains(String keyword, int size) {
         return searchAutoComplete.search(keyword, size);
     }
-
-    @Override
-    public void synchronizeRootDomains() {
-        for (Domain domain : memory.values()) {
-            searchAutoComplete.insert(domain.getRootDomain());
-        }
-    }
 }
