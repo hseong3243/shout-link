@@ -3,6 +3,7 @@ package com.seong.shoutlink.domain.common;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
 
@@ -28,8 +29,9 @@ public class Trie {
         }
 
         public Node nextNode(char c) {
-            children.putIfAbsent(c, new Node(c));
-            return children.get(c);
+            Node nextNode = children.putIfAbsent(c, new Node(c));
+            return Optional.ofNullable(nextNode)
+                .orElseGet(() -> children.get(c));
         }
 
         public void addSuggestions(String word, List<String> suggestions, int count) {
