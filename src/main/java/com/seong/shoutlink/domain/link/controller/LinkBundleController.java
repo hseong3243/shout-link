@@ -1,15 +1,15 @@
-package com.seong.shoutlink.domain.linkbundle.controller;
+package com.seong.shoutlink.domain.link.controller;
 
 import com.seong.shoutlink.domain.auth.LoginUser;
 import com.seong.shoutlink.domain.auth.NullableUser;
-import com.seong.shoutlink.domain.linkbundle.controller.request.CreateLinkBundleRequest;
-import com.seong.shoutlink.domain.linkbundle.service.LinkBundleUseCase;
-import com.seong.shoutlink.domain.linkbundle.service.request.CreateHubLinkBundleCommand;
-import com.seong.shoutlink.domain.linkbundle.service.request.FindHubLinkBundlesCommand;
-import com.seong.shoutlink.domain.linkbundle.service.request.FindLinkBundlesCommand;
-import com.seong.shoutlink.domain.linkbundle.service.response.CreateLinkBundleCommand;
-import com.seong.shoutlink.domain.linkbundle.service.response.CreateLinkBundleResponse;
-import com.seong.shoutlink.domain.linkbundle.service.response.FindLinkBundlesResponse;
+import com.seong.shoutlink.domain.link.controller.request.CreateLinkBundleRequest;
+import com.seong.shoutlink.domain.link.service.LinkBundleUseCase;
+import com.seong.shoutlink.domain.link.service.request.CreateHubLinkBundleCommand;
+import com.seong.shoutlink.domain.link.service.request.FindHubLinkBundlesCommand;
+import com.seong.shoutlink.domain.link.service.request.FindLinkBundlesCommand;
+import com.seong.shoutlink.domain.link.service.response.CreateLinkBundleCommand;
+import com.seong.shoutlink.domain.link.service.response.CreateLinkBundleResponse;
+import com.seong.shoutlink.domain.link.service.response.FindLinkBundlesResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

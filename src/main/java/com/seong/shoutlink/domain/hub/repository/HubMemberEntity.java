@@ -1,9 +1,7 @@
-package com.seong.shoutlink.domain.hubmember.repository;
+package com.seong.shoutlink.domain.hub.repository;
 
 import com.seong.shoutlink.domain.common.BaseEntity;
 import com.seong.shoutlink.domain.hub.Hub;
-import com.seong.shoutlink.domain.hub.repository.HubEntity;
-import com.seong.shoutlink.domain.hubmember.HubMemberRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

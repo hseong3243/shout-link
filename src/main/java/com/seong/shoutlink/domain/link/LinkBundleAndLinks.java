@@ -1,7 +1,5 @@
 package com.seong.shoutlink.domain.link;
 
-import com.seong.shoutlink.domain.link.Link;
-import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import java.util.List;
 import lombok.Getter;
 

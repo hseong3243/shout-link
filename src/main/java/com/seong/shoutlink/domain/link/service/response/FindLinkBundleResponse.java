@@ -1,6 +1,6 @@
-package com.seong.shoutlink.domain.linkbundle.service.response;
+package com.seong.shoutlink.domain.link.service.response;
 
-import com.seong.shoutlink.domain.linkbundle.LinkBundle;
+import com.seong.shoutlink.domain.link.LinkBundle;
 
 public record FindLinkBundleResponse(
     Long linkBundleId,

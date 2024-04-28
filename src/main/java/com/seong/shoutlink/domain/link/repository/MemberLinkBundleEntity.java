@@ -1,4 +1,4 @@
-package com.seong.shoutlink.domain.linkbundle.repository;
+package com.seong.shoutlink.domain.link.repository;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;

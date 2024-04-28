@@ -5,7 +5,7 @@ import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
 import com.seong.shoutlink.domain.link.service.result.LinkPaginationResult;
-import com.seong.shoutlink.domain.linkbundle.LinkBundle;
+import com.seong.shoutlink.domain.link.LinkBundle;
 import com.seong.shoutlink.domain.member.Member;
 import java.util.List;
 import java.util.Optional;

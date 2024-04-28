@@ -1,6 +1,5 @@
 package com.seong.shoutlink.domain.link;
 
-import com.seong.shoutlink.domain.linkbundle.LinkBundle;
 import lombok.Getter;
 
 @Getter

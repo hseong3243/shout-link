@@ -5,8 +5,6 @@ import com.seong.shoutlink.domain.hub.HubWithMaster;
 import com.seong.shoutlink.domain.hub.service.HubRepository;
 import com.seong.shoutlink.domain.hub.service.result.HubPaginationResult;
 import com.seong.shoutlink.domain.hub.service.result.TagResult;
-import com.seong.shoutlink.domain.hubmember.repository.HubMemberEntity;
-import com.seong.shoutlink.domain.hubmember.repository.HubMemberJpaRepository;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.repository.MemberJpaRepository;
 import java.util.List;

@@ -14,10 +14,10 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.seong.shoutlink.base.BaseControllerTest;
-import com.seong.shoutlink.domain.linkbundle.controller.request.CreateLinkBundleRequest;
-import com.seong.shoutlink.domain.linkbundle.service.response.CreateLinkBundleResponse;
-import com.seong.shoutlink.domain.linkbundle.service.response.FindLinkBundleResponse;
-import com.seong.shoutlink.domain.linkbundle.service.response.FindLinkBundlesResponse;
+import com.seong.shoutlink.domain.link.controller.request.CreateLinkBundleRequest;
+import com.seong.shoutlink.domain.link.service.response.CreateLinkBundleResponse;
+import com.seong.shoutlink.domain.link.service.response.FindLinkBundleResponse;
+import com.seong.shoutlink.domain.link.service.response.FindLinkBundlesResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

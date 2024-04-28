@@ -1,4 +1,4 @@
-package com.seong.shoutlink.domain.linkbundle.controller.request;
+package com.seong.shoutlink.domain.link.controller.request;
 
 import java.util.Objects;
 
