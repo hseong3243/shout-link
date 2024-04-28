@@ -2,7 +2,7 @@ package com.seong.shoutlink.global.config;
 
 import com.seong.shoutlink.domain.common.EventPublisher;
 import com.seong.shoutlink.domain.domain.service.DomainUseCase;
-import com.seong.shoutlink.domain.linkbundle.service.LinkBundleUseCase;
+import com.seong.shoutlink.domain.link.service.LinkBundleUseCase;
 import com.seong.shoutlink.domain.tag.service.TagUseCase;
 import com.seong.shoutlink.global.event.DomainEventListener;
 import com.seong.shoutlink.global.event.LinkBundleEventListener;

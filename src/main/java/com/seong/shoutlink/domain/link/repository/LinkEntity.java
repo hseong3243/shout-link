@@ -4,7 +4,7 @@ import com.seong.shoutlink.domain.common.BaseEntity;
 import com.seong.shoutlink.domain.domain.Domain;
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
-import com.seong.shoutlink.domain.linkbundle.LinkBundle;
+import com.seong.shoutlink.domain.link.LinkBundle;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

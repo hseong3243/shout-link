@@ -2,7 +2,7 @@ package com.seong.shoutlink.domain.tag.service.ai;
 
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.LinkBundleAndLinks;
-import com.seong.shoutlink.domain.linkbundle.LinkBundle;
+import com.seong.shoutlink.domain.link.LinkBundle;
 import java.util.List;
 
 public record GenerateAutoTagCommand(List<AutoTagLinkBundle> linkBundles, int generateTagCount) {

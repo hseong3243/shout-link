@@ -9,7 +9,7 @@ import com.seong.shoutlink.domain.auth.service.AuthService;
 import com.seong.shoutlink.domain.domain.service.DomainService;
 import com.seong.shoutlink.domain.hub.service.HubService;
 import com.seong.shoutlink.domain.link.service.LinkService;
-import com.seong.shoutlink.domain.linkbundle.service.LinkBundleService;
+import com.seong.shoutlink.domain.link.service.LinkBundleService;
 import com.seong.shoutlink.domain.member.MemberRole;
 import com.seong.shoutlink.domain.member.service.MemberService;
 import com.seong.shoutlink.fixture.AuthFixture;

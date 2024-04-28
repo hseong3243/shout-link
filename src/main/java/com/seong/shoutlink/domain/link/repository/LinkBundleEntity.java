@@ -1,10 +1,10 @@
-package com.seong.shoutlink.domain.linkbundle.repository;
+package com.seong.shoutlink.domain.link.repository;
 
 import com.seong.shoutlink.domain.common.BaseEntity;
 import com.seong.shoutlink.domain.hub.Hub;
-import com.seong.shoutlink.domain.linkbundle.HubLinkBundle;
-import com.seong.shoutlink.domain.linkbundle.LinkBundle;
-import com.seong.shoutlink.domain.linkbundle.MemberLinkBundle;
+import com.seong.shoutlink.domain.link.HubLinkBundle;
+import com.seong.shoutlink.domain.link.LinkBundle;
+import com.seong.shoutlink.domain.link.MemberLinkBundle;
 import com.seong.shoutlink.domain.member.Member;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;

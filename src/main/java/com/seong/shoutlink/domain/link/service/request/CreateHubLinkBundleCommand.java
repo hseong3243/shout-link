@@ -1,4 +1,4 @@
-package com.seong.shoutlink.domain.linkbundle.service.request;
+package com.seong.shoutlink.domain.link.service.request;
 
 public record CreateHubLinkBundleCommand(
     Long hubId,

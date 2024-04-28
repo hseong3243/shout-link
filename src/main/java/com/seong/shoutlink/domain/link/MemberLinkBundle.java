@@ -1,4 +1,4 @@
-package com.seong.shoutlink.domain.linkbundle;
+package com.seong.shoutlink.domain.link;
 
 import com.seong.shoutlink.domain.member.Member;
 import lombok.Getter;

@@ -2,9 +2,9 @@ package com.seong.shoutlink.global.event;
 
 import com.seong.shoutlink.domain.member.service.event.CreateMemberEvent;
 import com.seong.shoutlink.domain.hub.service.event.CreateHubEvent;
-import com.seong.shoutlink.domain.linkbundle.service.LinkBundleUseCase;
-import com.seong.shoutlink.domain.linkbundle.service.request.CreateHubLinkBundleCommand;
-import com.seong.shoutlink.domain.linkbundle.service.response.CreateLinkBundleCommand;
+import com.seong.shoutlink.domain.link.service.LinkBundleUseCase;
+import com.seong.shoutlink.domain.link.service.request.CreateHubLinkBundleCommand;
+import com.seong.shoutlink.domain.link.service.response.CreateLinkBundleCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

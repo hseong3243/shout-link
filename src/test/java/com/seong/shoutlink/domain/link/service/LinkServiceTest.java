@@ -20,7 +20,7 @@ import com.seong.shoutlink.domain.link.service.response.CreateHubLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.CreateLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.DeleteLinkResponse;
 import com.seong.shoutlink.domain.link.service.response.FindLinksResponse;
-import com.seong.shoutlink.domain.linkbundle.LinkBundle;
+import com.seong.shoutlink.domain.link.LinkBundle;
 import com.seong.shoutlink.domain.linkbundle.repository.StubLinkBundleRepository;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.MemberRole;

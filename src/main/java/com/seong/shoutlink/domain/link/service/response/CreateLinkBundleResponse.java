@@ -1,4 +1,4 @@
-package com.seong.shoutlink.domain.linkbundle.service.response;
+package com.seong.shoutlink.domain.link.service.response;
 
 public record CreateLinkBundleResponse(Long linkBundleId) {
 

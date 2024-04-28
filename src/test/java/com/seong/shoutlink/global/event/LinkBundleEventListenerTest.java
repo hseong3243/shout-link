@@ -6,7 +6,7 @@ import com.seong.shoutlink.base.BaseIntegrationTest;
 import com.seong.shoutlink.domain.hub.service.HubService;
 import com.seong.shoutlink.domain.hub.service.request.CreateHubCommand;
 import com.seong.shoutlink.domain.hub.service.response.CreateHubResponse;
-import com.seong.shoutlink.domain.linkbundle.repository.LinkBundleEntity;
+import com.seong.shoutlink.domain.link.repository.LinkBundleEntity;
 import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.service.MemberRepository;
 import com.seong.shoutlink.domain.member.service.MemberService;
