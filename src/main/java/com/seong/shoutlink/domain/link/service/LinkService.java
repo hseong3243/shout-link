@@ -5,7 +5,7 @@ import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.service.HubRepository;
-import com.seong.shoutlink.domain.hubmember.service.HubMemberRepository;
+import com.seong.shoutlink.domain.hub.service.HubMemberRepository;
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
 import com.seong.shoutlink.domain.link.service.event.CreateHubLinkEvent;

@@ -1,4 +1,4 @@
-package com.seong.shoutlink.domain.hubmember.repository;
+package com.seong.shoutlink.domain.hub.repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,24 +13,24 @@ public interface HubMemberJpaRepository extends JpaRepository<HubMemberEntity, L
     @Query("select hm from HubMemberEntity hm "
         + "join hm.hubEntity h "
         + "where h.hubId = :hubId "
-        + "and hm.hubMemberRole = com.seong.shoutlink.domain.hubmember.HubMemberRole.MASTER")
+        + "and hm.hubMemberRole = com.seong.shoutlink.domain.hub.repository.HubMemberRole.MASTER")
     Optional<HubMemberEntity> findHubWithMaster(@Param("hubId") Long hubId);
 
     @Query("select hm from HubMemberEntity hm "
         + "join fetch hm.hubEntity h "
-        + "where hm.hubMemberRole = com.seong.shoutlink.domain.hubmember.HubMemberRole.MASTER")
+        + "where hm.hubMemberRole = com.seong.shoutlink.domain.hub.repository.HubMemberRole.MASTER")
     Page<HubMemberEntity> findHubs(PageRequest pageRequest);
 
     @Query("select hm from HubMemberEntity hm "
         + "join fetch hm.hubEntity h "
         + "where hm.memberId=:memberId "
-        + "and hm.hubMemberRole = com.seong.shoutlink.domain.hubmember.HubMemberRole.MASTER")
+        + "and hm.hubMemberRole = com.seong.shoutlink.domain.hub.repository.HubMemberRole.MASTER")
     Page<HubMemberEntity> findMemberHubs(@Param("memberId") Long memberId, PageRequest pageRequest);
 
     @Query("select hm from HubTagEntity t "
         + "join HubMemberEntity hm on hm.hubEntity.hubId = t.hubId "
         + "join fetch hm.hubEntity "
         + "where t.tagId in :tagIds "
-        + "and hm.hubMemberRole = com.seong.shoutlink.domain.hubmember.HubMemberRole.MASTER")
+        + "and hm.hubMemberRole = com.seong.shoutlink.domain.hub.repository.HubMemberRole.MASTER")
     Page<HubMemberEntity> findHubsContainsTagIds(@Param("tagIds") List<Long> tagIds, PageRequest pageRequest);
 }
