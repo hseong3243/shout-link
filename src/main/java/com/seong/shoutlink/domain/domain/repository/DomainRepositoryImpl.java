@@ -29,8 +29,10 @@ public class DomainRepositoryImpl implements DomainRepository {
 
     @Override
     public Domain save(Domain domain) {
-        return domainJpaRepository.save(DomainEntity.create(domain))
+        Domain savedDomain = domainJpaRepository.save(DomainEntity.create(domain))
             .toDomain();
+        domainCacheRepository.insert(savedDomain.getRootDomain());
+        return savedDomain;
     }
 
     @Override
