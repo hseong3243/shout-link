@@ -1,46 +1,46 @@
 package com.seong.shoutlink.domain.common;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
 
 @Getter
 public class Trie {
 
-    @Getter
     static class Node {
 
         private final char c;
-        private final Map<Character, Node> children = new HashMap<>();
+        private final Map<Character, Node> children = new ConcurrentHashMap<>();
         private boolean isWord;
 
         public Node(char c) {
             this.c = c;
         }
 
-        public void setWord(boolean word) {
-            isWord = word;
+        public void settingWord() {
+            isWord = true;
         }
 
         public boolean hasChildren(char c) {
             return children.containsKey(c);
         }
 
-        public boolean isWord() {
-            return isWord;
+        public Node nextNode(char c) {
+            children.putIfAbsent(c, new Node(c));
+            return children.get(c);
         }
 
         public void addSuggestions(String word, List<String> suggestions, int count) {
+            if(isWord) {
+                suggestions.add(word);
+            }
+            if(suggestions.size() >= count) {
+                return;
+            }
             children.forEach((character, childNode) -> {
                 String suggestionsWord = word + character;
-                if (childNode.isWord()) {
-                    suggestions.add(suggestionsWord);
-                }
-                if (suggestions.size() >= count) {
-                    return;
-                }
                 childNode.addSuggestions(suggestionsWord, suggestions, count);
             });
         }
@@ -53,22 +53,19 @@ public class Trie {
 
     private final Node root = new Node(' ');
 
-    public synchronized void insert(String word) {
-        if(word.length() > MAX_WORD_LENGTH) {
+    public void insert(String word) {
+        if (word.length() > MAX_WORD_LENGTH) {
             return;
         }
-
         Node currentNode = root;
         for (char c : word.toCharArray()) {
-            Map<Character, Node> children = currentNode.getChildren();
-            currentNode = children.getOrDefault(c, new Node(c));
-            children.put(c, currentNode);
+            currentNode = currentNode.nextNode(c);
         }
-        currentNode.setWord(true);
+        currentNode.settingWord();
     }
 
     public List<String> search(String prefix, int count) {
-        if(prefix.length() > MAX_PREFIX_LENGTH) {
+        if (prefix.length() > MAX_PREFIX_LENGTH) {
             prefix = prefix.substring(ZERO, MAX_PREFIX_LENGTH);
         }
         Node currentNode = root;
@@ -76,17 +73,13 @@ public class Trie {
             if (!currentNode.hasChildren(c)) {
                 return List.of();
             }
-            Map<Character, Node> children = currentNode.getChildren();
-            currentNode = children.get(c);
+            currentNode = currentNode.nextNode(c);
         }
         return findWords(prefix, currentNode, Math.min(MAX_SUGGESTION, count));
     }
 
     private List<String> findWords(String word, Node currentNode, int count) {
         List<String> suggestions = new ArrayList<>();
-        if (currentNode.isWord()) {
-            suggestions.add(word);
-        }
         currentNode.addSuggestions(word, suggestions, count);
         return suggestions;
     }
