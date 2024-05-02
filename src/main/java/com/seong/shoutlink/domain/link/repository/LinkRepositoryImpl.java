@@ -3,7 +3,7 @@ package com.seong.shoutlink.domain.link.repository;
 import com.seong.shoutlink.domain.domain.Domain;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.link.Link;
-import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
+import com.seong.shoutlink.domain.link.LinkBundleAndLink;
 import com.seong.shoutlink.domain.link.service.LinkRepository;
 import com.seong.shoutlink.domain.link.service.result.LinkPaginationResult;
 import com.seong.shoutlink.domain.link.LinkBundle;
@@ -24,8 +24,8 @@ public class LinkRepositoryImpl implements LinkRepository {
     private final LinkJpaRepository linkJpaRepository;
 
     @Override
-    public Long save(LinkWithLinkBundle linkWithLinkBundle) {
-        LinkEntity linkEntity = linkJpaRepository.save(LinkEntity.create(linkWithLinkBundle));
+    public Long save(LinkBundleAndLink linkBundleAndLink) {
+        LinkEntity linkEntity = linkJpaRepository.save(LinkEntity.create(linkBundleAndLink));
         return linkEntity.getLinkId();
     }
 
@@ -58,7 +58,7 @@ public class LinkRepositoryImpl implements LinkRepository {
     }
 
     @Override
-    public List<LinkWithLinkBundle> findAllByLinkBundlesIn(List<LinkBundle> linkBundles) {
+    public List<LinkBundleAndLink> findAllByLinkBundlesIn(List<LinkBundle> linkBundles) {
         List<Long> linkBundleIds = linkBundles.stream()
             .map(LinkBundle::getLinkBundleId)
             .toList();
@@ -66,7 +66,7 @@ public class LinkRepositoryImpl implements LinkRepository {
         Map<Long, LinkBundle> linkBundleIdAndLinkBundle = linkBundles.stream()
             .collect(Collectors.toMap(LinkBundle::getLinkBundleId, linkBundle -> linkBundle));
         return linkEntities.stream()
-            .map(linkEntity -> new LinkWithLinkBundle(linkEntity.toDomain(),
+            .map(linkEntity -> new LinkBundleAndLink(linkEntity.toDomain(),
                 linkBundleIdAndLinkBundle.get(linkEntity.getLinkBundleId())))
             .toList();
     }

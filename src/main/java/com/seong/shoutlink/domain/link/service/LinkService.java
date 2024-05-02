@@ -7,7 +7,7 @@ import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.service.HubRepository;
 import com.seong.shoutlink.domain.hub.service.HubMemberRepository;
 import com.seong.shoutlink.domain.link.Link;
-import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
+import com.seong.shoutlink.domain.link.LinkBundleAndLink;
 import com.seong.shoutlink.domain.link.service.event.CreateHubLinkEvent;
 import com.seong.shoutlink.domain.link.service.event.CreateMemberLinkEvent;
 import com.seong.shoutlink.domain.link.service.request.CreateHubLinkCommand;
@@ -47,8 +47,8 @@ public class LinkService implements LinkUseCase {
         Member member = getMember(command.memberId());
         LinkBundle linkBundle = getLinkBundle(command.linkBundleId(), member);
         Link link = new Link(command.url(), command.description());
-        LinkWithLinkBundle linkWithLinkBundle = new LinkWithLinkBundle(link, linkBundle);
-        Long linkId = linkRepository.save(linkWithLinkBundle);
+        LinkBundleAndLink linkBundleAndLink = new LinkBundleAndLink(link, linkBundle);
+        Long linkId = linkRepository.save(linkBundleAndLink);
         eventPublisher.publishEvent(
             new CreateMemberLinkEvent(linkId, link.getUrl(), member.getMemberId()));
         return new CreateLinkResponse(linkId);
@@ -85,7 +85,7 @@ public class LinkService implements LinkUseCase {
 
         LinkBundle hubLinkBundle = getHubLinkBundle(command.linkBundleId(), hub);
         Link link = new Link(command.url(), command.description());
-        Long linkId = linkRepository.save(new LinkWithLinkBundle(link, hubLinkBundle));
+        Long linkId = linkRepository.save(new LinkBundleAndLink(link, hubLinkBundle));
         eventPublisher.publishEvent(new CreateHubLinkEvent(linkId, link.getUrl(), hub.getHubId()));
         return new CreateHubLinkResponse(linkId);
     }

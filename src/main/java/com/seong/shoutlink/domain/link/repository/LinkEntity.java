@@ -3,7 +3,7 @@ package com.seong.shoutlink.domain.link.repository;
 import com.seong.shoutlink.domain.common.BaseEntity;
 import com.seong.shoutlink.domain.domain.Domain;
 import com.seong.shoutlink.domain.link.Link;
-import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
+import com.seong.shoutlink.domain.link.LinkBundleAndLink;
 import com.seong.shoutlink.domain.link.LinkBundle;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,9 +35,9 @@ public class LinkEntity extends BaseEntity {
         this.linkBundleId = linkBundleId;
     }
 
-    public static LinkEntity create(LinkWithLinkBundle linkWithLinkBundle) {
-        Link link = linkWithLinkBundle.getLink();
-        LinkBundle linkBundle = linkWithLinkBundle.getLinkBundle();
+    public static LinkEntity create(LinkBundleAndLink linkBundleAndLink) {
+        Link link = linkBundleAndLink.getLink();
+        LinkBundle linkBundle = linkBundleAndLink.getLinkBundle();
         return new LinkEntity(
             link.getUrl(),
             link.getDescription(),

@@ -3,12 +3,12 @@ package com.seong.shoutlink.domain.link;
 import lombok.Getter;
 
 @Getter
-public class LinkWithLinkBundle {
+public class LinkBundleAndLink {
 
     private final Link link;
     private final LinkBundle linkBundle;
 
-    public LinkWithLinkBundle(Link link, LinkBundle linkBundle) {
+    public LinkBundleAndLink(Link link, LinkBundle linkBundle) {
         this.link = link;
         this.linkBundle = linkBundle;
     }
