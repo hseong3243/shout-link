@@ -9,7 +9,7 @@ import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hub.service.HubRepository;
 import com.seong.shoutlink.domain.link.LinkBundleAndLinks;
-import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
+import com.seong.shoutlink.domain.link.LinkBundleAndLink;
 import com.seong.shoutlink.domain.link.service.LinkRepository;
 import com.seong.shoutlink.domain.link.LinkBundle;
 import com.seong.shoutlink.domain.link.service.LinkBundleRepository;
@@ -48,7 +48,7 @@ public class TagService implements TagUseCase {
         Hub hub = getHub(command.hubId());
         checkHubTagIsCreatedWithinADay(hub);
         List<LinkBundle> hubLinkBundles = linkBundleRepository.findHubLinkBundles(hub);
-        List<LinkWithLinkBundle> links = linkRepository.findAllByLinkBundlesIn(hubLinkBundles);
+        List<LinkBundleAndLink> links = linkRepository.findAllByLinkBundlesIn(hubLinkBundles);
 
         List<LinkBundleAndLinks> linkBundlesAndLinks = groupingLinks(links);
         int generateTagCount = calculateNumberOfTag(links);
@@ -79,7 +79,7 @@ public class TagService implements TagUseCase {
         Member member = getMember(command.memberId());
         checkMemberTagIsCreatedWithinADay(member);
         List<LinkBundle> linkBundles = linkBundleRepository.findLinkBundlesThatMembersHave(member);
-        List<LinkWithLinkBundle> links = linkRepository.findAllByLinkBundlesIn(linkBundles);
+        List<LinkBundleAndLink> links = linkRepository.findAllByLinkBundlesIn(linkBundles);
 
         List<LinkBundleAndLinks> linkBundleAndLinks = groupingLinks(links);
         int generateTagCount = calculateNumberOfTag(links);
@@ -106,17 +106,17 @@ public class TagService implements TagUseCase {
             });
     }
 
-    private List<LinkBundleAndLinks> groupingLinks(List<LinkWithLinkBundle> links) {
+    private List<LinkBundleAndLinks> groupingLinks(List<LinkBundleAndLink> links) {
         return links.stream()
             .collect(groupingBy(
-                LinkWithLinkBundle::getLinkBundle,
-                mapping(LinkWithLinkBundle::getLink, toList())))
+                LinkBundleAndLink::getLinkBundle,
+                mapping(LinkBundleAndLink::getLink, toList())))
             .entrySet().stream()
             .map(entry -> new LinkBundleAndLinks(entry.getKey(), entry.getValue()))
             .toList();
     }
 
-    private int calculateNumberOfTag(List<LinkWithLinkBundle> links) {
+    private int calculateNumberOfTag(List<LinkBundleAndLink> links) {
         int totalLinkCount = links.size();
         if (totalLinkCount < MINIMUM_TAG_CONDITION
             || totalLinkCount % MINIMUM_TAG_CONDITION != ZERO) {

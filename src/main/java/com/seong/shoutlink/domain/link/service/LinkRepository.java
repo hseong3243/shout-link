@@ -3,7 +3,7 @@ package com.seong.shoutlink.domain.link.service;
 import com.seong.shoutlink.domain.domain.Domain;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.link.Link;
-import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
+import com.seong.shoutlink.domain.link.LinkBundleAndLink;
 import com.seong.shoutlink.domain.link.service.result.LinkPaginationResult;
 import com.seong.shoutlink.domain.link.LinkBundle;
 import com.seong.shoutlink.domain.member.Member;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface LinkRepository {
 
-    Long save(LinkWithLinkBundle linkWithLinkBundle);
+    Long save(LinkBundleAndLink linkBundleAndLink);
 
     LinkPaginationResult findLinks(LinkBundle linkBundle, int page, int size);
 
@@ -20,7 +20,7 @@ public interface LinkRepository {
 
     Optional<Link> findById(Long linkId);
 
-    List<LinkWithLinkBundle> findAllByLinkBundlesIn(List<LinkBundle> linkBundles);
+    List<LinkBundleAndLink> findAllByLinkBundlesIn(List<LinkBundle> linkBundles);
 
     Optional<Link> findMemberLink(Long linkId, Member member);
 

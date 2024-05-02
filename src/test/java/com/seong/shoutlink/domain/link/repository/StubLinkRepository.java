@@ -3,7 +3,7 @@ package com.seong.shoutlink.domain.link.repository;
 import com.seong.shoutlink.domain.domain.Domain;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.link.Link;
-import com.seong.shoutlink.domain.link.LinkWithLinkBundle;
+import com.seong.shoutlink.domain.link.LinkBundleAndLink;
 import com.seong.shoutlink.domain.link.service.LinkRepository;
 import com.seong.shoutlink.domain.link.service.result.LinkPaginationResult;
 import com.seong.shoutlink.domain.link.LinkBundle;
@@ -33,9 +33,9 @@ public class StubLinkRepository implements LinkRepository {
     }
 
     @Override
-    public Long save(LinkWithLinkBundle linkWithLinkBundle) {
+    public Long save(LinkBundleAndLink linkBundleAndLink) {
         long nextId = getNextId();
-        memory.put(nextId, linkWithLinkBundle.getLink());
+        memory.put(nextId, linkBundleAndLink.getLink());
         return nextId;
     }
 
@@ -63,12 +63,12 @@ public class StubLinkRepository implements LinkRepository {
     }
 
     @Override
-    public List<LinkWithLinkBundle> findAllByLinkBundlesIn(List<LinkBundle> linkBundles) {
-        List<LinkWithLinkBundle> result = new ArrayList<>();
+    public List<LinkBundleAndLink> findAllByLinkBundlesIn(List<LinkBundle> linkBundles) {
+        List<LinkBundleAndLink> result = new ArrayList<>();
         List<Link> links = memory.values().stream().toList();
         for(int i=0; i<links.size(); i++) {
             LinkBundle linkBundle = linkBundles.get(i % linkBundles.size());
-            result.add(new LinkWithLinkBundle(links.get(i), linkBundle));
+            result.add(new LinkBundleAndLink(links.get(i), linkBundle));
         }
         return result;
     }
