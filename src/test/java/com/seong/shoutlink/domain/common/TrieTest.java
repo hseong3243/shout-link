@@ -15,6 +15,17 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 class TrieTest {
 
+    private final String[] words = {
+        "apple", "ant", "arm", "anchor", "angle",
+        "alphabet", "album", "alien", "apron", "atom",
+        "axe", "art", "architect", "area", "arena",
+        "altitude", "almond", "aroma", "arrow", "ash",
+        "auction", "audio", "attic", "author", "award",
+        "charge", "crown", "cross", "cup", "cap",
+        "crop", "card", "chip", "case", "camp",
+        "club", "court", "crash", "class", "corner"
+    };
+
     @Nested
     @DisplayName("insert 호출 시")
     class InsertTest {
@@ -58,8 +69,8 @@ class TrieTest {
         void concurrentInsert() throws InterruptedException {
             //given
             Trie trie = new Trie();
-            String prefix = "asdf";
-            int threadPoolSize = 26;
+            String prefix = "";
+            int threadPoolSize = words.length;
             ExecutorService service = Executors.newFixedThreadPool(threadPoolSize);
             CountDownLatch latch = new CountDownLatch(threadPoolSize);
 
@@ -68,9 +79,7 @@ class TrieTest {
                 int finalI = i;
                 service.submit(() -> {
                     try {
-                        StringBuilder sb = new StringBuilder(prefix);
-                        sb.append((char) ('a' + finalI));
-                        trie.insert(sb.toString());
+                        trie.insert(words[finalI]);
                     } finally {
                         latch.countDown();
                     }

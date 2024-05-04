@@ -3,8 +3,8 @@ package com.seong.shoutlink.domain.common;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.Getter;
 
 @Getter
@@ -12,16 +12,11 @@ public class Trie {
 
     static class Node {
 
-        private final char c;
         private final Map<Character, Node> children = new ConcurrentHashMap<>();
-        private boolean isWord;
-
-        public Node(char c) {
-            this.c = c;
-        }
+        private final AtomicBoolean isWord = new AtomicBoolean(false);
 
         public void settingWord() {
-            isWord = true;
+            isWord.compareAndSet(false, true);
         }
 
         public boolean hasChildren(char c) {
@@ -29,16 +24,14 @@ public class Trie {
         }
 
         public Node nextNode(char c) {
-            Node nextNode = children.putIfAbsent(c, new Node(c));
-            return Optional.ofNullable(nextNode)
-                .orElseGet(() -> children.get(c));
+            return children.computeIfAbsent(c, key -> new Node());
         }
 
         public void addSuggestions(String word, List<String> suggestions, int count) {
-            if(isWord) {
+            if (isWord.get()) {
                 suggestions.add(word);
             }
-            if(suggestions.size() >= count) {
+            if (suggestions.size() >= count) {
                 return;
             }
             children.forEach((character, childNode) -> {
@@ -53,7 +46,7 @@ public class Trie {
     private static final int MAX_PREFIX_LENGTH = 30;
     public static final int ZERO = 0;
 
-    private final Node root = new Node(' ');
+    private final Node root = new Node();
 
     public void insert(String word) {
         if (word.length() > MAX_WORD_LENGTH) {
