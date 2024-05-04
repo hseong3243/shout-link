@@ -12,13 +12,8 @@ public class Trie {
 
     static class Node {
 
-        private final char c;
         private final Map<Character, Node> children = new ConcurrentHashMap<>();
         private boolean isWord;
-
-        public Node(char c) {
-            this.c = c;
-        }
 
         public void settingWord() {
             isWord = true;
@@ -29,16 +24,16 @@ public class Trie {
         }
 
         public Node nextNode(char c) {
-            Node nextNode = children.putIfAbsent(c, new Node(c));
+            Node nextNode = children.putIfAbsent(c, new Node());
             return Optional.ofNullable(nextNode)
                 .orElseGet(() -> children.get(c));
         }
 
         public void addSuggestions(String word, List<String> suggestions, int count) {
-            if(isWord) {
+            if (isWord) {
                 suggestions.add(word);
             }
-            if(suggestions.size() >= count) {
+            if (suggestions.size() >= count) {
                 return;
             }
             children.forEach((character, childNode) -> {
@@ -53,7 +48,7 @@ public class Trie {
     private static final int MAX_PREFIX_LENGTH = 30;
     public static final int ZERO = 0;
 
-    private final Node root = new Node(' ');
+    private final Node root = new Node();
 
     public void insert(String word) {
         if (word.length() > MAX_WORD_LENGTH) {
