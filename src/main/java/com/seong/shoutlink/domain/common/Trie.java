@@ -3,8 +3,8 @@ package com.seong.shoutlink.domain.common;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.Getter;
 
 @Getter
@@ -13,10 +13,10 @@ public class Trie {
     static class Node {
 
         private final Map<Character, Node> children = new ConcurrentHashMap<>();
-        private boolean isWord;
+        private final AtomicBoolean isWord = new AtomicBoolean(false);
 
         public void settingWord() {
-            isWord = true;
+            isWord.compareAndSet(false, true);
         }
 
         public boolean hasChildren(char c) {
@@ -24,13 +24,11 @@ public class Trie {
         }
 
         public Node nextNode(char c) {
-            Node nextNode = children.putIfAbsent(c, new Node());
-            return Optional.ofNullable(nextNode)
-                .orElseGet(() -> children.get(c));
+            return children.computeIfAbsent(c, key -> new Node());
         }
 
         public void addSuggestions(String word, List<String> suggestions, int count) {
-            if (isWord) {
+            if (isWord.get()) {
                 suggestions.add(word);
             }
             if (suggestions.size() >= count) {
