@@ -53,7 +53,7 @@ class LinkBundleEventListenerTest extends BaseIntegrationTest {
 
             //then
             LinkBundleEntity linkBundleEntity = em.createQuery(
-                    "select mlb from MemberLinkBundleEntity mlb where mlb.memberId = :memberId",
+                    "select mlb from MemberLinkBundleEntity mlb where mlb.member.memberId = :memberId",
                     LinkBundleEntity.class)
                 .setParameter("memberId", member.getMemberId())
                 .getSingleResult();
@@ -79,7 +79,7 @@ class LinkBundleEventListenerTest extends BaseIntegrationTest {
             //then
             LinkBundleEntity linkBundleEntity = em.createQuery(
                     "select hlb from HubLinkBundleEntity hlb "
-                        + "where hlb.hubId = :hubId", LinkBundleEntity.class)
+                        + "where hlb.hub.hubId = :hubId", LinkBundleEntity.class)
                 .setParameter("hubId", response.hubId())
                 .getSingleResult();
             assertThat(linkBundleEntity.getDescription()).isEqualTo("기본");

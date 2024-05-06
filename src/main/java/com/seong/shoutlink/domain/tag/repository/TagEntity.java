@@ -1,10 +1,8 @@
 package com.seong.shoutlink.domain.tag.repository;
 
 import com.seong.shoutlink.domain.common.BaseEntity;
-import com.seong.shoutlink.domain.hub.Hub;
-import com.seong.shoutlink.domain.member.Member;
-import com.seong.shoutlink.domain.tag.HubTag;
-import com.seong.shoutlink.domain.tag.MemberTag;
+import com.seong.shoutlink.domain.hub.repository.HubEntity;
+import com.seong.shoutlink.domain.member.repository.MemberEntity;
 import com.seong.shoutlink.domain.tag.Tag;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
@@ -36,16 +34,12 @@ public abstract class TagEntity extends BaseEntity {
         this.name = name;
     }
 
-    public static TagEntity from(HubTag hubTag) {
-        Hub hub = hubTag.getHub();
-        Tag tag = hubTag.getTag();
-        return new HubTagEntity(tag.getName(), hub.getHubId());
+    public static TagEntity create(Tag tag, HubEntity hubEntity) {
+        return new HubTagEntity(tag.getName(), hubEntity);
     }
 
-    public static TagEntity from(MemberTag memberTag) {
-        Member member = memberTag.getMember();
-        Tag tag = memberTag.getTag();
-        return new MemberTagEntity(tag.getName(), member.getMemberId());
+    public static TagEntity create(Tag tag, MemberEntity memberEntity) {
+        return new MemberTagEntity(tag.getName(), memberEntity);
     }
 
     public Tag toDomain() {

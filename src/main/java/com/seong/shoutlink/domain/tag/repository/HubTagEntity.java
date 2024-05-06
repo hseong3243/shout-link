@@ -1,7 +1,11 @@
 package com.seong.shoutlink.domain.tag.repository;
 
+import com.seong.shoutlink.domain.hub.repository.HubEntity;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +16,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class HubTagEntity extends TagEntity {
 
-    private Long hubId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hub_id")
+    private HubEntity hub;
 
-    public HubTagEntity(String name, Long hubId) {
+    public HubTagEntity(String name, HubEntity hubEntity) {
         super(name);
-        this.hubId = hubId;
+        this.hub = hubEntity;
+    }
+
+    public Long getHubId() {
+        return hub.getHubId();
     }
 }

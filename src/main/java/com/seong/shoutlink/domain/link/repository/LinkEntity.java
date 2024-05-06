@@ -3,12 +3,14 @@ package com.seong.shoutlink.domain.link.repository;
 import com.seong.shoutlink.domain.common.BaseEntity;
 import com.seong.shoutlink.domain.domain.Domain;
 import com.seong.shoutlink.domain.link.Link;
-import com.seong.shoutlink.domain.link.LinkBundleAndLink;
-import com.seong.shoutlink.domain.link.LinkBundle;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,24 +26,29 @@ public class LinkEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long linkId;
 
+    @Column(nullable = false)
     private String url;
+
+    @Column
     private String description;
-    private Long linkBundleId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "link_bundle_id", nullable = false)
+    private LinkBundleEntity linkBundle;
+
     private Long domainId;
 
-    private LinkEntity(String url, String description, Long linkBundleId) {
+    private LinkEntity(String url, String description, LinkBundleEntity linkBundleEntity) {
         this.url = url;
         this.description = description;
-        this.linkBundleId = linkBundleId;
+        this.linkBundle = linkBundleEntity;
     }
 
-    public static LinkEntity create(LinkBundleAndLink linkBundleAndLink) {
-        Link link = linkBundleAndLink.getLink();
-        LinkBundle linkBundle = linkBundleAndLink.getLinkBundle();
+    public static LinkEntity create(Link link, LinkBundleEntity linkBundleEntity) {
         return new LinkEntity(
             link.getUrl(),
             link.getDescription(),
-            linkBundle.getLinkBundleId());
+            linkBundleEntity);
     }
 
     public Link toDomain() {
@@ -52,7 +59,7 @@ public class LinkEntity extends BaseEntity {
         domainId = domain.getDomainId();
     }
 
-    public boolean isContainsIn(LinkBundle linkBundle) {
-        return linkBundleId.equals(linkBundle.getLinkBundleId());
+    public Long getLinkBundleId() {
+        return linkBundle.getLinkBundleId();
     }
 }

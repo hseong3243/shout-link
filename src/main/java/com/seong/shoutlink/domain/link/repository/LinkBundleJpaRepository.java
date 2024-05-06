@@ -11,25 +11,25 @@ public interface LinkBundleJpaRepository extends JpaRepository<LinkBundleEntity,
 
     @Modifying
     @Query("update MemberLinkBundleEntity lb set lb.isDefault = false"
-        + " where lb.isDefault = true and lb.memberId = :memberId")
+        + " where lb.isDefault = true and lb.member.memberId = :memberId")
     void updateDefaultBundleFalse(@Param("memberId") Long memberId);
 
     @Query("select lb from MemberLinkBundleEntity lb "
-        + "where lb.memberId = :memberId")
+        + "where lb.member.memberId = :memberId")
     List<LinkBundleEntity> findAllByMemberId(@Param("memberId") Long memberId);
 
     @Query("select lb from HubLinkBundleEntity lb "
-        + "where lb.linkBundleId = :linkBundleId and lb.hubId = :hubId")
+        + "where lb.linkBundleId = :linkBundleId and lb.hub.hubId = :hubId")
     Optional<LinkBundleEntity> findHubLinkBundle(
         @Param("linkBundleId") Long linkBundleId,
         @Param("hubId") Long hubId);
 
     @Query("select lb from HubLinkBundleEntity lb "
-        + "where lb.hubId = :hubId")
+        + "where lb.hub.hubId = :hubId")
     List<LinkBundleEntity> findAllByHubId(@Param("hubId") Long hubId);
 
     @Query("select lb from MemberLinkBundleEntity lb "
-        + "where lb.linkBundleId = :linkBundleId and lb.memberId = :memberId")
+        + "where lb.linkBundleId = :linkBundleId and lb.member.memberId = :memberId")
     Optional<LinkBundleEntity> findMemberLinkBundle(
         @Param("linkBundleId") Long linkBundleId,
         @Param("memberId") Long memberId);

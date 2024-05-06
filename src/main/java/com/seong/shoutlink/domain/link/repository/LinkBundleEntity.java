@@ -1,11 +1,9 @@
 package com.seong.shoutlink.domain.link.repository;
 
 import com.seong.shoutlink.domain.common.BaseEntity;
-import com.seong.shoutlink.domain.hub.Hub;
-import com.seong.shoutlink.domain.link.HubLinkBundle;
+import com.seong.shoutlink.domain.hub.repository.HubEntity;
 import com.seong.shoutlink.domain.link.LinkBundle;
-import com.seong.shoutlink.domain.link.MemberLinkBundle;
-import com.seong.shoutlink.domain.member.Member;
+import com.seong.shoutlink.domain.member.repository.MemberEntity;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,23 +38,19 @@ public abstract class LinkBundleEntity extends BaseEntity {
         this.isDefault = isDefault;
     }
 
-    public static LinkBundleEntity create(MemberLinkBundle memberLinkBundle) {
-        LinkBundle linkBundle = memberLinkBundle.getLinkBundle();
-        Member member = memberLinkBundle.getMember();
+    public static LinkBundleEntity create(LinkBundle linkBundle, MemberEntity memberEntity) {
         return new MemberLinkBundleEntity(
             linkBundle.getDescription(),
             linkBundle.isDefault(),
-            member.getMemberId()
+            memberEntity
         );
     }
 
-    public static LinkBundleEntity create(HubLinkBundle hubLinkBundle) {
-        LinkBundle linkBundle = hubLinkBundle.getLinkBundle();
-        Hub hub = hubLinkBundle.getHub();
+    public static LinkBundleEntity create(LinkBundle linkBundle, HubEntity hubEntity) {
         return new HubLinkBundleEntity(
             linkBundle.getDescription(),
             linkBundle.isDefault(),
-            hub.getHubId()
+            hubEntity
         );
     }
 

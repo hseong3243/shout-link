@@ -2,6 +2,7 @@ package com.seong.shoutlink.domain.hub.repository;
 
 import com.seong.shoutlink.domain.common.BaseEntity;
 import com.seong.shoutlink.domain.hub.Hub;
+import com.seong.shoutlink.domain.member.repository.MemberEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -27,33 +28,34 @@ public class HubMemberEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long hubMemberId;
 
-    @Column(nullable = false)
-    private Long memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false, updatable = false)
+    private MemberEntity member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hub_id", nullable = false, updatable = false)
-    private HubEntity hubEntity;
+    private HubEntity hub;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private HubMemberRole hubMemberRole;
 
-    public HubMemberEntity(Long memberId, HubEntity hubEntity, HubMemberRole hubMemberRole) {
-        this.memberId = memberId;
-        this.hubEntity = hubEntity;
+    public HubMemberEntity(MemberEntity memberEntity, HubEntity hubEntity, HubMemberRole hubMemberRole) {
+        this.member = memberEntity;
+        this.hub = hubEntity;
         this.hubMemberRole = hubMemberRole;
     }
 
-    public static HubMemberEntity create(HubEntity hubEntity, Long masterId) {
-        return new HubMemberEntity(masterId, hubEntity, HubMemberRole.MASTER);
+    public static HubMemberEntity create(MemberEntity memberEntity, HubEntity hubEntity) {
+        return new HubMemberEntity(memberEntity, hubEntity, HubMemberRole.MASTER);
     }
 
     public Hub toHub() {
         return new Hub(
-            hubEntity.getHubId(),
-            memberId,
-            hubEntity.getName(),
-            hubEntity.getDescription(),
-            hubEntity.isPrivate());
+            hub.getHubId(),
+            member.getMemberId(),
+            hub.getName(),
+            hub.getDescription(),
+            hub.isPrivate());
     }
 }

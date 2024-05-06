@@ -13,4 +13,8 @@ public class HubTag {
         this.hub = hub;
         this.tag = tag;
     }
+
+    public Long getHubId() {
+        return hub.getHubId();
+    }
 }
