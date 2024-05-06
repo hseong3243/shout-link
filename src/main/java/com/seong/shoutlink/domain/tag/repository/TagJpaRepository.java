@@ -10,25 +10,25 @@ import org.springframework.data.repository.query.Param;
 public interface TagJpaRepository extends JpaRepository<TagEntity, Long> {
 
     @Modifying
-    @Query("delete from HubTagEntity t where t.hubId=:hubId")
+    @Query("delete from HubTagEntity t where t.hub.hubId=:hubId")
     void deleteByHubId(@Param("hubId") Long hubId);
 
     @Query("select t from HubTagEntity t"
-        + " where t.hubId=:hubId"
+        + " where t.hub.hubId=:hubId"
         + " order by t.createdAt"
         + " limit 1")
     Optional<TagEntity> findLatestTagByHubId(Long hubId);
 
     @Query("select t from HubTagEntity t"
-        + " where t.hubId in :hubIds")
+        + " where t.hub.hubId in :hubIds")
     List<HubTagEntity> findTagsInHubIds(@Param("hubIds") List<Long> hubIds);
 
     @Modifying
-    @Query("delete from MemberTagEntity t where t.memberId=:memberId")
+    @Query("delete from MemberTagEntity t where t.member.memberId=:memberId")
     void deleteByMemberId(Long memberId);
 
     @Query("select t from MemberTagEntity t"
-        + " where t.memberId=:memberId"
+        + " where t.member.memberId=:memberId"
         + " order by t.createdAt"
         + " limit 1")
     Optional<TagEntity> findLatestTagByMemberId(Long memberId);

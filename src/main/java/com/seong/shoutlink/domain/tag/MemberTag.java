@@ -13,4 +13,8 @@ public class MemberTag {
         this.member = member;
         this.tag = tag;
     }
+
+    public Long getMemberId() {
+        return member.getMemberId();
+    }
 }

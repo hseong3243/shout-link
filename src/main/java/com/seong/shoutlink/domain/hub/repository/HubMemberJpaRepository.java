@@ -31,7 +31,7 @@ public interface HubMemberJpaRepository extends JpaRepository<HubMemberEntity, L
     Page<HubMemberEntity> findMemberHubs(@Param("memberId") Long memberId, PageRequest pageRequest);
 
     @Query("select hm from HubTagEntity t "
-        + "join HubMemberEntity hm on hm.hub.hubId = t.hubId "
+        + "join HubMemberEntity hm on hm.hub = t.hub "
         + "join fetch hm.hub h "
         + "join fetch hm.member m "
         + "where t.tagId in :tagIds "

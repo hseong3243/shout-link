@@ -1,7 +1,11 @@
 package com.seong.shoutlink.domain.tag.repository;
 
+import com.seong.shoutlink.domain.member.repository.MemberEntity;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +16,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberTagEntity extends TagEntity {
 
-    private Long memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private MemberEntity member;
 
-    public MemberTagEntity(String name, Long memberId) {
+    public MemberTagEntity(String name, MemberEntity memberEntity) {
         super(name);
-        this.memberId = memberId;
+        this.member = memberEntity;
     }
 }
