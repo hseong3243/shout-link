@@ -10,6 +10,7 @@ import com.seong.shoutlink.domain.link.LinkBundle;
 import com.seong.shoutlink.domain.member.Member;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +22,17 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class LinkRepositoryImpl implements LinkRepository {
 
+    private final LinkBundleJpaRepository linkBundleJpaRepository;
     private final LinkJpaRepository linkJpaRepository;
 
     @Override
     public Long save(LinkBundleAndLink linkBundleAndLink) {
-        LinkEntity linkEntity = linkJpaRepository.save(LinkEntity.create(linkBundleAndLink));
+        Link link = linkBundleAndLink.getLink();
+        LinkBundle linkBundle = linkBundleAndLink.getLinkBundle();
+        LinkBundleEntity linkBundleEntity = linkBundleJpaRepository.findById(
+                linkBundle.getLinkBundleId())
+            .orElseThrow(NoSuchElementException::new);
+        LinkEntity linkEntity = linkJpaRepository.save(LinkEntity.create(link, linkBundleEntity));
         return linkEntity.getLinkId();
     }
 
@@ -62,7 +69,7 @@ public class LinkRepositoryImpl implements LinkRepository {
         List<Long> linkBundleIds = linkBundles.stream()
             .map(LinkBundle::getLinkBundleId)
             .toList();
-        List<LinkEntity> linkEntities = linkJpaRepository.findAllByLinkBundleIdIn(linkBundleIds);
+        List<LinkEntity> linkEntities = linkJpaRepository.findAllByLinkBundleLinkBundleIdIn(linkBundleIds);
         Map<Long, LinkBundle> linkBundleIdAndLinkBundle = linkBundles.stream()
             .collect(Collectors.toMap(LinkBundle::getLinkBundleId, linkBundle -> linkBundle));
         return linkEntities.stream()

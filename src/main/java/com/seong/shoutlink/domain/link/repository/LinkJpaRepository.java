@@ -20,15 +20,15 @@ public interface LinkJpaRepository extends JpaRepository<LinkEntity, Long> {
         + " order by count(l.url) desc")
     Page<DomainLinkResult> findDomainLinks(@Param("domainId") Long domainId, Pageable pageable);
 
-    List<LinkEntity> findAllByLinkBundleIdIn(List<Long> linkBundleIds);
+    List<LinkEntity> findAllByLinkBundleLinkBundleIdIn(List<Long> linkBundleIds);
 
     @Query("select l from LinkEntity l "
-        + "join MemberLinkBundleEntity lb on l.linkBundleId = lb.linkBundleId "
+        + "join fetch MemberLinkBundleEntity lb "
         + "where l.linkId = :linkId and lb.member.memberId = :memberId")
     Optional<LinkEntity> findByIdAndMemberId(@Param("linkId") Long linkId, @Param("memberId") Long memberId);
 
     @Query("select l from LinkEntity l "
-        + "join HubLinkBundleEntity lb on l.linkBundleId = lb.linkBundleId "
+        + "join fetch HubLinkBundleEntity lb "
         + "where l.linkId = :linkId and lb.hub.hubId = :hubId")
     Optional<LinkEntity> findByIdAndHubId(@Param("linkId") Long linkId, @Param("hubId") Long hubId);
 }
