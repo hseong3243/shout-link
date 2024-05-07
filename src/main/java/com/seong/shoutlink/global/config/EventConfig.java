@@ -1,8 +1,8 @@
 package com.seong.shoutlink.global.config;
 
 import com.seong.shoutlink.domain.common.EventPublisher;
-import com.seong.shoutlink.domain.domain.repository.DomainRepositoryImpl;
-import com.seong.shoutlink.domain.domain.service.DomainUseCase;
+import com.seong.shoutlink.domain.linkdomain.repository.LinkDomainRepositoryImpl;
+import com.seong.shoutlink.domain.linkdomain.service.LinkDomainUseCase;
 import com.seong.shoutlink.domain.link.service.LinkBundleUseCase;
 import com.seong.shoutlink.domain.tag.service.TagUseCase;
 import com.seong.shoutlink.global.event.DomainEventListener;
@@ -28,9 +28,9 @@ public class EventConfig {
 
     @Bean
     public DomainEventListener domainEventListener(
-        DomainUseCase domainUseCase,
-        DomainRepositoryImpl domainRepository) {
-        return new DomainEventListener(domainUseCase, domainRepository);
+        LinkDomainUseCase linkDomainUseCase,
+        LinkDomainRepositoryImpl domainRepository) {
+        return new DomainEventListener(linkDomainUseCase, domainRepository);
     }
 
     @Bean

@@ -1,7 +1,7 @@
 package com.seong.shoutlink.domain.link.repository;
 
 import com.seong.shoutlink.domain.common.BaseEntity;
-import com.seong.shoutlink.domain.domain.Domain;
+import com.seong.shoutlink.domain.linkdomain.LinkDomain;
 import com.seong.shoutlink.domain.link.Link;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -55,8 +55,8 @@ public class LinkEntity extends BaseEntity {
         return new Link(linkId, url, description);
     }
 
-    public void updateDomainId(Domain domain) {
-        domainId = domain.getDomainId();
+    public void updateDomainId(LinkDomain linkDomain) {
+        domainId = linkDomain.getDomainId();
     }
 
     public Long getLinkBundleId() {

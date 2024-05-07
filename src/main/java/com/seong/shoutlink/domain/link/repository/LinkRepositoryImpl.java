@@ -1,6 +1,6 @@
 package com.seong.shoutlink.domain.link.repository;
 
-import com.seong.shoutlink.domain.domain.Domain;
+import com.seong.shoutlink.domain.linkdomain.LinkDomain;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.LinkBundleAndLink;
@@ -53,9 +53,9 @@ public class LinkRepositoryImpl implements LinkRepository {
     }
 
     @Override
-    public void updateLinkDomain(Link link, Domain domain) {
+    public void updateLinkDomain(Link link, LinkDomain linkDomain) {
         linkJpaRepository.findById(link.getLinkId())
-            .ifPresent(linkEntity -> linkEntity.updateDomainId(domain));
+            .ifPresent(linkEntity -> linkEntity.updateDomainId(linkDomain));
     }
 
     @Override

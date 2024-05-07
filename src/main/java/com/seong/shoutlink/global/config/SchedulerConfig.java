@@ -1,6 +1,6 @@
 package com.seong.shoutlink.global.config;
 
-import com.seong.shoutlink.domain.domain.repository.DomainRepositoryImpl;
+import com.seong.shoutlink.domain.linkdomain.repository.LinkDomainRepositoryImpl;
 import com.seong.shoutlink.global.scheduler.DomainScheduler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class SchedulerConfig {
 
     @Bean
-    public DomainScheduler domainScheduler(DomainRepositoryImpl domainRepository) {
+    public DomainScheduler domainScheduler(LinkDomainRepositoryImpl domainRepository) {
         return new DomainScheduler(domainRepository);
     }
 }

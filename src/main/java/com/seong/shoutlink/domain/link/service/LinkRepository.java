@@ -1,6 +1,6 @@
 package com.seong.shoutlink.domain.link.service;
 
-import com.seong.shoutlink.domain.domain.Domain;
+import com.seong.shoutlink.domain.linkdomain.LinkDomain;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.LinkBundleAndLink;
@@ -16,7 +16,7 @@ public interface LinkRepository {
 
     LinkPaginationResult findLinks(LinkBundle linkBundle, int page, int size);
 
-    void updateLinkDomain(Link link, Domain domain);
+    void updateLinkDomain(Link link, LinkDomain linkDomain);
 
     Optional<Link> findById(Long linkId);
 

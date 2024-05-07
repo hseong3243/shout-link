@@ -187,38 +187,38 @@ operation::hub-controller-test/find-member-hubs[snippets='http-response,response
 
 ==== request
 
-operation::domain-controller-test/find-root-domains[snippets='http-request,query-parameters']
+operation::linkDomain-controller-test/find-root-linkDomains[snippets='http-request,query-parameters']
 
 ==== response
 
-operation::domain-controller-test/find-root-domains[snippets='http-response,response-fields']
+operation::linkDomain-controller-test/find-root-linkDomains[snippets='http-response,response-fields']
 
 === 도메인 목록 조회
 
 ==== request
 
-operation::domain-controller-test/find-domains[snippets='http-request,query-parameters']
+operation::linkDomain-controller-test/find-linkDomains[snippets='http-request,query-parameters']
 
 ==== response
 
-operation::domain-controller-test/find-domains[snippets='http-response,response-fields']
+operation::linkDomain-controller-test/find-linkDomains[snippets='http-response,response-fields']
 
 === 도메인 단건 조회
 
 ==== request
 
-operation::domain-controller-test/find-domain[snippets='http-request,path-parameters']
+operation::linkDomain-controller-test/find-linkDomain[snippets='http-request,path-parameters']
 
 ==== response
 
-operation::domain-controller-test/find-domain[snippets='http-response,response-fields']
+operation::linkDomain-controller-test/find-linkDomain[snippets='http-response,response-fields']
 
 === 도메인 링크 목록 조회
 
 ==== request
 
-operation::domain-controller-test/find-domain-links[snippets='http-request,path-parameters,query-parameters']
+operation::linkDomain-controller-test/find-linkDomain-links[snippets='http-request,path-parameters,query-parameters']
 
 ==== response
 
-operation::domain-controller-test/find-domain-links[snippets='http-response,response-fields']
+operation::linkDomain-controller-test/find-linkDomain-links[snippets='http-response,response-fields']
