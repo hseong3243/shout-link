@@ -1,11 +1,11 @@
 package com.seong.shoutlink.domain.linkdomain.repository;
 
 import com.seong.shoutlink.domain.common.Trie;
-import com.seong.shoutlink.domain.linkdomain.LinkDomain;
-import com.seong.shoutlink.domain.linkdomain.service.LinkDomainRepository;
-import com.seong.shoutlink.domain.linkdomain.service.result.LinkDomainLinkPaginationResult;
-import com.seong.shoutlink.domain.linkdomain.service.result.LinkDomainLinkResult;
-import com.seong.shoutlink.domain.linkdomain.service.result.LinkDomainPaginationResult;
+import com.seong.shoutlink.domain.link.linkdomain.LinkDomain;
+import com.seong.shoutlink.domain.link.linkdomain.service.LinkDomainRepository;
+import com.seong.shoutlink.domain.link.linkdomain.service.result.LinkDomainLinkPaginationResult;
+import com.seong.shoutlink.domain.link.linkdomain.service.result.LinkDomainLinkResult;
+import com.seong.shoutlink.domain.link.linkdomain.service.result.LinkDomainPaginationResult;
 import com.seong.shoutlink.domain.link.Link;
 import java.util.HashMap;
 import java.util.List;

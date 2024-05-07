@@ -15,12 +15,12 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.seong.shoutlink.base.BaseControllerTest;
-import com.seong.shoutlink.domain.linkdomain.service.response.FindLinkDomainDetailResponse;
-import com.seong.shoutlink.domain.linkdomain.service.response.FindLinkDomainLinkResponse;
-import com.seong.shoutlink.domain.linkdomain.service.response.FindLinkDomainLinksResponse;
-import com.seong.shoutlink.domain.linkdomain.service.response.FindLinkDomainResponse;
-import com.seong.shoutlink.domain.linkdomain.service.response.FindLinkDomainsResponse;
-import com.seong.shoutlink.domain.linkdomain.service.response.FindRootDomainsResponse;
+import com.seong.shoutlink.domain.link.linkdomain.service.response.FindLinkDomainDetailResponse;
+import com.seong.shoutlink.domain.link.linkdomain.service.response.FindLinkDomainLinkResponse;
+import com.seong.shoutlink.domain.link.linkdomain.service.response.FindLinkDomainLinksResponse;
+import com.seong.shoutlink.domain.link.linkdomain.service.response.FindLinkDomainResponse;
+import com.seong.shoutlink.domain.link.linkdomain.service.response.FindLinkDomainsResponse;
+import com.seong.shoutlink.domain.link.linkdomain.service.response.FindRootDomainsResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

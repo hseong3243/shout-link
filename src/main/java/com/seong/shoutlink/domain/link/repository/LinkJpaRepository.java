@@ -1,6 +1,6 @@
 package com.seong.shoutlink.domain.link.repository;
 
-import com.seong.shoutlink.domain.linkdomain.service.result.LinkDomainLinkResult;
+import com.seong.shoutlink.domain.link.linkdomain.service.result.LinkDomainLinkResult;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -13,7 +13,7 @@ public interface LinkJpaRepository extends JpaRepository<LinkEntity, Long> {
 
     Page<LinkEntity> findAllByLinkBundleId(Long linkBundleId, Pageable pageable);
 
-    @Query("select new com.seong.shoutlink.domain.linkdomain.service.result.LinkDomainLinkResult(l.linkId, l.url, count(l.url))"
+    @Query("select new com.seong.shoutlink.domain.link.linkdomain.service.result.LinkDomainLinkResult(l.linkId, l.url, count(l.url))"
         + " from LinkEntity l"
         + " where l.domainId = :domainId"
         + " group by l.url"

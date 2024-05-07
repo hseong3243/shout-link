@@ -1,6 +1,6 @@
 package com.seong.shoutlink.domain.link.service;
 
-import com.seong.shoutlink.domain.linkdomain.LinkDomain;
+import com.seong.shoutlink.domain.link.linkdomain.LinkDomain;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.link.Link;
 import com.seong.shoutlink.domain.link.LinkBundleAndLink;

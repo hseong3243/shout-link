@@ -1,6 +1,6 @@
 package com.seong.shoutlink.fixture.DomainFixture;
 
-import com.seong.shoutlink.domain.linkdomain.LinkDomain;
+import com.seong.shoutlink.domain.link.linkdomain.LinkDomain;
 
 public class DomainFixture {
 

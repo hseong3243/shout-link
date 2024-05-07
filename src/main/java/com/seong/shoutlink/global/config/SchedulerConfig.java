@@ -1,6 +1,6 @@
 package com.seong.shoutlink.global.config;
 
-import com.seong.shoutlink.domain.linkdomain.repository.LinkDomainRepositoryImpl;
+import com.seong.shoutlink.domain.link.linkdomain.repository.LinkDomainRepositoryImpl;
 import com.seong.shoutlink.global.scheduler.DomainScheduler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

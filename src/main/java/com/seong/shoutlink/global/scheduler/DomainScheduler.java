@@ -1,6 +1,6 @@
 package com.seong.shoutlink.global.scheduler;
 
-import com.seong.shoutlink.domain.linkdomain.repository.LinkDomainRepositoryImpl;
+import com.seong.shoutlink.domain.link.linkdomain.repository.LinkDomainRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 

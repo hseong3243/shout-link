@@ -3,9 +3,9 @@ package com.seong.shoutlink.global.event;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.seong.shoutlink.base.BaseIntegrationTest;
-import com.seong.shoutlink.domain.linkdomain.LinkDomain;
-import com.seong.shoutlink.domain.linkdomain.repository.LinkDomainEntity;
-import com.seong.shoutlink.domain.linkdomain.service.LinkDomainRepository;
+import com.seong.shoutlink.domain.link.linkdomain.LinkDomain;
+import com.seong.shoutlink.domain.link.linkdomain.repository.LinkDomainEntity;
+import com.seong.shoutlink.domain.link.linkdomain.service.LinkDomainRepository;
 import com.seong.shoutlink.domain.link.repository.LinkEntity;
 import com.seong.shoutlink.domain.link.service.LinkService;
 import com.seong.shoutlink.domain.link.service.request.CreateLinkCommand;

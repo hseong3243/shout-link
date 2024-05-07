@@ -1,8 +1,8 @@
 package com.seong.shoutlink.global.config;
 
 import com.seong.shoutlink.domain.common.EventPublisher;
-import com.seong.shoutlink.domain.linkdomain.repository.LinkDomainRepositoryImpl;
-import com.seong.shoutlink.domain.linkdomain.service.LinkDomainUseCase;
+import com.seong.shoutlink.domain.link.linkdomain.repository.LinkDomainRepositoryImpl;
+import com.seong.shoutlink.domain.link.linkdomain.service.LinkDomainUseCase;
 import com.seong.shoutlink.domain.link.service.LinkBundleUseCase;
 import com.seong.shoutlink.domain.tag.service.TagUseCase;
 import com.seong.shoutlink.global.event.DomainEventListener;

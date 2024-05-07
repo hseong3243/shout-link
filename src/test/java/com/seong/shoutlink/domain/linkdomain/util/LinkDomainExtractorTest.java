@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.catchException;
 
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
+import com.seong.shoutlink.domain.link.linkdomain.util.DomainExtractor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

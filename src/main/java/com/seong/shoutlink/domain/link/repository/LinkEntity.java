@@ -1,7 +1,7 @@
 package com.seong.shoutlink.domain.link.repository;
 
 import com.seong.shoutlink.domain.common.BaseEntity;
-import com.seong.shoutlink.domain.linkdomain.LinkDomain;
+import com.seong.shoutlink.domain.link.linkdomain.LinkDomain;
 import com.seong.shoutlink.domain.link.Link;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

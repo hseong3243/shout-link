@@ -3,7 +3,8 @@ package com.seong.shoutlink.domain.linkdomain.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.seong.shoutlink.base.BaseIntegrationTest;
-import com.seong.shoutlink.domain.linkdomain.LinkDomain;
+import com.seong.shoutlink.domain.link.linkdomain.LinkDomain;
+import com.seong.shoutlink.domain.link.linkdomain.repository.LinkDomainRepositoryImpl;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
