@@ -3,7 +3,7 @@ package com.seong.shoutlink.global.event;
 import com.seong.shoutlink.domain.link.linkdomain.repository.LinkDomainRepositoryImpl;
 import com.seong.shoutlink.domain.link.linkdomain.service.LinkDomainUseCase;
 import com.seong.shoutlink.domain.link.linkdomain.service.request.UpdateLinkDomainCommand;
-import com.seong.shoutlink.domain.link.service.event.CreateLinkEvent;
+import com.seong.shoutlink.domain.link.link.service.event.CreateLinkEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;

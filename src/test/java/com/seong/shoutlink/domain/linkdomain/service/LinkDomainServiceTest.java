@@ -18,7 +18,7 @@ import com.seong.shoutlink.domain.link.linkdomain.service.response.FindRootDomai
 import com.seong.shoutlink.domain.link.linkdomain.service.response.UpdateLinkDomainResponse;
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
-import com.seong.shoutlink.domain.link.Link;
+import com.seong.shoutlink.domain.link.link.Link;
 import com.seong.shoutlink.domain.link.repository.StubLinkRepository;
 import com.seong.shoutlink.fixture.DomainFixture.DomainFixture;
 import com.seong.shoutlink.fixture.LinkFixture;

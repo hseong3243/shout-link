@@ -6,7 +6,7 @@ import com.seong.shoutlink.domain.link.linkdomain.service.LinkDomainRepository;
 import com.seong.shoutlink.domain.link.linkdomain.service.result.LinkDomainLinkPaginationResult;
 import com.seong.shoutlink.domain.link.linkdomain.service.result.LinkDomainLinkResult;
 import com.seong.shoutlink.domain.link.linkdomain.service.result.LinkDomainPaginationResult;
-import com.seong.shoutlink.domain.link.Link;
+import com.seong.shoutlink.domain.link.link.Link;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

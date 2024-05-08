@@ -4,7 +4,7 @@ import com.seong.shoutlink.domain.link.linkdomain.LinkDomain;
 import com.seong.shoutlink.domain.link.linkdomain.service.LinkDomainRepository;
 import com.seong.shoutlink.domain.link.linkdomain.service.result.LinkDomainLinkPaginationResult;
 import com.seong.shoutlink.domain.link.linkdomain.service.result.LinkDomainLinkResult;
-import com.seong.shoutlink.domain.link.repository.LinkJpaRepository;
+import com.seong.shoutlink.domain.link.link.repository.LinkJpaRepository;
 import java.util.List;
 import com.seong.shoutlink.domain.link.linkdomain.service.result.LinkDomainPaginationResult;
 import java.util.Optional;

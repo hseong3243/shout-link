@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.seong.shoutlink.domain.link.Link;
-import com.seong.shoutlink.domain.link.LinkBundle;
+import com.seong.shoutlink.domain.link.link.Link;
+import com.seong.shoutlink.domain.link.linkbundle.LinkBundle;
 import com.seong.shoutlink.domain.tag.service.ai.GenerateAutoTagCommand;
-import com.seong.shoutlink.domain.link.LinkBundleAndLinks;
+import com.seong.shoutlink.domain.link.link.LinkBundleAndLinks;
 import com.seong.shoutlink.domain.tag.service.ai.GeneratedTag;
 import com.seong.shoutlink.fixture.ApiFixture;
 import com.seong.shoutlink.fixture.LinkBundleFixture;

@@ -1,10 +1,10 @@
 package com.seong.shoutlink.domain.linkbundle.repository;
 
 import com.seong.shoutlink.domain.hub.Hub;
-import com.seong.shoutlink.domain.link.HubLinkBundle;
-import com.seong.shoutlink.domain.link.LinkBundle;
-import com.seong.shoutlink.domain.link.MemberLinkBundle;
-import com.seong.shoutlink.domain.link.service.LinkBundleRepository;
+import com.seong.shoutlink.domain.link.linkbundle.HubLinkBundle;
+import com.seong.shoutlink.domain.link.linkbundle.LinkBundle;
+import com.seong.shoutlink.domain.link.linkbundle.MemberLinkBundle;
+import com.seong.shoutlink.domain.link.linkbundle.service.LinkBundleRepository;
 import com.seong.shoutlink.domain.member.Member;
 import java.util.HashMap;
 import java.util.List;

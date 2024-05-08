@@ -2,8 +2,8 @@ package com.seong.shoutlink.global.event;
 
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
-import com.seong.shoutlink.domain.link.service.event.CreateHubLinkEvent;
-import com.seong.shoutlink.domain.link.service.event.CreateMemberLinkEvent;
+import com.seong.shoutlink.domain.link.link.service.event.CreateHubLinkEvent;
+import com.seong.shoutlink.domain.link.link.service.event.CreateMemberLinkEvent;
 import com.seong.shoutlink.domain.tag.service.TagUseCase;
 import com.seong.shoutlink.domain.tag.service.request.AutoCreateHubTagCommand;
 import com.seong.shoutlink.domain.tag.service.request.AutoCreateMemberTagCommand;

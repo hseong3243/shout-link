@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seong.shoutlink.domain.exception.ErrorCode;
 import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.hub.repository.StubHubRepository;
-import com.seong.shoutlink.domain.link.Link;
+import com.seong.shoutlink.domain.link.link.Link;
 import com.seong.shoutlink.domain.link.repository.StubLinkRepository;
 import com.seong.shoutlink.domain.linkbundle.repository.StubLinkBundleRepository;
 import com.seong.shoutlink.domain.member.repository.StubMemberRepository;
