@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import lombok.Getter;
 
-@Getter
 public class Trie {
 
     static class Node {
@@ -23,20 +21,25 @@ public class Trie {
             return children.containsKey(c);
         }
 
-        public Node nextNode(char c) {
+        public Node getOrCreateNextNode(char c) {
             return children.computeIfAbsent(c, key -> new Node());
         }
 
-        public void addSuggestions(String word, List<String> suggestions, int count) {
+        public Node getNextNode(char c) {
+            return children.get(c);
+        }
+
+        public void addSuggestions(StringBuilder word, List<String> suggestions, int count) {
             if (isWord.get()) {
-                suggestions.add(word);
+                suggestions.add(word.toString());
             }
             if (suggestions.size() >= count) {
                 return;
             }
             children.forEach((character, childNode) -> {
-                String suggestionsWord = word + character;
-                childNode.addSuggestions(suggestionsWord, suggestions, count);
+                word.append(character);
+                childNode.addSuggestions(word, suggestions, count);
+                word.deleteCharAt(word.length() - 1);
             });
         }
     }
@@ -54,7 +57,7 @@ public class Trie {
         }
         Node currentNode = root;
         for (char c : word.toCharArray()) {
-            currentNode = currentNode.nextNode(c);
+            currentNode = currentNode.getOrCreateNextNode(c);
         }
         currentNode.settingWord();
     }
@@ -68,14 +71,14 @@ public class Trie {
             if (!currentNode.hasChildren(c)) {
                 return List.of();
             }
-            currentNode = currentNode.nextNode(c);
+            currentNode = currentNode.getNextNode(c);
         }
         return findWords(prefix, currentNode, Math.min(MAX_SUGGESTION, count));
     }
 
     private List<String> findWords(String word, Node currentNode, int count) {
         List<String> suggestions = new ArrayList<>();
-        currentNode.addSuggestions(word, suggestions, count);
+        currentNode.addSuggestions(new StringBuilder(word), suggestions, count);
         return suggestions;
     }
 }
