@@ -51,7 +51,7 @@ public class LinkRepositoryImpl implements LinkRepository {
         int page,
         int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<LinkEntity> linkEntityPage = linkJpaRepository.findAllByLinkBundleId(
+        Page<LinkEntity> linkEntityPage = linkJpaRepository.findAllByLinkBundleLinkBundleId(
             linkBundle.getLinkBundleId(),
             pageRequest);
         List<Link> content = linkEntityPage.map(LinkEntity::toDomain).getContent();
