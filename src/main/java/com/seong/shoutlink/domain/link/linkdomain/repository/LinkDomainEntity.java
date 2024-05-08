@@ -13,21 +13,21 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "domain")
+@Table(name = "link_domain")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LinkDomainEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long domainId;
+    private Long linkDomainId;
     private String rootDomain;
 
     public LinkDomainEntity(String rootDomain) {
         this(null, rootDomain);
     }
 
-    public LinkDomainEntity(Long domainId, String rootDomain) {
-        this.domainId = domainId;
+    public LinkDomainEntity(Long linkDomainId, String rootDomain) {
+        this.linkDomainId = linkDomainId;
         this.rootDomain = rootDomain;
     }
 
@@ -36,6 +36,6 @@ public class LinkDomainEntity extends BaseEntity {
     }
 
     public LinkDomain toDomain() {
-        return new LinkDomain(domainId, rootDomain);
+        return new LinkDomain(linkDomainId, rootDomain);
     }
 }

@@ -15,10 +15,10 @@ public interface LinkJpaRepository extends JpaRepository<LinkEntity, Long> {
 
     @Query("select new com.seong.shoutlink.domain.link.linkdomain.service.result.LinkDomainLinkResult(l.linkId, l.url, count(l.url))"
         + " from LinkEntity l"
-        + " where l.domainId = :domainId"
+        + " where l.linkDomain.linkDomainId = :linkDomainId"
         + " group by l.url"
         + " order by count(l.url) desc")
-    Page<LinkDomainLinkResult> findDomainLinks(@Param("domainId") Long domainId, Pageable pageable);
+    Page<LinkDomainLinkResult> findDomainLinks(@Param("linkDomainId") Long linkDomainId, Pageable pageable);
 
     List<LinkEntity> findAllByLinkBundleLinkBundleIdIn(List<Long> linkBundleIds);
 

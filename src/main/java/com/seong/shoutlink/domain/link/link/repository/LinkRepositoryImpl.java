@@ -9,6 +9,9 @@ import com.seong.shoutlink.domain.link.link.LinkBundleAndLink;
 import com.seong.shoutlink.domain.link.link.service.LinkRepository;
 import com.seong.shoutlink.domain.link.link.service.result.LinkPaginationResult;
 import com.seong.shoutlink.domain.link.linkbundle.LinkBundle;
+import com.seong.shoutlink.domain.link.linkdomain.repository.LinkDomainEntity;
+import com.seong.shoutlink.domain.link.linkdomain.repository.LinkDomainJpaRepository;
+import com.seong.shoutlink.domain.link.linkdomain.util.DomainExtractor;
 import com.seong.shoutlink.domain.member.Member;
 import java.util.List;
 import java.util.Map;
@@ -26,15 +29,19 @@ public class LinkRepositoryImpl implements LinkRepository {
 
     private final LinkBundleJpaRepository linkBundleJpaRepository;
     private final LinkJpaRepository linkJpaRepository;
+    private final LinkDomainJpaRepository linkDomainJpaRepository;
 
     @Override
     public Long save(LinkBundleAndLink linkBundleAndLink) {
         Link link = linkBundleAndLink.getLink();
         LinkBundle linkBundle = linkBundleAndLink.getLinkBundle();
+        String rootDomain = DomainExtractor.extractRootDomain(link.getUrl());
+        LinkDomainEntity linkDomainEntity = linkDomainJpaRepository.findByRootDomain(rootDomain)
+            .orElseGet(() -> new LinkDomainEntity(rootDomain));
         LinkBundleEntity linkBundleEntity = linkBundleJpaRepository.findById(
                 linkBundle.getLinkBundleId())
             .orElseThrow(NoSuchElementException::new);
-        LinkEntity linkEntity = linkJpaRepository.save(LinkEntity.create(link, linkBundleEntity));
+        LinkEntity linkEntity = linkJpaRepository.save(LinkEntity.create(link, linkBundleEntity, linkDomainEntity));
         return linkEntity.getLinkId();
     }
 
@@ -56,8 +63,8 @@ public class LinkRepositoryImpl implements LinkRepository {
 
     @Override
     public void updateLinkDomain(Link link, LinkDomain linkDomain) {
-        linkJpaRepository.findById(link.getLinkId())
-            .ifPresent(linkEntity -> linkEntity.updateDomainId(linkDomain));
+//        linkJpaRepository.findById(link.getLinkId())
+//            .ifPresent(linkEntity -> linkEntity.updateDomainId(linkDomain));
     }
 
     @Override
