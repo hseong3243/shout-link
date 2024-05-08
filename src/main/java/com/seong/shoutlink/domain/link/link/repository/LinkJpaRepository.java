@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface LinkJpaRepository extends JpaRepository<LinkEntity, Long> {
 
-    Page<LinkEntity> findAllByLinkBundleId(Long linkBundleId, Pageable pageable);
+    Page<LinkEntity> findAllByLinkBundleLinkBundleId(Long linkBundleId, Pageable pageable);
 
     @Query("select new com.seong.shoutlink.domain.link.linkdomain.service.result.LinkDomainLinkResult(l.linkId, l.url, count(l.url))"
         + " from LinkEntity l"
