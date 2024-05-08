@@ -1,12 +1,12 @@
 package com.seong.shoutlink.domain.link.repository;
 
-import com.seong.shoutlink.domain.domain.Domain;
+import com.seong.shoutlink.domain.link.linkdomain.LinkDomain;
 import com.seong.shoutlink.domain.hub.Hub;
-import com.seong.shoutlink.domain.link.Link;
-import com.seong.shoutlink.domain.link.LinkBundleAndLink;
-import com.seong.shoutlink.domain.link.service.LinkRepository;
-import com.seong.shoutlink.domain.link.service.result.LinkPaginationResult;
-import com.seong.shoutlink.domain.link.LinkBundle;
+import com.seong.shoutlink.domain.link.link.Link;
+import com.seong.shoutlink.domain.link.link.LinkBundleAndLink;
+import com.seong.shoutlink.domain.link.link.service.LinkRepository;
+import com.seong.shoutlink.domain.link.link.service.result.LinkPaginationResult;
+import com.seong.shoutlink.domain.link.linkbundle.LinkBundle;
 import com.seong.shoutlink.domain.member.Member;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +53,7 @@ public class StubLinkRepository implements LinkRepository {
     }
 
     @Override
-    public void updateLinkDomain(Link link, Domain domain) {
+    public void updateLinkDomain(Link link, LinkDomain linkDomain) {
 
     }
 

@@ -2504,7 +2504,7 @@ Content-Length: 272
 <h5 id="_request_18_http_request"><a class="link" href="#_request_18_http_request">HTTP request</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/domains/search?keyword=searchKeyword&amp;size=20 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/linkDomains/search?keyword=searchKeyword&amp;size=20 HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2588,7 +2588,7 @@ Content-Length: 38
 <h5 id="_request_19_http_request"><a class="link" href="#_request_19_http_request">HTTP request</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/domains?keyword=searchKeyword&amp;page=0&amp;size=10 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/linkDomains?keyword=searchKeyword&amp;page=0&amp;size=10 HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2637,7 +2637,7 @@ Content-Type: application/json;charset=UTF-8
 Content-Length: 123
 
 {
-  "domains" : [ {
+  "linkDomains" : [ {
     "domainId" : 1,
     "rootDomain" : "github.com"
   } ],
@@ -2664,17 +2664,17 @@ Content-Length: 123
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>domains</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>linkDomains</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">도메인 목록</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>domains[].domainId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>linkDomains[].domainId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">도메인 ID</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>domains[].rootDomain</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>linkDomains[].rootDomain</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">루트 도메인</p></td>
 </tr>
@@ -2701,7 +2701,7 @@ Content-Length: 123
 <h5 id="_request_20_http_request"><a class="link" href="#_request_20_http_request">HTTP request</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/domains/1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/linkDomains/1 HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2709,7 +2709,7 @@ Host: localhost:8080</code></pre>
 <div class="sect4">
 <h5 id="_request_20_path_parameters"><a class="link" href="#_request_20_path_parameters">Path parameters</a></h5>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. /api/domains/{domainId}</caption>
+<caption class="title">Table 1. /api/linkDomains/{domainId}</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -2788,7 +2788,7 @@ Content-Length: 51
 <h5 id="_request_21_http_request"><a class="link" href="#_request_21_http_request">HTTP request</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/domains/1/links?page=0&amp;size=10 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/linkDomains/1/links?page=0&amp;size=10 HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2796,7 +2796,7 @@ Host: localhost:8080</code></pre>
 <div class="sect4">
 <h5 id="_request_21_path_parameters"><a class="link" href="#_request_21_path_parameters">Path parameters</a></h5>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. /api/domains/{domainId}/links</caption>
+<caption class="title">Table 1. /api/linkDomains/{domainId}/links</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">

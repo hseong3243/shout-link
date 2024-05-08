@@ -1,6 +1,6 @@
 package com.seong.shoutlink.fixture;
 
-import com.seong.shoutlink.domain.link.Link;
+import com.seong.shoutlink.domain.link.link.Link;
 import java.util.ArrayList;
 import java.util.List;
 

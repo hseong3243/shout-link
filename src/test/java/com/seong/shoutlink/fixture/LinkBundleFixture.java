@@ -1,6 +1,6 @@
 package com.seong.shoutlink.fixture;
 
-import com.seong.shoutlink.domain.link.LinkBundle;
+import com.seong.shoutlink.domain.link.linkbundle.LinkBundle;
 
 public final class LinkBundleFixture {
 
