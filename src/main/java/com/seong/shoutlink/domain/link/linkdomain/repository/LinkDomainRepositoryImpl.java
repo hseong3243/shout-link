@@ -22,21 +22,6 @@ public class LinkDomainRepositoryImpl implements LinkDomainRepository {
     private final LinkJpaRepository linkJpaRepository;
 
     @Override
-    public Optional<LinkDomain> findByRootDomain(String rootDomain) {
-        return linkDomainJpaRepository.findByRootDomain(rootDomain)
-            .map(LinkDomainEntity::toDomain);
-    }
-
-    @Override
-    public LinkDomain save(LinkDomain linkDomain) {
-        LinkDomain savedLinkDomain = linkDomainJpaRepository.save(LinkDomainEntity.create(
-                linkDomain))
-            .toDomain();
-        linkDomainCacheRepository.insert(savedLinkDomain.getRootDomain());
-        return savedLinkDomain;
-    }
-
-    @Override
     public List<String> findRootDomains(String keyword, int size) {
         return linkDomainCacheRepository.findRootDomains(keyword, size);
     }
