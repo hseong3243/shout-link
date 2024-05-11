@@ -29,20 +29,6 @@ public class StubLinkDomainRepository implements LinkDomainRepository {
     }
 
     @Override
-    public Optional<LinkDomain> findByRootDomain(String rootDomain) {
-        return memory.values().stream()
-            .filter(domain -> domain.getRootDomain().equals(rootDomain))
-            .findFirst();
-    }
-
-    @Override
-    public LinkDomain save(LinkDomain linkDomain) {
-        Long domainId = nextId();
-        memory.put(domainId, linkDomain);
-        return new LinkDomain(domainId, linkDomain.getRootDomain());
-    }
-
-    @Override
     public LinkDomainPaginationResult findDomains(String keyword, int page, int size) {
         List<LinkDomain> list = memory.values().stream().toList();
         int totalElements = list.size();

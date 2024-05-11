@@ -9,6 +9,7 @@ import com.seong.shoutlink.domain.link.link.LinkBundleAndLink;
 import com.seong.shoutlink.domain.link.link.service.LinkRepository;
 import com.seong.shoutlink.domain.link.link.service.result.LinkPaginationResult;
 import com.seong.shoutlink.domain.link.linkbundle.LinkBundle;
+import com.seong.shoutlink.domain.link.linkdomain.repository.LinkDomainCacheRepository;
 import com.seong.shoutlink.domain.link.linkdomain.repository.LinkDomainEntity;
 import com.seong.shoutlink.domain.link.linkdomain.repository.LinkDomainJpaRepository;
 import com.seong.shoutlink.domain.link.linkdomain.util.DomainExtractor;
@@ -30,6 +31,7 @@ public class LinkRepositoryImpl implements LinkRepository {
     private final LinkBundleJpaRepository linkBundleJpaRepository;
     private final LinkJpaRepository linkJpaRepository;
     private final LinkDomainJpaRepository linkDomainJpaRepository;
+    private final LinkDomainCacheRepository linkDomainCacheRepository;
 
     @Override
     public Long save(LinkBundleAndLink linkBundleAndLink) {
@@ -37,12 +39,16 @@ public class LinkRepositoryImpl implements LinkRepository {
         LinkBundle linkBundle = linkBundleAndLink.getLinkBundle();
         String rootDomain = DomainExtractor.extractRootDomain(link.getUrl());
         LinkDomainEntity linkDomainEntity = linkDomainJpaRepository.findByRootDomain(rootDomain)
-            .orElseGet(() -> new LinkDomainEntity(rootDomain));
+            .orElseGet(() -> {
+                linkDomainCacheRepository.insert(rootDomain);
+                return linkDomainJpaRepository.save(new LinkDomainEntity(rootDomain));
+            });
         LinkBundleEntity linkBundleEntity = linkBundleJpaRepository.findById(
                 linkBundle.getLinkBundleId())
             .orElseThrow(NoSuchElementException::new);
-        LinkEntity linkEntity = linkJpaRepository.save(LinkEntity.create(link, linkBundleEntity, linkDomainEntity));
-        return linkEntity.getLinkId();
+
+        return linkJpaRepository.save(LinkEntity.create(link, linkBundleEntity, linkDomainEntity))
+            .getLinkId();
     }
 
     @Override
