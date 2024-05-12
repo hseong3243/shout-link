@@ -48,12 +48,11 @@
   - 요구사항: 사용자는 링크 도메인(예. github.com) 검색을 통해 도메인과 연관된 링크를 알 수 있습니다.
   - 검색어 자동 완성을 제공하여 검색 기능의 활성화를 유도하기 위함
 - **해결**
-  - 서버는 분산 환경을 고려하지 않고 단일 인스턴스, 단일 컨테이너로 실행. 따라서 별도의 외부 저장소를 고려하지 않고 애플리케이션 단에서 캐싱하는 방법을 선택
-  - 캐시 전략은 쓰기 전략에 write-through, 읽기 전략에 cache-only를 적용
+  - 서버는 분산 환경을 고려하지 않고 단일 인스턴스, 단일 컨테이너로 실행 중. 따라서 별도의 외부 저장소를 고려하지 않고 애플리케이션 단에서 캐싱하는 방법을 선택
+  - 캐시 전략은 쓰기 전략에 write-through, 읽기 전략에 read-through를 적용
   - 문자열 검색에 유용한 자료 구조인 Trie를 구현하고 최대 35자까지 입력받을 수 있도록 제한
   - TrieNode의 구현은 멀티스레드 환경에서의 동시성을 제어하기 위해 ConcurrentHashMap, AtomicBoolean을 사용
   - ExecutorService, CountDownlatch를 활용하여 테스트 코드를 통한 동시성 검증을 수행
-![shoutlink_code_architecture2 excalidraw 10](https://github.com/hseong3243/shout-link/assets/48748265/b9a8777d-d1f2-48a5-9487-e39a31e7f6ff)
 
 ### Gemini API를 이용한 태그 자동 생성 기능 구현
 - **목적**
