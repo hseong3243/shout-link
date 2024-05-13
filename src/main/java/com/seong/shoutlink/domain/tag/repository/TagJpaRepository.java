@@ -17,7 +17,7 @@ public interface TagJpaRepository extends JpaRepository<TagEntity, Long> {
         + " where t.hub.hubId=:hubId"
         + " order by t.createdAt"
         + " limit 1")
-    Optional<TagEntity> findLatestTagByHubId(Long hubId);
+    Optional<TagEntity> findLatestTagByHubId(@Param("hubId") Long hubId);
 
     @Query("select t from HubTagEntity t"
         + " where t.hub.hubId in :hubIds")
@@ -25,13 +25,13 @@ public interface TagJpaRepository extends JpaRepository<TagEntity, Long> {
 
     @Modifying
     @Query("delete from MemberTagEntity t where t.member.memberId=:memberId")
-    void deleteByMemberId(Long memberId);
+    void deleteByMemberId(@Param("memberId") Long memberId);
 
     @Query("select t from MemberTagEntity t"
         + " where t.member.memberId=:memberId"
         + " order by t.createdAt"
         + " limit 1")
-    Optional<TagEntity> findLatestTagByMemberId(Long memberId);
+    Optional<TagEntity> findLatestTagByMemberId(@Param("memberId") Long memberId);
 
     @Query("select t from HubTagEntity t "
         + "where t.name like %:tagKeyword%")
