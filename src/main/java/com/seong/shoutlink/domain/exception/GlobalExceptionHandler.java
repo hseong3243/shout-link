@@ -1,12 +1,11 @@
-package com.seong.shoutlink.global.exception;
+package com.seong.shoutlink.domain.exception;
 
-import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class globalExceptionHandler {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(ShoutLinkException.class)
     public ResponseEntity<ErrorResponse> shoutLinkExHandle(ShoutLinkException e) {
