@@ -14,7 +14,8 @@ public enum ErrorCode {
     NOT_FOUND("SL401", Constants.NOT_FOUND),
     DUPLICATE_EMAIL("SL901", Constants.CONFLICT),
     DUPLICATE_NICKNAME("SL902", Constants.BAD_REQUEST),
-    NOT_MET_CONDITION("SL1001", Constants.BAD_REQUEST);
+    NOT_MET_CONDITION("SL1001", Constants.BAD_REQUEST),
+    SERVER_ERROR("SL9999", Constants.SERVER_ERROR);
 
     private final String errorCode;
     private final int status;
@@ -26,5 +27,6 @@ public enum ErrorCode {
         private static final int FORBIDDEN = 401;
         private static final int NOT_FOUND = 404;
         private static final int CONFLICT = 409;
+        private static final int SERVER_ERROR = 500;
     }
 }
