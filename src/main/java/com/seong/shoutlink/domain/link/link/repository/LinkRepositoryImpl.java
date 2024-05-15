@@ -1,14 +1,14 @@
 package com.seong.shoutlink.domain.link.link.repository;
 
-import com.seong.shoutlink.domain.link.linkbundle.repository.LinkBundleEntity;
-import com.seong.shoutlink.domain.link.linkbundle.repository.LinkBundleJpaRepository;
-import com.seong.shoutlink.domain.link.linkdomain.LinkDomain;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.link.link.Link;
 import com.seong.shoutlink.domain.link.link.LinkBundleAndLink;
 import com.seong.shoutlink.domain.link.link.service.LinkRepository;
 import com.seong.shoutlink.domain.link.link.service.result.LinkPaginationResult;
 import com.seong.shoutlink.domain.link.linkbundle.LinkBundle;
+import com.seong.shoutlink.domain.link.linkbundle.repository.LinkBundleEntity;
+import com.seong.shoutlink.domain.link.linkbundle.repository.LinkBundleJpaRepository;
+import com.seong.shoutlink.domain.link.linkdomain.LinkDomain;
 import com.seong.shoutlink.domain.link.linkdomain.repository.LinkDomainCacheRepository;
 import com.seong.shoutlink.domain.link.linkdomain.repository.LinkDomainEntity;
 import com.seong.shoutlink.domain.link.linkdomain.repository.LinkDomainJpaRepository;
@@ -16,7 +16,6 @@ import com.seong.shoutlink.domain.link.linkdomain.util.DomainExtractor;
 import com.seong.shoutlink.domain.member.Member;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +44,7 @@ public class LinkRepositoryImpl implements LinkRepository {
             });
         LinkBundleEntity linkBundleEntity = linkBundleJpaRepository.findById(
                 linkBundle.getLinkBundleId())
-            .orElseThrow(NoSuchElementException::new);
+            .orElseThrow(IllegalStateException::new);
 
         return linkJpaRepository.save(LinkEntity.create(link, linkBundleEntity, linkDomainEntity))
             .getLinkId();

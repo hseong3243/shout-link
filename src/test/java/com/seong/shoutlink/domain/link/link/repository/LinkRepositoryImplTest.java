@@ -1,8 +1,9 @@
 package com.seong.shoutlink.domain.link.link.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchException;
 
-import com.seong.shoutlink.base.BaseIntegrationTest;
+import com.seong.shoutlink.base.BaseRepositoryTest;
 import com.seong.shoutlink.domain.link.link.Link;
 import com.seong.shoutlink.domain.link.link.LinkBundleAndLink;
 import com.seong.shoutlink.domain.link.linkbundle.LinkBundle;
@@ -16,20 +17,16 @@ import com.seong.shoutlink.domain.member.repository.MemberEntity;
 import com.seong.shoutlink.fixture.LinkBundleFixture;
 import com.seong.shoutlink.fixture.LinkFixture;
 import com.seong.shoutlink.fixture.MemberFixture;
-import jakarta.persistence.EntityManager;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class LinkRepositoryImplTest extends BaseIntegrationTest {
+class LinkRepositoryImplTest extends BaseRepositoryTest {
 
     @Autowired
     private LinkRepositoryImpl linkRepository;
-
-    @Autowired
-    private EntityManager em;
 
     @Autowired
     private LinkDomainCacheRepository linkDomainCacheRepository;
@@ -49,8 +46,8 @@ class LinkRepositoryImplTest extends BaseIntegrationTest {
             MemberEntity memberEntity = MemberEntity.create(member);
             LinkBundleEntity linkBundleEntity = LinkBundleEntity.create(linkBundle, memberEntity);
 
-            persist(memberEntity);
-            persist(linkBundleEntity);
+            em.persist(memberEntity);
+            em.persist(linkBundleEntity);
 
             //when
             Long savedLinkId = linkRepository.save(linkBundleAndLink);
@@ -77,9 +74,9 @@ class LinkRepositoryImplTest extends BaseIntegrationTest {
             LinkDomainEntity linkDomainEntity = LinkDomainEntity.create(
                 new LinkDomain(DomainExtractor.extractRootDomain(link.getUrl())));
 
-            persist(memberEntity);
-            persist(linkBundleEntity);
-            persist(linkDomainEntity);
+            em.persist(memberEntity);
+            em.persist(linkBundleEntity);
+            em.persist(linkDomainEntity);
 
             //when
             Long linkId = linkRepository.save(linkBundleAndLink);
@@ -101,8 +98,8 @@ class LinkRepositoryImplTest extends BaseIntegrationTest {
             MemberEntity memberEntity = MemberEntity.create(member);
             LinkBundleEntity linkBundleEntity = LinkBundleEntity.create(linkBundle, memberEntity);
 
-            persist(memberEntity);
-            persist(linkBundleEntity);
+            em.persist(memberEntity);
+            em.persist(linkBundleEntity);
 
             //when
             Long savedLinkId = linkRepository.save(linkBundleAndLink);
@@ -111,6 +108,21 @@ class LinkRepositoryImplTest extends BaseIntegrationTest {
             List<String> rootDomains = linkDomainCacheRepository.findRootDomains("", 10);
             assertThat(rootDomains).containsExactly(
                 DomainExtractor.extractRootDomain(link.getUrl()));
+        }
+
+        @Test
+        @DisplayName("예외(illegalStateEx): 존재하지 않는 링크 묶음 조회 시")
+        void illegalStateEx_WhenTryToFindLinkBundle_DoseNotExist() {
+            //given
+            LinkBundle linkBundle = LinkBundleFixture.linkBundle();
+            Link link = LinkFixture.link();
+            LinkBundleAndLink linkBundleAndLink = new LinkBundleAndLink(link, linkBundle);
+
+            //when
+            Exception exception = catchException(() -> linkRepository.save(linkBundleAndLink));
+
+            //then
+            assertThat(exception).isInstanceOf(IllegalStateException.class);
         }
     }
 }

@@ -9,7 +9,6 @@ import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.repository.MemberEntity;
 import com.seong.shoutlink.domain.member.repository.MemberJpaRepository;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,7 +26,7 @@ public class HubRepositoryImpl implements HubRepository {
     @Override
     public Long save(Hub hub) {
         MemberEntity memberEntity = memberJpaRepository.findById(hub.getMasterId())
-            .orElseThrow(NoSuchElementException::new);
+            .orElseThrow(IllegalStateException::new);
         HubEntity hubEntity = hubJpaRepository.save(HubEntity.create(hub));
         HubMemberEntity hubMemberEntity = HubMemberEntity.create(memberEntity, hubEntity);
         hubMemberJpaRepository.save(hubMemberEntity);
