@@ -1,6 +1,7 @@
 package com.seong.shoutlink.domain.link.link.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchException;
 
 import com.seong.shoutlink.base.BaseRepositoryTest;
 import com.seong.shoutlink.domain.link.link.Link;
@@ -107,6 +108,21 @@ class LinkRepositoryImplTest extends BaseRepositoryTest {
             List<String> rootDomains = linkDomainCacheRepository.findRootDomains("", 10);
             assertThat(rootDomains).containsExactly(
                 DomainExtractor.extractRootDomain(link.getUrl()));
+        }
+
+        @Test
+        @DisplayName("예외(illegalStateEx): 존재하지 않는 링크 묶음 조회 시")
+        void illegalStateEx_WhenTryToFindLinkBundle_DoseNotExist() {
+            //given
+            LinkBundle linkBundle = LinkBundleFixture.linkBundle();
+            Link link = LinkFixture.link();
+            LinkBundleAndLink linkBundleAndLink = new LinkBundleAndLink(link, linkBundle);
+
+            //when
+            Exception exception = catchException(() -> linkRepository.save(linkBundleAndLink));
+
+            //then
+            assertThat(exception).isInstanceOf(IllegalStateException.class);
         }
     }
 }

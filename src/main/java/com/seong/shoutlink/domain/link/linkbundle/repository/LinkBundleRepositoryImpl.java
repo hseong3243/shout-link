@@ -11,7 +11,6 @@ import com.seong.shoutlink.domain.member.Member;
 import com.seong.shoutlink.domain.member.repository.MemberEntity;
 import com.seong.shoutlink.domain.member.repository.MemberJpaRepository;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -29,7 +28,7 @@ public class LinkBundleRepositoryImpl implements LinkBundleRepository {
         Member member = memberLinkBundle.getMember();
         LinkBundle linkBundle = memberLinkBundle.getLinkBundle();
         MemberEntity memberEntity = memberJpaRepository.findById(member.getMemberId())
-            .orElseThrow(NoSuchElementException::new);
+            .orElseThrow(IllegalStateException::new);
         LinkBundleEntity linkBundleEntity = LinkBundleEntity.create(linkBundle, memberEntity);
         linkBundleJpaRepository.save(linkBundleEntity);
         return linkBundleEntity.getLinkBundleId();
@@ -58,7 +57,7 @@ public class LinkBundleRepositoryImpl implements LinkBundleRepository {
         LinkBundle linkBundle = hubLinkBundle.getLinkBundle();
         Hub hub = hubLinkBundle.getHub();
         HubEntity hubEntity = hubJpaRepository.findById(hub.getHubId())
-            .orElseThrow(NoSuchElementException::new);
+            .orElseThrow(IllegalStateException::new);
         LinkBundleEntity linkBundleEntity = LinkBundleEntity.create(linkBundle, hubEntity);
         linkBundleJpaRepository.save(linkBundleEntity);
         return linkBundleEntity.getLinkBundleId();
