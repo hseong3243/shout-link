@@ -9,6 +9,11 @@ gemini:
   url: https://generativelanguage.fake.com/v1/models/fake-pro:generateContent
   api-key: fakeAPIKey
 
+retry:
+  delay: 100
+  multiply: 1.0
+  max-attempt: 3
+
 spring:
   jpa:
     properties:
