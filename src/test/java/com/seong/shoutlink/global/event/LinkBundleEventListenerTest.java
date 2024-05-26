@@ -13,6 +13,7 @@ import com.seong.shoutlink.domain.member.service.MemberService;
 import com.seong.shoutlink.domain.member.service.request.CreateMemberCommand;
 import com.seong.shoutlink.fixture.MemberFixture;
 import jakarta.persistence.EntityManager;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -52,12 +53,14 @@ class LinkBundleEventListenerTest extends BaseIntegrationTest {
             memberService.createMember(createMemberCommand);
 
             //then
-            LinkBundleEntity linkBundleEntity = em.createQuery(
-                    "select mlb from MemberLinkBundleEntity mlb where mlb.member.memberId = :memberId",
-                    LinkBundleEntity.class)
-                .setParameter("memberId", member.getMemberId())
-                .getSingleResult();
-            assertThat(linkBundleEntity.getDescription()).isEqualTo("기본");
+            Awaitility.await().untilAsserted(() -> {
+                LinkBundleEntity linkBundleEntity = em.createQuery(
+                        "select mlb from MemberLinkBundleEntity mlb where mlb.member.memberId = :memberId",
+                        LinkBundleEntity.class)
+                    .setParameter("memberId", member.getMemberId())
+                    .getSingleResult();
+                assertThat(linkBundleEntity.getDescription()).isEqualTo("기본");
+            });
         }
     }
 
@@ -77,12 +80,14 @@ class LinkBundleEventListenerTest extends BaseIntegrationTest {
             CreateHubResponse response = hubService.createHub(command);
 
             //then
-            LinkBundleEntity linkBundleEntity = em.createQuery(
-                    "select hlb from HubLinkBundleEntity hlb "
-                        + "where hlb.hub.hubId = :hubId", LinkBundleEntity.class)
-                .setParameter("hubId", response.hubId())
-                .getSingleResult();
-            assertThat(linkBundleEntity.getDescription()).isEqualTo("기본");
+            Awaitility.await().untilAsserted(() -> {
+                LinkBundleEntity linkBundleEntity = em.createQuery(
+                        "select hlb from HubLinkBundleEntity hlb "
+                            + "where hlb.hub.hubId = :hubId", LinkBundleEntity.class)
+                    .setParameter("hubId", response.hubId())
+                    .getSingleResult();
+                assertThat(linkBundleEntity.getDescription()).isEqualTo("기본");
+            });
         }
     }
 }

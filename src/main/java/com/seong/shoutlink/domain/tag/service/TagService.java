@@ -70,7 +70,8 @@ public class TagService implements TagUseCase {
         tagRepository.findLatestTagByHub(hub)
             .filter(Tag::isCreatedWithinADay)
             .ifPresent(tag -> {
-                throw new ShoutLinkException("태그 생성된 지 하루가 지나지 않았습니다.", ErrorCode.NOT_MET_CONDITION);});
+                throw new NotMetCondition("태그가 생성된 지 하루가 지나지 않았습니다.");
+            });
     }
 
     @Override
@@ -101,8 +102,7 @@ public class TagService implements TagUseCase {
         tagRepository.findLatestTagByMember(member)
             .filter(Tag::isCreatedWithinADay)
             .ifPresent(tag -> {
-                throw new ShoutLinkException("태그가 생성된 지 하루가 지나지 않았습니다.",
-                    ErrorCode.NOT_MET_CONDITION);
+                throw new NotMetCondition("태그가 생성된 지 하루가 지나지 않았습니다.");
             });
     }
 
@@ -120,7 +120,7 @@ public class TagService implements TagUseCase {
         int totalLinkCount = links.size();
         if (totalLinkCount < MINIMUM_TAG_CONDITION
             || totalLinkCount % MINIMUM_TAG_CONDITION != ZERO) {
-            throw new ShoutLinkException("태그 생성 조건을 충족하지 못했습니다.", ErrorCode.NOT_MET_CONDITION);
+            throw new NotMetCondition("태그 생성 조건을 충족하지 못했습니다.");
         }
         return Math.min(MAXIMUM_TAG_COUNT, totalLinkCount / MINIMUM_TAG_CONDITION);
     }

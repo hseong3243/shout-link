@@ -34,4 +34,11 @@ public class CreateHubLinkEvent extends CreateLinkEvent {
     public int hashCode() {
         return Objects.hash(super.hashCode(), hubId);
     }
+
+    @Override
+    public String toString() {
+        return "CreateHubLinkEvent{" +
+            "hubId=" + hubId +
+            '}';
+    }
 }

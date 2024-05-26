@@ -6,8 +6,13 @@ jwt:
   refresh-secret: cjOYckwZQhEqZOCZCCjCIG4W0HFPfSjMtest
 
 gemini:
-  url: https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent
+  url: https://generativelanguage.fake.com/v1/models/fake-pro:generateContent
   api-key: fakeAPIKey
+
+retry:
+  delay: 100
+  multiply: 1.0
+  max-attempt: 3
 
 spring:
   jpa:
@@ -15,3 +20,6 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+logging:
+  level:
+    com: debug
