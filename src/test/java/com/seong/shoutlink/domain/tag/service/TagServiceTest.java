@@ -134,9 +134,7 @@ class TagServiceTest {
             Exception exception = catchException(() -> tagService.autoCreateHubTags(command));
 
             //then
-            assertThat(exception).isInstanceOf(ShoutLinkException.class)
-                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
-                .isEqualTo(ErrorCode.NOT_MET_CONDITION);
+            assertThat(exception).isInstanceOf(NotMetCondition.class);
         }
 
         @ParameterizedTest
@@ -154,9 +152,7 @@ class TagServiceTest {
             Exception exception = catchException(() -> tagService.autoCreateHubTags(command));
 
             //then
-            assertThat(exception).isInstanceOf(ShoutLinkException.class)
-                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
-                .isEqualTo(ErrorCode.NOT_MET_CONDITION);
+            assertThat(exception).isInstanceOf(NotMetCondition.class);
         }
 
         @ParameterizedTest
@@ -174,9 +170,7 @@ class TagServiceTest {
             Exception exception = catchException(() -> tagService.autoCreateHubTags(command));
 
             //then
-            assertThat(exception).isInstanceOf(ShoutLinkException.class)
-                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
-                .isEqualTo(ErrorCode.NOT_MET_CONDITION);
+            assertThat(exception).isInstanceOf(NotMetCondition.class);
         }
     }
 
@@ -256,9 +250,7 @@ class TagServiceTest {
             Exception exception = catchException(() -> tagService.autoCreateMemberTags(command));
 
             //then
-            assertThat(exception).isInstanceOf(ShoutLinkException.class)
-                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
-                .isEqualTo(ErrorCode.NOT_MET_CONDITION);
+            assertThat(exception).isInstanceOf(NotMetCondition.class);
         }
 
         @ParameterizedTest
@@ -276,9 +268,7 @@ class TagServiceTest {
             Exception exception = catchException(() -> tagService.autoCreateMemberTags(command));
 
             //then
-            assertThat(exception).isInstanceOf(ShoutLinkException.class)
-                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
-                .isEqualTo(ErrorCode.NOT_MET_CONDITION);
+            assertThat(exception).isInstanceOf(NotMetCondition.class);
         }
 
         @ParameterizedTest
@@ -296,9 +286,7 @@ class TagServiceTest {
             Exception exception = catchException(() -> tagService.autoCreateMemberTags(command));
 
             //then
-            assertThat(exception).isInstanceOf(ShoutLinkException.class)
-                .extracting(e -> ((ShoutLinkException) e).getErrorCode())
-                .isEqualTo(ErrorCode.NOT_MET_CONDITION);
+            assertThat(exception).isInstanceOf(NotMetCondition.class);
         }
     }
 }
