@@ -34,4 +34,11 @@ public class CreateMemberLinkEvent extends CreateLinkEvent{
     public int hashCode() {
         return Objects.hash(super.hashCode(), memberId);
     }
+
+    @Override
+    public String toString() {
+        return "CreateMemberLinkEvent{" +
+            "memberId=" + memberId +
+            '}';
+    }
 }
