@@ -21,11 +21,13 @@ public abstract class BaseIntegrationTest {
         databaseCleaner.clear();
     }
 
-    protected void persist(Object entity) {
+    protected void persist(Object... entity) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        em.persist(entity);
+        for (Object o : entity) {
+            em.persist(o);
+        }
         transaction.commit();
     }
 }
