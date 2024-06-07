@@ -47,7 +47,7 @@ public class LinkService implements LinkUseCase {
     public CreateLinkResponse createLink(CreateLinkCommand command) {
         Member member = getMember(command.memberId());
         LinkBundle linkBundle = getLinkBundle(command.linkBundleId(), member);
-        Link link = new Link(command.url(), command.description());
+        Link link = new Link(command.url(), command.description(), command.expiredAt());
         LinkBundleAndLink linkBundleAndLink = new LinkBundleAndLink(link, linkBundle);
         Long linkId = linkRepository.save(linkBundleAndLink);
         eventPublisher.publishEvent(
@@ -85,7 +85,7 @@ public class LinkService implements LinkUseCase {
         hub.checkMasterAuthority(member);
 
         LinkBundle hubLinkBundle = getHubLinkBundle(command.linkBundleId(), hub);
-        Link link = new Link(command.url(), command.description());
+        Link link = new Link(command.url(), command.description(), command.expiredAt());
         Long linkId = linkRepository.save(new LinkBundleAndLink(link, hubLinkBundle));
         eventPublisher.publishEvent(new CreateHubLinkEvent(linkId, link.getUrl(), hub.getHubId()));
         return new CreateHubLinkResponse(linkId);

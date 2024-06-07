@@ -43,7 +43,8 @@ public class LinkController {
             memberId,
             request.linkBundleId(),
             request.url(),
-            request.description()));
+            request.description(),
+            request.expiredAt()));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -69,7 +70,8 @@ public class LinkController {
             memberId,
             request.linkBundleId(),
             request.url(),
-            request.description()));
+            request.description(),
+            request.expiredAt()));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

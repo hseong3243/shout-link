@@ -1,5 +1,8 @@
 package com.seong.shoutlink.domain.link.link.service.request;
 
-public record CreateLinkCommand(Long memberId, Long linkBundleId, String url, String description) {
+import java.time.LocalDateTime;
+
+public record CreateLinkCommand(Long memberId, Long linkBundleId, String url, String description,
+                                LocalDateTime expiredAt) {
 
 }

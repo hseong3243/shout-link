@@ -74,7 +74,8 @@ class LinkServiceTest {
                 1L,
                 linkBundle.getLinkBundleId(),
                 "https://hseong.tistory.com/",
-                "내 블로그");
+                "내 블로그",
+                LinkFixture.DEFAULT_EXPIRED_AT);
 
             //when
             CreateLinkResponse response = linkService.createLink(command);
@@ -95,7 +96,8 @@ class LinkServiceTest {
                 1L,
                 linkBundle.getLinkBundleId(),
                 "https://hseong.tistory.com/",
-                "내 블로그");
+                "내 블로그",
+                LinkFixture.DEFAULT_EXPIRED_AT);
 
             //when
             CreateLinkResponse response = linkService.createLink(command);
@@ -166,7 +168,8 @@ class LinkServiceTest {
             linkBundleRepository.stub(linkBundle);
             hubRepository.stub(hub);
             CreateHubLinkCommand command = new CreateHubLinkCommand(hub.getHubId(),
-                hub.getMasterId(), linkBundle.getLinkBundleId(), "url", "설명");
+                hub.getMasterId(), linkBundle.getLinkBundleId(), "url", "설명",
+                LinkFixture.DEFAULT_EXPIRED_AT);
 
             //when
             CreateHubLinkResponse response = linkService.createHubLink(command);
@@ -186,7 +189,8 @@ class LinkServiceTest {
             linkBundleRepository.stub(linkBundle);
             hubRepository.stub(hub);
             CreateHubLinkCommand command = new CreateHubLinkCommand(hub.getHubId(),
-                hub.getMasterId(), linkBundle.getLinkBundleId(), "url", "설명");
+                hub.getMasterId(), linkBundle.getLinkBundleId(), "url", "설명",
+                LinkFixture.DEFAULT_EXPIRED_AT);
 
             //when
             CreateHubLinkResponse response = linkService.createHubLink(command);
@@ -199,7 +203,8 @@ class LinkServiceTest {
         @DisplayName("예외(NotFound): 존재하지 않는 허브")
         void notFound_WhenHubNotFound() {
             //given
-            CreateHubLinkCommand command = new CreateHubLinkCommand(1L, 1L, 1L, "url", "설명");
+            CreateHubLinkCommand command = new CreateHubLinkCommand(1L, 1L, 1L, "url", "설명",
+                LinkFixture.DEFAULT_EXPIRED_AT);
 
             //when
             Exception exception = catchException(() -> linkService.createHubLink(command));
@@ -219,7 +224,7 @@ class LinkServiceTest {
             memberRepository.stub(member);
             hubRepository.stub(hub);
             CreateHubLinkCommand command = new CreateHubLinkCommand(hub.getHubId(),
-                member.getMemberId(), 1L, "url", "설명");
+                member.getMemberId(), 1L, "url", "설명", LinkFixture.DEFAULT_EXPIRED_AT);
 
             //when
             Exception exception = catchException(() -> linkService.createHubLink(command));
@@ -242,7 +247,7 @@ class LinkServiceTest {
             memberRepository.stub(member);
             hubRepository.stub(hub);
             CreateHubLinkCommand command = new CreateHubLinkCommand(hub.getHubId(),
-                member.getMemberId(), 1L, "url", "설명");
+                member.getMemberId(), 1L, "url", "설명", LinkFixture.DEFAULT_EXPIRED_AT);
 
             //when
             Exception exception = catchException(() -> linkService.createHubLink(command));

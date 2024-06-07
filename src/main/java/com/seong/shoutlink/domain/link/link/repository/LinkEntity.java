@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,9 @@ public class LinkEntity extends BaseEntity {
     @Column
     private String description;
 
+    @Column
+    private LocalDateTime expiredAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "link_bundle_id", nullable = false)
     private LinkBundleEntity linkBundle;
@@ -41,10 +45,12 @@ public class LinkEntity extends BaseEntity {
     @JoinColumn(name = "link_domain_id", nullable = false, updatable = false)
     private LinkDomainEntity linkDomain;
 
-    private LinkEntity(String url, String description, LinkBundleEntity linkBundleEntity,
+    private LinkEntity(String url, String description, LocalDateTime expiredAt,
+        LinkBundleEntity linkBundleEntity,
         LinkDomainEntity linkDomainEntity) {
         this.url = url;
         this.description = description;
+        this.expiredAt = expiredAt;
         this.linkBundle = linkBundleEntity;
         this.linkDomain = linkDomainEntity;
     }
@@ -56,12 +62,13 @@ public class LinkEntity extends BaseEntity {
         return new LinkEntity(
             link.getUrl(),
             link.getDescription(),
+            link.getExpiredAt(),
             linkBundleEntity,
             linkDomainEntity);
     }
 
     public Link toDomain() {
-        return new Link(linkId, url, description);
+        return new Link(linkId, url, description, expiredAt);
     }
 
     public Long getLinkBundleId() {
