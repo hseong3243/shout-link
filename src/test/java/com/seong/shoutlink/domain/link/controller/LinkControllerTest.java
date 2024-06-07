@@ -22,6 +22,7 @@ import com.seong.shoutlink.domain.link.link.service.response.CreateLinkResponse;
 import com.seong.shoutlink.domain.link.link.service.response.DeleteLinkResponse;
 import com.seong.shoutlink.domain.link.link.service.response.FindLinkResponse;
 import com.seong.shoutlink.domain.link.link.service.response.FindLinksResponse;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,7 @@ class LinkControllerTest extends BaseControllerTest {
     void createLink() throws Exception {
         //given
         CreateLinkRequest request = new CreateLinkRequest(1L, "https://hseong.tistory.com/",
-            "내 블로그");
+            "내 블로그", LocalDateTime.of(2050, 10, 10, 10, 10));
         CreateLinkResponse response = new CreateLinkResponse(1L);
         given(linkService.createLink(any())).willReturn(response);
 
@@ -59,7 +60,8 @@ class LinkControllerTest extends BaseControllerTest {
                         .description("링크 묶음 ID"),
                     fieldWithPath("url").type(JsonFieldType.STRING).description("링크 url"),
                     fieldWithPath("description").type(JsonFieldType.STRING).description("링크 설명")
-                        .optional()
+                        .optional(),
+                    fieldWithPath("expiredAt").type(JsonFieldType.STRING).description("만료일")
                 ),
                 responseFields(
                     fieldWithPath("linkId").type(JsonFieldType.NUMBER).description("생성된 링크 ID")
@@ -115,7 +117,8 @@ class LinkControllerTest extends BaseControllerTest {
     void createHubLink() throws Exception {
         //given
         Long hubId = 1L;
-        CreateLinkRequest request = new CreateLinkRequest(1L, "url", "설명");
+        CreateLinkRequest request = new CreateLinkRequest(1L, "url", "설명",
+            LocalDateTime.of(2050, 10, 10, 10, 10));
 
         given(linkService.createHubLink(any())).willReturn(new CreateHubLinkResponse(1L));
 
@@ -138,7 +141,8 @@ class LinkControllerTest extends BaseControllerTest {
                     fieldWithPath("linkBundleId").type(JsonFieldType.NUMBER)
                         .description("링크 묶음 ID"),
                     fieldWithPath("url").type(JsonFieldType.STRING).description("링크 url"),
-                    fieldWithPath("description").type(JsonFieldType.STRING).description("설명")
+                    fieldWithPath("description").type(JsonFieldType.STRING).description("설명"),
+                    fieldWithPath("expiredAt").type(JsonFieldType.STRING).description("만료일")
                 ),
                 responseFields(
                     fieldWithPath("linkId").type(JsonFieldType.NUMBER).description("링크 ID")

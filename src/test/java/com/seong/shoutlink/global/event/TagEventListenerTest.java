@@ -26,6 +26,7 @@ import com.seong.shoutlink.domain.tag.service.AutoGenerativeClient;
 import com.seong.shoutlink.domain.tag.service.ai.GeneratedTag;
 import com.seong.shoutlink.fixture.HubFixture;
 import com.seong.shoutlink.fixture.LinkBundleFixture;
+import com.seong.shoutlink.fixture.LinkFixture;
 import com.seong.shoutlink.fixture.MemberFixture;
 import com.seong.shoutlink.global.client.api.ApiException;
 import jakarta.persistence.EntityManager;
@@ -78,7 +79,7 @@ class TagEventListenerTest extends BaseIntegrationTest {
             //given
             LinkDomainEntity linkDomainEntity = LinkDomainEntity.create(
                 new LinkDomain("github.com"));
-            Link link = new Link("https://github.com", "asdf");
+            Link link = new Link("https://github.com", "asdf", LinkFixture.DEFAULT_EXPIRED_AT);
             persist(
                 linkDomainEntity,
                 LinkEntity.create(link, linkBundleEntity, linkDomainEntity),
@@ -92,7 +93,8 @@ class TagEventListenerTest extends BaseIntegrationTest {
                 memberEntity.getMemberId(),
                 linkBundleEntity.getLinkBundleId(),
                 "https://github.com/hseong3243",
-                "내 깃허브");
+                "내 깃허브",
+                LinkFixture.DEFAULT_EXPIRED_AT);
             List<GeneratedTag> stubbedResponse = Stream.of("태그A", "태그B", "태그C")
                 .map(GeneratedTag::new)
                 .toList();
@@ -120,7 +122,7 @@ class TagEventListenerTest extends BaseIntegrationTest {
             //given
             LinkDomainEntity linkDomainEntity = LinkDomainEntity.create(
                 new LinkDomain("github.com"));
-            Link link = new Link("https://github.com", "asdf");
+            Link link = new Link("https://github.com", "asdf", LinkFixture.DEFAULT_EXPIRED_AT);
             persist(
                 linkDomainEntity,
                 LinkEntity.create(link, linkBundleEntity, linkDomainEntity),
@@ -134,7 +136,7 @@ class TagEventListenerTest extends BaseIntegrationTest {
                 memberEntity.getMemberId(),
                 linkBundleEntity.getLinkBundleId(),
                 "https://github.com/hseong3243",
-                "내 깃허브");
+                "내 깃허브", LinkFixture.DEFAULT_EXPIRED_AT);
 
             given(autoGenerativeClient.generateTags(any())).willThrow(ApiException.class);
 
@@ -172,7 +174,7 @@ class TagEventListenerTest extends BaseIntegrationTest {
             //given
             LinkDomainEntity linkDomainEntity = LinkDomainEntity.create(
                 new LinkDomain("github.com"));
-            Link link = new Link("https://github.com", "asdf");
+            Link link = new Link("https://github.com", "asdf", LinkFixture.DEFAULT_EXPIRED_AT);
             persist(
                 linkDomainEntity,
                 LinkEntity.create(link, linkBundleEntity, linkDomainEntity),
@@ -185,7 +187,7 @@ class TagEventListenerTest extends BaseIntegrationTest {
                 memberEntity.getMemberId(),
                 linkBundleEntity.getLinkBundleId(),
                 "https://github.com/hseong3243",
-                "내 깃허브");
+                "내 깃허브", LinkFixture.DEFAULT_EXPIRED_AT);
             List<GeneratedTag> stubbedResponse = Stream.of("태그A", "태그B", "태그C")
                 .map(GeneratedTag::new)
                 .toList();
@@ -213,7 +215,7 @@ class TagEventListenerTest extends BaseIntegrationTest {
             //given
             LinkDomainEntity linkDomainEntity = LinkDomainEntity.create(
                 new LinkDomain("github.com"));
-            Link link = new Link("https://github.com", "asdf");
+            Link link = new Link("https://github.com", "asdf", LinkFixture.DEFAULT_EXPIRED_AT);
             persist(
                 linkDomainEntity,
                 LinkEntity.create(link, linkBundleEntity, linkDomainEntity),
@@ -226,7 +228,7 @@ class TagEventListenerTest extends BaseIntegrationTest {
                 memberEntity.getMemberId(),
                 linkBundleEntity.getLinkBundleId(),
                 "https://github.com/hseong3243",
-                "내 깃허브");
+                "내 깃허브", LinkFixture.DEFAULT_EXPIRED_AT);
 
             given(autoGenerativeClient.generateTags(any())).willThrow(ApiException.class);
 
