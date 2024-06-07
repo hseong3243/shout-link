@@ -6,6 +6,9 @@ import lombok.Getter;
 @Getter
 public class Link {
 
+    private static final LocalDateTime NO_EXPIRED_DATE_TIME =
+        LocalDateTime.of(9999, 12, 31, 23, 59);
+
     private final Long linkId;
     private final String url;
     private final String description;
@@ -20,6 +23,6 @@ public class Link {
         this.linkId = linkId;
         this.url = url;
         this.description = description;
-        this.expiredAt = expiredAt;
+        this.expiredAt = expiredAt != null ? expiredAt : NO_EXPIRED_DATE_TIME;
     }
 }
