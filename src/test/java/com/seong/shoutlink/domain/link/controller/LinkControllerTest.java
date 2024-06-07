@@ -22,6 +22,7 @@ import com.seong.shoutlink.domain.link.link.service.response.CreateLinkResponse;
 import com.seong.shoutlink.domain.link.link.service.response.DeleteLinkResponse;
 import com.seong.shoutlink.domain.link.link.service.response.FindLinkResponse;
 import com.seong.shoutlink.domain.link.link.service.response.FindLinksResponse;
+import com.seong.shoutlink.fixture.LinkFixture;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -77,7 +78,8 @@ class LinkControllerTest extends BaseControllerTest {
         params.add("linkBundleId", "1");
         params.add("page", "0");
         params.add("size", "10");
-        FindLinkResponse findLinkResponse = new FindLinkResponse(1L, "url", "간단한 설명");
+        FindLinkResponse findLinkResponse = new FindLinkResponse(1L, "url", "간단한 설명",
+            LinkFixture.DEFAULT_EXPIRED_AT);
         FindLinksResponse response = new FindLinksResponse(List.of(findLinkResponse), 1,
             false);
 
@@ -105,6 +107,7 @@ class LinkControllerTest extends BaseControllerTest {
                     fieldWithPath("links[].url").type(JsonFieldType.STRING).description("링크 url"),
                     fieldWithPath("links[].description").type(JsonFieldType.STRING)
                         .description("링크 설명"),
+                    fieldWithPath("links[].expiredAt").type(JsonFieldType.STRING).description("링크 만료일"),
                     fieldWithPath("totalElements").type(JsonFieldType.NUMBER)
                         .description("총 요소 개수"),
                     fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 여부")
@@ -159,7 +162,8 @@ class LinkControllerTest extends BaseControllerTest {
         params.add("page", "0");
         params.add("size", "20");
         long hubId = 1;
-        FindLinkResponse findLink = new FindLinkResponse(1L, "url", "설명");
+        FindLinkResponse findLink = new FindLinkResponse(1L, "url", "설명",
+            LinkFixture.DEFAULT_EXPIRED_AT);
         FindLinksResponse response = new FindLinksResponse(List.of(findLink), 1, false);
 
         given(linkService.findHubLinks(any())).willReturn(response);
@@ -189,6 +193,7 @@ class LinkControllerTest extends BaseControllerTest {
                     fieldWithPath("links[].url").type(JsonFieldType.STRING).description("링크 url"),
                     fieldWithPath("links[].description").type(JsonFieldType.STRING)
                         .description("링크 설명"),
+                    fieldWithPath("links[].expiredAt").type(JsonFieldType.STRING).description("링크 만료일"),
                     fieldWithPath("totalElements").type(JsonFieldType.NUMBER)
                         .description("총 요소 개수"),
                     fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 여부")
