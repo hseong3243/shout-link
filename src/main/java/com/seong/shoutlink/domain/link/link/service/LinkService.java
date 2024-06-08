@@ -64,7 +64,7 @@ public class LinkService implements LinkUseCase {
             linkBundle,
             command.page(),
             command.size(),
-            LinkOrderBy.CREATED_AT);
+            command.linkOrderBy());
         return FindLinksResponse.of(result.links(), result.totalElements(), result.hasNext());
     }
 
@@ -104,7 +104,7 @@ public class LinkService implements LinkUseCase {
 
         LinkBundle hubLinkBundle = getHubLinkBundle(command.linkBundleId(), hub);
         LinkPaginationResult result = linkRepository.findLinks(hubLinkBundle, command.page(),
-            command.size(), LinkOrderBy.CREATED_AT);
+            command.size(), command.linkOrderBy());
         return FindLinksResponse.of(result.links(), result.totalElements(), result.hasNext());
     }
 

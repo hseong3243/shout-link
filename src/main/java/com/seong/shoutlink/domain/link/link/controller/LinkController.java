@@ -56,7 +56,8 @@ public class LinkController {
             memberId,
             request.linkBundleId(),
             request.page(),
-            request.size()));
+            request.size(),
+            request.linkOrderBy()));
         return ResponseEntity.ok(response);
     }
 
@@ -85,7 +86,8 @@ public class LinkController {
             hubId,
             nullableMemberId,
             request.page(),
-            request.size()));
+            request.size(),
+            request.linkOrderBy()));
         return ResponseEntity.ok(response);
     }
 

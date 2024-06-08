@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.link.link.service.request;
 
+import com.seong.shoutlink.domain.link.link.service.LinkOrderBy;
 import jakarta.annotation.Nullable;
 
 public record FindHubLinksCommand(
@@ -8,6 +9,7 @@ public record FindHubLinksCommand(
     @Nullable
     Long nullableMemberId,
     int page,
-    int size) {
+    int size,
+    LinkOrderBy linkOrderBy) {
 
 }

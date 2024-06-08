@@ -78,6 +78,7 @@ class LinkControllerTest extends BaseControllerTest {
         params.add("linkBundleId", "1");
         params.add("page", "0");
         params.add("size", "10");
+        params.add("linkOrderBy", "CREATED_AT");
         FindLinkResponse findLinkResponse = new FindLinkResponse(1L, "url", "간단한 설명",
             LinkFixture.DEFAULT_EXPIRED_AT);
         FindLinksResponse response = new FindLinksResponse(List.of(findLinkResponse), 1,
@@ -99,7 +100,8 @@ class LinkControllerTest extends BaseControllerTest {
                 queryParameters(
                     parameterWithName("linkBundleId").description("링크 묶음 ID"),
                     parameterWithName("page").description("페이지"),
-                    parameterWithName("size").description("사이즈")
+                    parameterWithName("size").description("사이즈"),
+                    parameterWithName("linkOrderBy").description("정렬 기준")
                 ),
                 responseFields(
                     fieldWithPath("links").type(JsonFieldType.ARRAY).description("링크 목록"),
@@ -185,7 +187,8 @@ class LinkControllerTest extends BaseControllerTest {
                 queryParameters(
                     parameterWithName("linkBundleId").description("링크 묶음 ID"),
                     parameterWithName("page").description("페이지").optional(),
-                    parameterWithName("size").description("사이즈").optional()
+                    parameterWithName("size").description("사이즈").optional(),
+                    parameterWithName("linkOrderBy").description("정렬 기준").optional()
                 ),
                 responseFields(
                     fieldWithPath("links").type(JsonFieldType.ARRAY).description("허브 링크 목록"),
