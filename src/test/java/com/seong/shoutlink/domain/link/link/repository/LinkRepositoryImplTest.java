@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.catchException;
 import com.seong.shoutlink.base.BaseRepositoryTest;
 import com.seong.shoutlink.domain.link.link.Link;
 import com.seong.shoutlink.domain.link.link.LinkBundleAndLink;
+import com.seong.shoutlink.domain.link.link.service.LinkOrderBy;
+import com.seong.shoutlink.domain.link.link.service.result.LinkPaginationResult;
 import com.seong.shoutlink.domain.link.linkbundle.LinkBundle;
 import com.seong.shoutlink.domain.link.linkbundle.repository.LinkBundleEntity;
 import com.seong.shoutlink.domain.link.linkdomain.LinkDomain;
@@ -17,11 +19,14 @@ import com.seong.shoutlink.domain.member.repository.MemberEntity;
 import com.seong.shoutlink.fixture.LinkBundleFixture;
 import com.seong.shoutlink.fixture.LinkFixture;
 import com.seong.shoutlink.fixture.MemberFixture;
+import java.time.LocalDateTime;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.ReflectionTestUtils;
 
 class LinkRepositoryImplTest extends BaseRepositoryTest {
 
@@ -123,6 +128,98 @@ class LinkRepositoryImplTest extends BaseRepositoryTest {
 
             //then
             assertThat(exception).isInstanceOf(IllegalStateException.class);
+        }
+    }
+
+    @Nested
+    @DisplayName("findLinks 호출 시")
+    class FindLinksTest {
+
+        private MemberEntity memberEntity;
+        private LinkBundleEntity linkBundleEntity;
+
+        @BeforeEach
+        void setUp() {
+            memberEntity = MemberEntity.create(MemberFixture.member());
+            linkBundleEntity = LinkBundleEntity.create(LinkBundleFixture.linkBundle(),
+                memberEntity);
+            em.persist(memberEntity);
+            em.persist(linkBundleEntity);
+        }
+
+        @Test
+        @DisplayName("성공: 정렬 기준이 createdAt인 경우 생성일 기준으로 내림차순 정렬된다.")
+        void findLinks_OrderByCreatedAt() {
+            //given
+            LinkDomainEntity linkDomainEntity = LinkDomainEntity.create(
+                new LinkDomain("github.com"));
+            LinkEntity linkEntityA = LinkEntity.create(new Link("github.com", "깃허브", null),
+                linkBundleEntity, linkDomainEntity);
+            LinkEntity linkEntityB = LinkEntity.create(new Link("github.com", "깃허브", null),
+                linkBundleEntity, linkDomainEntity);
+            LinkEntity linkEntityC = LinkEntity.create(new Link("github.com", "깃허브", null),
+                linkBundleEntity, linkDomainEntity);
+
+            LocalDateTime now = LocalDateTime.now();
+            ReflectionTestUtils.setField(linkEntityB, "createdAt", now.plusDays(1));
+            ReflectionTestUtils.setField(linkEntityC, "createdAt", now.plusDays(2));
+
+            em.persist(linkDomainEntity);
+            em.persist(linkEntityA);
+            em.persist(linkEntityB);
+            em.persist(linkEntityC);
+
+            //when
+            LinkBundle linkBundle = linkBundleEntity.toDomain();
+            LinkOrderBy orderByCreatedAt = LinkOrderBy.CREATED_AT;
+            LinkPaginationResult result = linkRepository.findLinks(linkBundle, 0, 10,
+                orderByCreatedAt);
+
+            //then
+            List<Link> links = result.links();
+            assertThat(links).extracting(Link::getLinkId)
+                .containsExactly(
+                    linkEntityC.getLinkId(),
+                    linkEntityB.getLinkId(),
+                    linkEntityA.getLinkId());
+        }
+
+        @Test
+        @DisplayName("성공: 정렬 기준이 expiredAt인 경우 만료일 기준으로 내림차순 정렬된다.")
+        void findLinks_OrderByExpiredAt() {
+            //given
+            LocalDateTime expiredAt = LocalDateTime.of(2023, 6, 8, 12, 0);
+
+            LinkDomainEntity linkDomainEntity = LinkDomainEntity.create(
+                new LinkDomain("github.com"));
+            LinkEntity linkEntityA = LinkEntity.create(
+                new Link("github.com", "깃허브", expiredAt),
+                linkBundleEntity, linkDomainEntity);
+            LinkEntity linkEntityB = LinkEntity.create(
+                new Link("github.com", "깃허브", expiredAt.plusDays(1)),
+                linkBundleEntity, linkDomainEntity);
+            LinkEntity linkEntityC = LinkEntity.create(
+                new Link("github.com", "깃허브", expiredAt.plusDays(2)),
+                linkBundleEntity, linkDomainEntity);
+
+            em.persist(linkDomainEntity);
+            em.persist(linkEntityA);
+            em.persist(linkEntityB);
+            em.persist(linkEntityC);
+
+            //when
+            LinkBundle linkBundle = linkBundleEntity.toDomain();
+            LinkOrderBy orderByCreatedAt = LinkOrderBy.EXPIRED_AT;
+            LinkPaginationResult result = linkRepository.findLinks(linkBundle, 0, 10,
+                orderByCreatedAt);
+
+            //then
+            List<Link> links = result.links();
+            assertThat(links).extracting(Link::getLinkId)
+                .containsExactly(
+                    linkEntityC.getLinkId(),
+                    linkEntityB.getLinkId(),
+                    linkEntityA.getLinkId());
         }
     }
 }

@@ -3,6 +3,7 @@ package com.seong.shoutlink.domain.link.link.repository;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.link.link.Link;
 import com.seong.shoutlink.domain.link.link.LinkBundleAndLink;
+import com.seong.shoutlink.domain.link.link.service.LinkOrderBy;
 import com.seong.shoutlink.domain.link.link.service.LinkRepository;
 import com.seong.shoutlink.domain.link.link.service.result.LinkPaginationResult;
 import com.seong.shoutlink.domain.link.linkbundle.LinkBundle;
@@ -21,6 +22,8 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -54,8 +57,10 @@ public class LinkRepositoryImpl implements LinkRepository {
     public LinkPaginationResult findLinks(
         LinkBundle linkBundle,
         int page,
-        int size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
+        int size,
+        LinkOrderBy linkOrderBy) {
+        Sort orderByDesc = Sort.by(Direction.DESC, linkOrderBy.getOrderBy());
+        PageRequest pageRequest = PageRequest.of(page, size, orderByDesc);
         Page<LinkEntity> linkEntityPage = linkJpaRepository.findAllByLinkBundleLinkBundleId(
             linkBundle.getLinkBundleId(),
             pageRequest);

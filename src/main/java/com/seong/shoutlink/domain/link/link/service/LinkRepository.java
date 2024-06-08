@@ -14,7 +14,8 @@ public interface LinkRepository {
 
     Long save(LinkBundleAndLink linkBundleAndLink);
 
-    LinkPaginationResult findLinks(LinkBundle linkBundle, int page, int size);
+    LinkPaginationResult findLinks(LinkBundle linkBundle, int page, int size,
+        LinkOrderBy linkOrderBy);
 
     void updateLinkDomain(Link link, LinkDomain linkDomain);
 
