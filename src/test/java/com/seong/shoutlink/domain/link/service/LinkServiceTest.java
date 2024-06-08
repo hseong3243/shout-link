@@ -9,6 +9,7 @@ import com.seong.shoutlink.domain.exception.ShoutLinkException;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.hubmember.repository.StubHubMemberRepository;
 import com.seong.shoutlink.domain.link.link.Link;
+import com.seong.shoutlink.domain.link.link.service.LinkOrderBy;
 import com.seong.shoutlink.domain.link.link.service.LinkService;
 import com.seong.shoutlink.domain.link.repository.StubLinkRepository;
 import com.seong.shoutlink.domain.link.link.service.request.CreateHubLinkCommand;
@@ -125,7 +126,8 @@ class LinkServiceTest {
                 member.getMemberId(),
                 linkBundle.getLinkBundleId(),
                 0,
-                20);
+                20,
+                LinkOrderBy.CREATED_AT);
 
             //when
             FindLinksResponse response = linkService.findLinks(command);
@@ -295,7 +297,7 @@ class LinkServiceTest {
             linkRepository.stub(link);
 
             FindHubLinksCommand command = new FindHubLinksCommand(linkBundle.getLinkBundleId(),
-                hub.getHubId(), null, 0, 10);
+                hub.getHubId(), null, 0, 10, LinkOrderBy.CREATED_AT);
 
             //when
             FindLinksResponse response = linkService.findHubLinks(command);
@@ -315,7 +317,7 @@ class LinkServiceTest {
         @DisplayName("예외(NotFound): 존재하지 않는 허브")
         void notFound_WhenHubNotFound() {
             //given
-            FindHubLinksCommand command = new FindHubLinksCommand(1L, 1L, null, 0, 10);
+            FindHubLinksCommand command = new FindHubLinksCommand(1L, 1L, null, 0, 10, LinkOrderBy.CREATED_AT);
 
             //when
             Exception exception = catchException(() -> linkService.findHubLinks(command));
@@ -333,7 +335,7 @@ class LinkServiceTest {
             memberRepository.stub(member);
             hubRepository.stub(hub);
 
-            FindHubLinksCommand command = new FindHubLinksCommand(1L, hub.getHubId(), null, 0, 10);
+            FindHubLinksCommand command = new FindHubLinksCommand(1L, hub.getHubId(), null, 0, 10, LinkOrderBy.CREATED_AT);
 
             //when
             Exception exception = catchException(() -> linkService.findHubLinks(command));
@@ -360,7 +362,7 @@ class LinkServiceTest {
                 linkRepository.stub(link);
 
                 FindHubLinksCommand command = new FindHubLinksCommand(linkBundle.getLinkBundleId(),
-                    privateHub.getHubId(), member.getMemberId(), 0, 10);
+                    privateHub.getHubId(), member.getMemberId(), 0, 10, LinkOrderBy.CREATED_AT);
 
                 //when
                 FindLinksResponse response = linkService.findHubLinks(command);
@@ -387,7 +389,7 @@ class LinkServiceTest {
                 linkRepository.stub(link);
 
                 FindHubLinksCommand command = new FindHubLinksCommand(linkBundle.getLinkBundleId(),
-                    hub.getHubId(), null, 0, 10);
+                    hub.getHubId(), null, 0, 10, LinkOrderBy.CREATED_AT);
 
                 //when
                 Exception exception = catchException(() -> linkService.findHubLinks(command));
@@ -413,7 +415,7 @@ class LinkServiceTest {
                     "asdf123!", "nickname", MemberRole.ROLE_USER);
                 memberRepository.stub(anotherMember);
                 FindHubLinksCommand command = new FindHubLinksCommand(linkBundle.getLinkBundleId(),
-                    hub.getHubId(), anotherMember.getMemberId(), 0, 10);
+                    hub.getHubId(), anotherMember.getMemberId(), 0, 10, LinkOrderBy.CREATED_AT);
 
                 //when
                 Exception exception = catchException(() -> linkService.findHubLinks(command));

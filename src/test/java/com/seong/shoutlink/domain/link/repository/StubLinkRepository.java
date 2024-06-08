@@ -1,5 +1,6 @@
 package com.seong.shoutlink.domain.link.repository;
 
+import com.seong.shoutlink.domain.link.link.service.LinkOrderBy;
 import com.seong.shoutlink.domain.link.linkdomain.LinkDomain;
 import com.seong.shoutlink.domain.hub.Hub;
 import com.seong.shoutlink.domain.link.link.Link;
@@ -47,7 +48,7 @@ public class StubLinkRepository implements LinkRepository {
     public LinkPaginationResult findLinks(
         LinkBundle linkBundle,
         int page,
-        int size) {
+        int size, LinkOrderBy linkOrderBy) {
         List<Link> content = memory.values().stream().toList();
         return new LinkPaginationResult(content, content.size(), false);
     }
