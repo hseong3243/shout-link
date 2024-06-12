@@ -28,7 +28,7 @@
       <onMismatch>DENY</onMismatch>
     </filter>
     <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-      <fileNamePattern>logs/info/info-%d{yyyy-MM-dd}.log</fileNamePattern>
+      <fileNamePattern>logs/info/info-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
       <maxFileSize>100MB</maxFileSize>
       <maxHistory>30</maxHistory>
       <totalSizeCap>3GB</totalSizeCap>
@@ -46,7 +46,7 @@
       <onMismatch>DENY</onMismatch>
     </filter>
     <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-      <fileNamePattern>logs/warn/warn-%d{yyyy-MM-dd}.log</fileNamePattern>
+      <fileNamePattern>logs/warn/warn-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
       <maxFileSize>100MB</maxFileSize>
       <maxHistory>30</maxHistory>
       <totalSizeCap>3GB</totalSizeCap>
@@ -64,7 +64,7 @@
       <onMismatch>DENY</onMismatch>
     </filter>
     <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-      <fileNamePattern>logs/error/error-%d{yyyy-MM-dd}.log</fileNamePattern>
+      <fileNamePattern>logs/error/error-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
       <maxFileSize>100MB</maxFileSize>
       <maxHistory>30</maxHistory>
       <totalSizeCap>3GB</totalSizeCap>
